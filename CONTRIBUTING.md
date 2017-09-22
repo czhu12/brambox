@@ -21,7 +21,7 @@ pep8 --max-line-length=200 .
 
 ## Adding a package
 
-A package in python is a folder containing one or more python modules (.py files) and a '__init__.py' file where the name
+A package in python is a folder containing one or more python modules (.py files) and a '\_\_init\_\_.py' file where the name
 of the folder is the name of the package.
 
 If you add a new package, mension its name in the 'setup.py' build script by adding an entry in the 'packages' list.
