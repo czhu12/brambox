@@ -31,13 +31,7 @@ def main():
     for vatic_annotation in vatic_annotations:
 
         if vatic_annotation.frame_number == next_frame_number:
-            dollar_annotation = DollarAnnotation()
-            dollar_annotation.class_label = vatic_annotation.class_label
-            dollar_annotation.left = vatic_annotation.x_min
-            dollar_annotation.top = vatic_annotation.y_min
-            dollar_annotation.width = abs(vatic_annotation.x_max - vatic_annotation.x_min)
-            dollar_annotation.height = abs(vatic_annotation.y_max - vatic_annotation.y_min)
-            text += [dollar_annotation.serialize()]
+            text += [DollarAnnotation(vatic_annotation).serialize()]
         else:
             filename = os.path.join(args.outputfolder, "I{:08d}.txt".format(next_frame_number))
             with open(filename, 'w') as f:

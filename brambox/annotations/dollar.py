@@ -2,35 +2,39 @@
 #   Copyright EAVISE
 #
 
+from .annotation import Annotation
+
 __all__ = ["DollarAnnotation"]
 
 
-class DollarAnnotation:
-    """ Dollar image annotation format """
+class DollarAnnotation(Annotation):
+    """ Dollar image annotation """
 
-    def __init__(self):
-        self.class_label = ""
-        self.left = 0
-        self.top = 0
-        self.width = 0
-        self.height = 0
-        self.occluded = 0
-        self.visible_left = 0
-        self.visible_top = 0
-        self.visible_width = 0
-        self.visible_height = 0
-        self.ignore = 0
-        self.angle = 0
+    def __init__(self, obj=None):
+        Annotation.__init__(self, obj)
 
     def serialize(self):
         """ generate a dollar annotation string """
-        string = "{} {} {} {} {} {} {} {} {} {} {} {}" \
-            .format(self.class_label, self.left, self.top, self.width, self.height,
-                    self.occluded, self.visible_left, self.visible_top, self.visible_width,
-                    self.visible_height, self.ignore, self.angle)
+
+        string = "{} {} {} {} {} {} 0 0 0 0 0 0" \
+            .format(self.class_label,
+                    int(self.x_top_left),
+                    int(self.y_top_left),
+                    int(self.width),
+                    int(self.height),
+                    int(self.occluded))
+
         return string
 
     def deserialize(self, string):
-        """ parse a dollar annotation """
+        """ parse a dollar annotation string """
 
-        raise NotImplementedError
+        elements = string.split()
+        self.class_label = elements[0]
+        self.x_top_left = float(elements[1])
+        self.y_top_left = float(elements[2])
+        self.width = float(elements[3])
+        self.height = float(elements[4])
+        self.occluded = elements[5] != '0'
+
+        return self
