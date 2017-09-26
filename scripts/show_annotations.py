@@ -72,10 +72,14 @@ def show(annos, images, stride, fps):
     cv2.resizeWindow("Annotations", 640, 480)
 
     print("Rendering boxes...")
+
     for i in range(0, len(annos), stride):
 
         # multiple annotations per image
         for j, anno in enumerate(annos[i]):
+            if anno.lost:
+                continue
+
             pt1 = (int(anno.x_top_left), int(anno.y_top_left))
             pt2 = (int(anno.x_top_left + anno.width), int(anno.y_top_left + anno.height))
             if anno.occluded:
@@ -85,20 +89,34 @@ def show(annos, images, stride, fps):
 
             cv2.rectangle(images[i], pt1, pt2, colors[j % len(colors)], thickness)
 
-        text = "{}/{}".format(i, len(images))
+        text = "{}/{}".format(i + 1, len(images))
         height, width, _ = images[i].shape
         cv2.putText(images[i], text, (10, int(height) - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
 
     print("Showtime!")
+    if fps <= 0:
+        print("*** Hit a key to go to next frame ***")
+    else:
+        print("*** Hit a key to play/pause ***")
+        cv2.imshow("Annotations", images[0])
+        cv2.waitKey(0)
+
     prev = time.time()
     for image in images:
         start = time.time()
         cv2.imshow("Annotations", image)
         diff = (time.time() - start) * 1000
-        if fps == 0:
+        if fps <= 0:
             cv2.waitKey(0)
-        elif cv2.waitKey(int(1000.0/fps - diff)) == ord(' '):
-            cv2.waitKey(0)
+        else:
+            # avoid numbers smaller than 1 (0, waitKey will wait forever)
+            wait_time = max(int(1000.0/fps - diff), 1)
+            if cv2.waitKey(wait_time) != -1:
+                cv2.waitKey(0)
+
+    print("*** Hit a key again to exit ***")
+    cv2.imshow("Annotations", images[-1])
+    cv2.waitKey(0)
 
     print("Done")
 

@@ -22,8 +22,8 @@ class VaticAnnotation(Annotation):
         x_max = int(self.x_top_left + self.width)
         y_max = int(self.y_top_left + self.height)
         frame_nr = self.frame_number
-        lost = 0
-        occluded = self.occluded
+        lost = int(self.lost)
+        occluded = int(self.occluded)
         generated = 0
         class_label = self.class_label
 
@@ -50,7 +50,8 @@ class VaticAnnotation(Annotation):
         self.width = abs(float(elements[3]) - self.x_top_left)
         self.height = abs(float(elements[4]) - self.y_top_left)
         self.frame_number = int(elements[5])
-        self.occluded = int(elements[7])
+        self.lost = elements[6] != '0'
+        self.occluded = elements[7] != '0'
         self.class_label = elements[9]
 
         return self
