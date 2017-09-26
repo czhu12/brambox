@@ -10,15 +10,16 @@ import threading
 from brambox.annotations import formats
 
 colors = [
-    (0,0,255),
-    (0,255,0),
-    (255,0,0),
-    (255,0,255),
-    (0,255,255),
-    (255,255,0),
-    (255,255,255),
-    (0,0,0)
+    (0, 0, 255),
+    (0, 255, 0),
+    (255, 0, 0),
+    (255, 0, 255),
+    (0, 255, 255),
+    (255, 255, 0),
+    (255, 255, 255),
+    (0, 0, 0)
 ]
+
 
 def parse_files(annofile, anno_fmt, video_file):
 
@@ -64,6 +65,7 @@ def parse_files(annofile, anno_fmt, video_file):
 
     return annotations, images
 
+
 def show(annos, images, stride, fps):
 
     cv2.namedWindow("Annotations", cv2.WINDOW_NORMAL)
@@ -85,7 +87,7 @@ def show(annos, images, stride, fps):
 
         text = "{}/{}".format(i, len(images))
         height, width, _ = images[i].shape
-        cv2.putText(images[i], text, (10, int(height) - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 3)
+        cv2.putText(images[i], text, (10, int(height) - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 3)
 
     print("Showtime!")
     prev = time.time()
@@ -99,6 +101,7 @@ def show(annos, images, stride, fps):
             cv2.waitKey(0)
 
     print("Done")
+
 
 def main():
 
