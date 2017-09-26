@@ -3,8 +3,8 @@
 import os
 import argparse
 
-from brambox.annotations.vatic import VaticAnnotation
-from brambox.annotations.dollar import DollarAnnotation
+from brambox.annotations import VaticAnnotation
+from brambox.annotations import DollarAnnotation
 
 
 def main():
@@ -30,15 +30,15 @@ def main():
     text = []
     for vatic_annotation in vatic_annotations:
 
-        if vatic_annotation.frame_number == next_frame_number:
-            text += [DollarAnnotation(vatic_annotation).serialize()]
-        else:
+        if vatic_annotation.frame_number != next_frame_number:
             filename = os.path.join(args.outputfolder, "I{:08d}.txt".format(next_frame_number))
             with open(filename, 'w') as f:
                 f.write("\n".join(text))
 
             next_frame_number = vatic_annotation.frame_number
             text = []
+
+        text += [DollarAnnotation(vatic_annotation).serialize()]
 
 if __name__ == '__main__':
     main()
