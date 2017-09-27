@@ -5,4 +5,4 @@ setup(name='brambox',
       description='Unified tools for generating PR curves, crunshing image data annotation sets and more',
       author='EAVISE',
       packages=['brambox', 'brambox.annotations'],
-      scripts=['scripts/format_vatic_to_dollar.py', 'scripts/show_annotations.py'])
+      scripts=['scripts/convert_annotations.py', 'scripts/show_annotations.py'])

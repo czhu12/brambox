@@ -10,7 +10,7 @@ __all__ = ["VaticAnnotation"]
 class VaticAnnotation(Annotation):
     """ VATIC tool annotation """
 
-    def __init__(self, obj=None):
+    def __init__(self, obj=None, **kwargs):
         Annotation.__init__(self, obj)
 
     def serialize(self):

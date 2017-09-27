@@ -8,6 +8,7 @@ import argparse
 import threading
 
 from brambox.annotations import formats
+from brambox.annotations import parse
 
 colors = [
     (0, 0, 255),
@@ -23,30 +24,6 @@ colors = [
 
 def parse_files(annofile, anno_fmt, video_file):
 
-    print("Parsing annotations...")
-    annotations = []
-    if '%' in annofile:
-        # its a series of annotation files
-        counter = 0
-        while True:
-            filename = annofile % counter
-            counter += 1
-
-            if not os.path.exists(filename):
-                break
-
-            with open(filename, "r") as f:
-                lines = f.readlines()
-
-            imgannos = []
-            for line in lines:
-                imgannos.append(formats[anno_fmt](line))
-
-            annotations.append(imgannos)
-
-    else:
-        raise NotImplementedError
-
     cap = cv2.VideoCapture(video_file)
     number_of_frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
     images = []
@@ -60,6 +37,10 @@ def parse_files(annofile, anno_fmt, video_file):
         frame_counter += 1
         print("Reading video frames", int(100 * frame_counter / number_of_frames), "%", end='\r')
     print("")
+
+    print("Parsing annotations...")
+    height, width, _ = images[0].shape
+    annotations = parse(annofile, anno_fmt, width, height)
 
     assert len(images) == len(annotations)
 

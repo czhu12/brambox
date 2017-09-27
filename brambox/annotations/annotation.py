@@ -11,21 +11,6 @@ class Annotation:
     def __init__(self, obj=None):
         """ x_top_left,y_top_left,width,height are in pixel coordinates """
 
-        if obj is not None:
-            if isinstance(obj, str):
-                self.deserialize(obj)
-            else:
-                self.frame_number = obj.frame_number
-                self.class_label = obj.class_label
-                self.x_top_left = obj.x_top_left
-                self.y_top_left = obj.y_top_left
-                self.width = obj.width
-                self.height = obj.height
-                self.lost = obj.lost
-                self.occluded = obj.occluded
-
-            return
-
         self.frame_number = 0   # frame number this annotation belongs to starting with 0
         self.class_label = ""   # class string label
         self.x_top_left = 0.0   # x pixel coordinate top left of the box
@@ -34,6 +19,23 @@ class Annotation:
         self.height = 0.0       # height of the box in pixels
         self.lost = False       # if object is not seen in the image, if true one must ignore this annotation
         self.occluded = False   # if object is occluded
+
+        if obj is None:
+            return
+
+        if isinstance(obj, str):
+            self.deserialize(obj)
+        elif isinstance(obj, Annotation):
+            self.frame_number = obj.frame_number
+            self.class_label = obj.class_label
+            self.x_top_left = obj.x_top_left
+            self.y_top_left = obj.y_top_left
+            self.width = obj.width
+            self.height = obj.height
+            self.lost = obj.lost
+            self.occluded = obj.occluded
+        else:
+            raise TypeError("Object is not of type Annotation or not a string")
 
     def __str__(self):
         """ pretty print """
@@ -51,11 +53,11 @@ class Annotation:
         return string
 
     def serialize(self):
-        """ abstract serializer """
+        """ abstract serializer, implement in derived class """
 
         raise NotImplementedError
 
     def deserialize(self, string):
-        """ abstract parser """
+        """ abstract parser, implement in derived class """
 
         raise NotImplementedError
