@@ -27,25 +27,24 @@ class PascalVOCAnnotation(Annotation):
         else:
             name = 0
 
-        string =    (   "<object>\n"
-                            "<name>{}</name>\n"
-                            "<pose>Unspecified</pose>\n"
-                            "<truncated>{}</truncated>\n"
-                            "<difficult>0</difficult>\n"
-                            "<bndbox>\n"
-                                "<xmin>{}</xmin>\n"
-                                "<ymin>{}</ymin>\n"
-                                "<xmax>{}</xmax>\n"
-                                "<ymay>{}</ymay>\n"
-                            "</bndbox>\n"
-                        "</object>\n"
-                    ) \
-                    .format(name,
-                            1 if self.occluded else 0,
-                            int(self.x_top_left),
-                            int(self.y_top_left),
-                            int(self.x_top_left + self.width),
-                            int(self.y_top_left + self.height))
+        string = ("<object>\n"
+                  "<name>{}</name>\n"
+                  "<pose>Unspecified</pose>\n"
+                  "<truncated>{}</truncated>\n"
+                  "<difficult>0</difficult>\n"
+                  "<bndbox>\n"
+                  "<xmin>{}</xmin>\n"
+                  "<ymin>{}</ymin>\n"
+                  "<xmax>{}</xmax>\n"
+                  "<ymay>{}</ymay>\n"
+                  "</bndbox>\n"
+                  "</object>\n") \
+            .format(name,
+                    1 if self.occluded else 0,
+                    int(self.x_top_left),
+                    int(self.y_top_left),
+                    int(self.x_top_left + self.width),
+                    int(self.y_top_left + self.height))
 
         return string
 
@@ -71,10 +70,9 @@ class PascalVOCAnnotation(Annotation):
         self.y_top_left = float(box[1].text)
         self.width = float(int(box[2].text) - int(box[0].text))
         self.height = float(int(box[3].text) - int(box[1].text))
-        self.occluded = root.find('truncated').text == '1' 
+        self.occluded = root.find('truncated').text == '1'
 
         self.frame_number = 0
         self.lost = None
 
         return self
-

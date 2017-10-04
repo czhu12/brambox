@@ -48,7 +48,8 @@ def main():
         assert os.path.isdir(args.output), 'Output and input should both be folders'
 
         for filename in os.listdir(args.input):
-            if not filename.endswith('.xml'): continue
+            if not filename.endswith('.xml'):
+                continue
 
             infile = os.path.join(args.input, filename)
             outfile = os.path.join(args.output, filename.rsplit('.', 1)[0] + '.txt')

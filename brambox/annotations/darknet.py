@@ -52,4 +52,3 @@ class DarknetAnnotation(Annotation):
         self.lost = False
 
         return self
-
