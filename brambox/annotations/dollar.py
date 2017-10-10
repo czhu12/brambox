@@ -21,10 +21,10 @@ class DollarAnnotation(Annotation):
 
         string = "{} {} {} {} {} {} 0 0 0 0 {} 0" \
             .format(self.class_label,
-                    int(self.x_top_left),
-                    int(self.y_top_left),
-                    int(self.width),
-                    int(self.height),
+                    round(self.x_top_left),
+                    round(self.y_top_left),
+                    round(self.width),
+                    round(self.height),
                     int(self.occluded),
                     int(self.lost))
 

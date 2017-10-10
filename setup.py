@@ -7,7 +7,7 @@ setup(name='brambox',
       packages=['brambox',
                 'brambox.annotations',
                 'brambox.transforms'],
-      scripts=[ 'scripts/convert_annotations.py',
-                'scripts/format_pascalvoc_to_darknet.py',
-                'scripts/show_annotations.py',
-                'scripts/swap_image_channel.py'])
+      scripts=['scripts/convert_annotations.py',
+               'scripts/format_pascalvoc_to_darknet.py',
+               'scripts/show_annotations.py',
+               'scripts/swap_image_channel.py'])

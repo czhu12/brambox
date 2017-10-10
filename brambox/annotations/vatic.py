@@ -17,10 +17,10 @@ class VaticAnnotation(Annotation):
         """ generate a vatic annotation string """
 
         object_id = 0
-        x_min = int(self.x_top_left)
-        y_min = int(self.y_top_left)
-        x_max = int(self.x_top_left + self.width)
-        y_max = int(self.y_top_left + self.height)
+        x_min = round(self.x_top_left)
+        y_min = round(self.y_top_left)
+        x_max = round(self.x_top_left + self.width)
+        y_max = round(self.y_top_left + self.height)
         frame_nr = self.frame_number
         lost = int(self.lost)
         occluded = int(self.occluded)
@@ -52,6 +52,6 @@ class VaticAnnotation(Annotation):
         self.frame_number = int(elements[5])
         self.lost = elements[6] != '0'
         self.occluded = elements[7] != '0'
-        self.class_label = elements[9]
+        self.class_label = elements[9].strip('\"')
 
         return self

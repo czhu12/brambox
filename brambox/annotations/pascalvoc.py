@@ -13,19 +13,13 @@ __all__ = ["PascalVOCAnnotation"]
 class PascalVOCAnnotation(Annotation):
     """ Pascal VOC image annotation """
 
-    def __init__(self, obj=None, classlist=None):
-        self.cls = classlist
+    def __init__(self, obj=None, **kwargs):
         self.frame_number = 0
         self.lost = False
         Annotation.__init__(self, obj)
 
     def serialize(self):
         """ generate a Pascal VOC object xml string """
-
-        if self.cls is not None:
-            name = self.cls[self.class_label]
-        else:
-            name = 0
 
         string = ("<object>\n"
                   "<name>{}</name>\n"
@@ -39,7 +33,7 @@ class PascalVOCAnnotation(Annotation):
                   "<ymay>{}</ymay>\n"
                   "</bndbox>\n"
                   "</object>\n") \
-            .format(name,
+            .format(self.class_label,
                     1 if self.occluded else 0,
                     int(self.x_top_left),
                     int(self.y_top_left),
@@ -60,10 +54,7 @@ class PascalVOCAnnotation(Annotation):
             root = root.find('object')
             assert root is not None, 'Invalid xml data (no object tag was found)'
 
-        if self.cls is not None:
-            self.class_label = self.cls.index(root.find('name').text)
-        else:
-            self.class_label = 0
+        self.class_label = root.find('name').text
 
         box = root.find('bndbox')
         self.x_top_left = float(box[0].text)

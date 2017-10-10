@@ -13,7 +13,7 @@ from brambox.annotations import DarknetAnnotation
 
 
 def convert(infile, outfile, names):
-    pascal = PascalVOCAnnotation(None, names)
+    pascal = PascalVOCAnnotation()
     darknet = []
     root = ET.parse(infile).getroot()
     img_width = int(root.find('size').find('width').text)
@@ -21,7 +21,10 @@ def convert(infile, outfile, names):
     obj = root.findall('object')
 
     for o in obj:
-        darknet += [DarknetAnnotation(img_width, img_height, pascal.deserialize(o)).serialize()]
+        darknet += [DarknetAnnotation(pascal.deserialize(o),
+                                      frame_width=img_width,
+                                      frame_height=img_height,
+                                      class_label_map=names).serialize()]
 
     with open(outfile, 'w') as f:
         f.write("\n".join(darknet))

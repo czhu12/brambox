@@ -22,7 +22,7 @@ colors = [
 ]
 
 
-def parse_files(annofile, anno_fmt, video_file):
+def parse_files(annofile, anno_fmt, video_file, class_names):
 
     cap = cv2.VideoCapture(video_file)
     number_of_frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
@@ -40,7 +40,10 @@ def parse_files(annofile, anno_fmt, video_file):
 
     print("Parsing annotations...")
     height, width, _ = images[0].shape
-    annotations = parse(annofile, anno_fmt, width, height)
+    annotations = parse(annofile, anno_fmt,
+                        frame_width=width,
+                        frame_height=height,
+                        class_label_map=class_names)
 
     assert len(images) == len(annotations)
 
@@ -110,10 +113,17 @@ def main():
     parser.add_argument('videofile', help='Videofile or image sequence, for example: path/to/images/I%%08d.png')
     parser.add_argument('--stride', dest='stride', type=int, default=1, help='Only show every N\'th image')
     parser.add_argument('--fps', dest='fps', type=int, default=0, help='Frames per second to show, if 0, use space bar to go to next frame')
+    parser.add_argument('--class-names', dest='class_names', default=None, help="Class label file for annotation formats using indexes rather than class names")
 
     args = parser.parse_args()
 
-    annos, images = parse_files(args.annofile, args.format, args.videofile)
+    class_names = None
+    if args.class_names is not None:
+        class_names = []
+        with open(args.class_names) as f:
+            class_names = f.read().splitlines()
+
+    annos, images = parse_files(args.annofile, args.format, args.videofile, class_names)
     show(annos, images, args.stride, args.fps)
 
 
