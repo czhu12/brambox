@@ -4,9 +4,8 @@ import os
 import sys
 import argparse
 
-def create_link(src, dst, hard, override):
-    #print(src, "->", dst)
 
+def create_link(src, dst, hard, override):
     if override and os.path.exists(dst):
         os.remove(dst)
 
@@ -14,6 +13,7 @@ def create_link(src, dst, hard, override):
         os.link(src, dst)
     else:
         os.symlink(src, dst)
+
 
 def main():
 

@@ -47,7 +47,7 @@ def parse(filename, fmt, **kwargs):
         for annotation in annotations_flat:
 
             if annotation.frame_number != next_frame_number:
-                annotations.append({'frame_number':annotation.frame_number, 'annotations':annos_per_image})
+                annotations.append({'frame_number': annotation.frame_number, 'annotations': annos_per_image})
                 next_frame_number = annotation.frame_number
                 annos_per_image = []
 
@@ -73,7 +73,7 @@ def parse(filename, fmt, **kwargs):
                     # line is not deserializable, treat as comment: ignore
                     pass
 
-            annotations.append({'frame_number':frame_counter, 'annotations':annos_per_image})
+            annotations.append({'frame_number': frame_counter, 'annotations': annos_per_image})
             frame_counter += 1
     else:
         raise TypeError("Filename {} of unknown type".format(filename))

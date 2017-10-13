@@ -30,7 +30,7 @@ class DollarAnnotation(Annotation):
     def deserialize(self, string):
         """ parse a dollar annotation string """
 
-        #TODO: define our own exception type here
+        # TODO: define our own exception type here
         if string.startswith('%'):
             raise ValueError("Commment string, not parsing this")
 

@@ -23,14 +23,14 @@ def generate(annotations, fmt, filename, **kwargs):
 
     elif os.path.isfile(filename):
         # produce a single output file
-        #text = []
-        #for annotation in annotations:
+        # text = []
+        # for annotation in annotations:
 
         #    string = formats[fmt](annotation, **kwargs).serialize()
         #    if string:
         #        text.append(string)
 
-        #with open(filename) as f:
+        # with open(filename) as f:
         #    f.write("\n".join(text))
         raise NotImplementedError
 
