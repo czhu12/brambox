@@ -32,3 +32,23 @@ Scripts from the script folder that accept command line options must use python'
 commandline options. See the scripts folder for examples.
 
 If you add a scrip, mension its name in the 'setup.py' build script by adding an entry in the 'scripts' list.
+
+## Creating unit tests
+
+If you want to add a unit test module, create a file in 'tests' starting with the 'test\_' prefix.
+We are using python's 'unittest' package so see python's unittest help or an existing test suite in brambox for examples.
+
+## Running unit tests
+
+The 'tests' folder contains unit test modules for the brambox packages. You can run all tests with:
+
+```
+python setup.py test
+```
+
+If you want to run only one unit test module during test development:
+
+```
+python test/test_my_module_under_test.py
+```
+

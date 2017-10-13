@@ -12,7 +12,7 @@ class Annotation:
         """ x_top_left,y_top_left,width,height are in pixel coordinates """
 
         self.frame_number = 0   # frame number this annotation belongs to starting with 0
-        self.class_label = ""   # class string label
+        self.class_label = "x"  # class string label
         self.x_top_left = 0.0   # x pixel coordinate top left of the box
         self.y_top_left = 0.0   # y pixel coordinate top left of the box
         self.width = 0.0        # width of the box in pixels
