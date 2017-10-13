@@ -1,0 +1,6 @@
+image: python:3.6.3-jessie
+
+build:
+    scrpt:
+        - python setup.py build
+        - python setup.py test
