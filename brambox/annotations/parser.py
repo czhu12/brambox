@@ -32,8 +32,13 @@ def parse(filename, fmt, **kwargs):
             lines = f.readlines()
 
         for line in lines:
-            # assume these formats include a frame number field
-            annotations_flat.append(formats[fmt](line, **kwargs))
+            # NOTE: assume these formats include a frame number field
+            # TODO: add error if format does not include frame number field
+            try:
+                annotations_flat.append(formats[fmt](line, **kwargs))
+            except ValueError:
+                # line is not deserializable, treat as comment: ignore
+                pass
 
         # group annotations per image
         annotations_flat = sorted(annotations_flat, key=lambda annotation: annotation.frame_number)
@@ -42,7 +47,7 @@ def parse(filename, fmt, **kwargs):
         for annotation in annotations_flat:
 
             if annotation.frame_number != next_frame_number:
-                annotations.append(annos_per_image)
+                annotations.append({'frame_number':annotation.frame_number, 'annotations':annos_per_image})
                 next_frame_number = annotation.frame_number
                 annos_per_image = []
 
@@ -62,8 +67,13 @@ def parse(filename, fmt, **kwargs):
 
             annos_per_image = []
             for line in lines:
-                annos_per_image.append(formats[fmt](line, frame_number=frame_counter, **kwargs))
-            annotations.append(annos_per_image)
+                try:
+                    annos_per_image.append(formats[fmt](line, **kwargs))
+                except ValueError:
+                    # line is not deserializable, treat as comment: ignore
+                    pass
+
+            annotations.append({'frame_number':frame_counter, 'annotations':annos_per_image})
             frame_counter += 1
     else:
         raise TypeError("Filename {} of unknown type".format(filename))

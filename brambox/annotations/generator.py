@@ -23,27 +23,28 @@ def generate(annotations, fmt, filename, **kwargs):
 
     elif os.path.isfile(filename):
         # produce a single output file
-        text = []
-        for annotation in annotations:
+        #text = []
+        #for annotation in annotations:
 
-            string = formats[fmt](annotation, **kwargs).serialize()
-            if string:
-                text.append(string)
+        #    string = formats[fmt](annotation, **kwargs).serialize()
+        #    if string:
+        #        text.append(string)
 
-        with open(filename) as f:
-            f.write("\n".join(text))
+        #with open(filename) as f:
+        #    f.write("\n".join(text))
+        raise NotImplementedError
 
     elif '%' in filename:
         # sequence expression
         # produce a series of annotation files
         for annos_per_image in annotations:
             text = []
-            for annotation in annos_per_image:
+            for annotation in annos_per_image['annotations']:
                 string = formats[fmt](annotation, **kwargs).serialize()
                 if string:
                     text.append(string)
 
-            fn = filename % annos_per_image[0].frame_number
+            fn = filename % annos_per_image['frame_number']
             with open(fn, 'w') as f:
                 f.write("\n".join(text))
 

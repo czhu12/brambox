@@ -26,13 +26,9 @@ class DarknetAnnotation(Annotation):
         if self.frame_height is None:
             raise TypeError("Darknet annotation requires frame_height")
 
-        self.frame_number = 0
         self.lost = False
         self.occluded = False
         Annotation.__init__(self, obj)
-
-        if 'frame_number' in kwargs:
-            self.frame_number = kwargs['frame_number']
 
     def serialize(self):
         """ generate a darknet annotation string """
@@ -72,7 +68,6 @@ class DarknetAnnotation(Annotation):
         self.x_top_left = float(elements[1]) * self.frame_width - self.width / 2
         self.y_top_left = float(elements[2]) * self.frame_height - self.height / 2
 
-        self.frame_number = 0
         self.occluded = False
         self.lost = False
 

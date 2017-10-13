@@ -24,7 +24,7 @@ def main():
 
     indir = os.path.split(args.inputannotations)[0]
     if not os.path.exists(indir):
-        sys.exit("Input directory", indir, "does not exist")
+        sys.exit("Input directory {} does not exist".format(indir))
 
     if os.path.splitext(args.outputannotations)[1] != '':
         outdir = os.path.split(args.outputannotations)[0]

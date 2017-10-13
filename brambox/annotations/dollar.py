@@ -13,9 +13,6 @@ class DollarAnnotation(Annotation):
     def __init__(self, obj=None, **kwargs):
         Annotation.__init__(self, obj)
 
-        if 'frame_number' in kwargs:
-            self.frame_number = kwargs['frame_number']
-
     def serialize(self):
         """ generate a dollar annotation string """
 
@@ -32,6 +29,10 @@ class DollarAnnotation(Annotation):
 
     def deserialize(self, string):
         """ parse a dollar annotation string """
+
+        #TODO: define our own exception type here
+        if string.startswith('%'):
+            raise ValueError("Commment string, not parsing this")
 
         elements = string.split()
         self.class_label = elements[0]

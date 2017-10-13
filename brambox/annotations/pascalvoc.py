@@ -14,7 +14,6 @@ class PascalVOCAnnotation(Annotation):
     """ Pascal VOC image annotation """
 
     def __init__(self, obj=None, **kwargs):
-        self.frame_number = 0
         self.lost = False
         Annotation.__init__(self, obj)
 
@@ -63,7 +62,6 @@ class PascalVOCAnnotation(Annotation):
         self.height = float(int(box[3].text) - int(box[1].text))
         self.occluded = root.find('truncated').text == '1'
 
-        self.frame_number = 0
         self.lost = None
 
         return self

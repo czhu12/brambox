@@ -11,6 +11,10 @@ class VaticAnnotation(Annotation):
     """ VATIC tool annotation """
 
     def __init__(self, obj=None, **kwargs):
+        
+        if 'frame_number' in kwargs:
+            self.frame_number = kwargs['frame_number']
+
         Annotation.__init__(self, obj)
 
     def serialize(self):

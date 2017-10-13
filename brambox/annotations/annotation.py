@@ -26,7 +26,6 @@ class Annotation:
         if isinstance(obj, str):
             self.deserialize(obj)
         elif isinstance(obj, Annotation):
-            self.frame_number = obj.frame_number
             self.class_label = obj.class_label
             self.x_top_left = obj.x_top_left
             self.y_top_left = obj.y_top_left
@@ -40,7 +39,6 @@ class Annotation:
     def __str__(self):
         """ pretty print """
         string = "{ "
-        string += "frame_number = {}, ".format(self.frame_number)
         string += "class_label = {}, ".format(self.class_label)
         string += "x_top_left = {}, ".format(self.x_top_left)
         string += "y_top_left = {}, ".format(self.y_top_left)
