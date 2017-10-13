@@ -30,14 +30,6 @@ class TestDarknetAnnotation(unittest.TestCase):
                           frame_height=None,
                           class_label_map=[])
 
-    def test_optional_kwargs(self):
-        """ frame number can also be provided to the constructor """
-        self.anno = DarknetAnnotation(frame_width=self.frame_width,
-                                      frame_height=self.frame_height,
-                                      class_label_map=self.class_label_map,
-                                      frame_number=10)
-        self.assertEqual(self.anno.frame_number, 10)
-
     def test_serialize(self):
         """ test if major fields, label,x,y,w,h are serialized """
 
