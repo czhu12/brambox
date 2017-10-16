@@ -33,6 +33,8 @@ def main():
         os.makedirs(args.outputdir)
 
     for i in range(args.offset, len(filenames), args.stride):
+        if i < 0:
+            continue
         create_link(os.path.join(args.inputdir, filenames[i]), os.path.join(args.outputdir, filenames[i]), args.hard, args.force)
 
 if __name__ == '__main__':

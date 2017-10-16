@@ -10,5 +10,6 @@ setup(name='brambox',
       scripts=['scripts/convert_annotations.py',
                'scripts/format_pascalvoc_to_darknet.py',
                'scripts/show_annotations.py',
-               'scripts/swap_image_channel.py'],
+               'scripts/swap_image_channel.py',
+               'scripts/sparse_link.py'],
       test_suite='tests')
