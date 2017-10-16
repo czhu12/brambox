@@ -11,5 +11,6 @@ setup(name='brambox',
                'scripts/format_pascalvoc_to_darknet.py',
                'scripts/show_annotations.py',
                'scripts/swap_image_channel.py',
-               'scripts/sparse_link.py'],
+               'scripts/sparse_link.py',
+               'scripts/replace_image_channel.py'],
       test_suite='tests')
