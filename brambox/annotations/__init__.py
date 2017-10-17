@@ -3,6 +3,7 @@
 # Copyright EAVISE         #
 ############################
 
+from .yaml import *
 from .pascalvoc import *
 from .vatic import *
 from .dollar import *
