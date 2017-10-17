@@ -2,6 +2,8 @@
 #   Copyright EAVISE
 #
 
+from enum import Enum
+
 __all__ = ["Annotation", "Parser", "ParserType"]
 
 
@@ -11,10 +13,10 @@ class Annotation:
     def __init__(self):
         """ x_top_left,y_top_left,width,height are in pixel coordinates """
         self.class_label = "x"  # class string label
-        self.x_top_left = 0.0   # x pixel coordinate top left of the box
-        self.y_top_left = 0.0   # y pixel coordinate top left of the box
-        self.width = 0.0        # width of the box in pixels
-        self.height = 0.0       # height of the box in pixels
+        self.x_top_left = 0     # x pixel coordinate top left of the box
+        self.y_top_left = 0     # y pixel coordinate top left of the box
+        self.width = 0          # width of the box in pixels
+        self.height = 0         # height of the box in pixels
         self.lost = False       # if object is not seen in the image, if true one must ignore this annotation
         self.occluded = False   # if object is occluded
 
@@ -63,13 +65,26 @@ class Annotation:
         """ abstract parser, implement in derived class """
         raise NotImplementedError
 
+
+class ParserType(Enum):
+    """ Enum for differentiating between different parser types """
+    UNDEFINED = 0
+    SINGLE_FILE = 1     # One single file contains all annotations
+    MULTI_FILE = 2      # One annotation file per image
+
+
 class Parser:
     """ Generic parser class """
+    parser_type = ParserType.UNDEFINED  # Derived classes should set the correct parser_type
     annotation_type = Annotation        # Derived classes should set the correct annotation_type
 
     def serialize(self, annotations):
         """ abstract serializer, implement in derived class
-            Default : loop through annotations and call serialize """
+
+            SINGLE_FILE : input dictionary {"image_id": [anno, anno, ...], ...} -> output string
+            MULTI_FILE  : input list [anno, anno, ...] -> output string
+            Default     : loop through annotations and call serialize
+        """
         result = ""
 
         for anno in annotations:
@@ -80,7 +95,11 @@ class Parser:
 
     def deserialize(self, string):
         """ abstract deserializer, implement in derived class
-            Default : loop through lines and call deserialize """
+
+            SINGLE_FILE : input string -> output dictionary {"image_id": [anno, anno, ...], ...}
+            MULTI_FILE  : input string -> output list [anno, anno, ...]
+            Default     : loop through lines and call deserialize
+        """
         result = []
 
         for line in string:
