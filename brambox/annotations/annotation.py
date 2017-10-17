@@ -2,7 +2,7 @@
 #   Copyright EAVISE
 #
 
-__all__ = ["Annotation", "Parser"]
+__all__ = ["Annotation", "Parser", "ParserType"]
 
 
 class Annotation:
@@ -10,7 +10,6 @@ class Annotation:
 
     def __init__(self):
         """ x_top_left,y_top_left,width,height are in pixel coordinates """
-        self.frame_number = 0   # frame number this annotation belongs to starting with 0
         self.class_label = "x"  # class string label
         self.x_top_left = 0.0   # x pixel coordinate top left of the box
         self.y_top_left = 0.0   # y pixel coordinate top left of the box
@@ -66,22 +65,25 @@ class Annotation:
 
 class Parser:
     """ Generic parser class """
-
-    def __init__(self):
-        pass
+    annotation_type = Annotation        # Derived classes should set the correct annotation_type
 
     def serialize(self, annotations):
         """ abstract serializer, implement in derived class
             Default : loop through annotations and call serialize """
-        result = []
+        result = ""
+
         for anno in annotations:
-            result += [anno.serialize()]
+            new_anno = annotation_type.create(anno)
+            result += new_anno.serialize() + "\n"
+
         return result
 
-    def deserialize(self, chunk):
+    def deserialize(self, string):
         """ abstract deserializer, implement in derived class
             Default : loop through lines and call deserialize """
         result = []
-        for line in chunk:
-            result += [anno.deserialize(line)]
+
+        for line in string:
+            result += [annotation_type.create(line)]
+
         return result
