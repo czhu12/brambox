@@ -3,11 +3,14 @@
 # Copyright EAVISE         #
 ############################
 
-from .yaml import *
-from .pascalvoc import *
-from .vatic import *
-from .dollar import *
+# Formats
 from .darknet import *
+#from .dollar import *
+#from .pascalvoc import *
+#from .vatic import *
+from .yaml import *
+
+# Extra
 from .formats import *
 from .parser import *
 from .generator import *
