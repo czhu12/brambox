@@ -37,7 +37,8 @@ class DarknetAnnotation(Annotation):
     def deserialize(self, string, class_label_map, image_width, image_height):
         """ parse a darknet annotation string """
         elements = string.split()
-        self.class_label = class_label_map[int(elements[0])]
+        if class_label_map is not None:
+            self.class_label = class_label_map[int(elements[0])]
         self.width = float(elements[3]) * image_width
         self.height = float(elements[4]) * image_height
         self.x_top_left = float(elements[1]) * image_width - self.width / 2
