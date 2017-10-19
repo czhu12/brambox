@@ -44,6 +44,7 @@ class YamlParser(Parser):
     """ YAML annotation parser """
     parser_type = ParserType.SINGLE_FILE    # Darknet annotations have one file per image
     annotation_type = YamlAnnotation        # Darknet annotation type
+    extension = '.yaml'
 
     def serialize(self, annotations):
         """ Serialize input dictionary of annotations into one string """

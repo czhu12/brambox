@@ -77,6 +77,10 @@ class Parser:
     """ Generic parser class """
     parser_type = ParserType.UNDEFINED  # Derived classes should set the correct parser_type
     annotation_type = Annotation        # Derived classes should set the correct annotation_type
+    extension = '.txt'
+
+    def __init__(self, **kwargs):
+        pass
 
     def serialize(self, annotations):
         """ abstract serializer, implement in derived class
