@@ -3,4 +3,5 @@
 # Copyright EAVISE           #
 ##############################
 
+from .visual import *
 from .convert import *
