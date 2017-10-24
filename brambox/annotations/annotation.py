@@ -57,6 +57,13 @@ class Annotation:
 
         return string
 
+    def rescale(self, value):
+        self.x_top_left = self.x_top_left * value
+        self.y_top_left = self.y_top_left * value
+        self.width = self.width * value
+        self.height = self.height * value
+        return self
+
     def serialize(self):
         """ abstract serializer, implement in derived class """
         raise NotImplementedError
