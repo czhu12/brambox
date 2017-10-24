@@ -1,7 +1,7 @@
-############################
-# Image annotation formats #
-# Copyright EAVISE         #
-############################
+#
+# Image annotation formats
+# Copyright EAVISE
+#
 
 # Formats
 from .darknet import *
