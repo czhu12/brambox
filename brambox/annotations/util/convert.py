@@ -22,30 +22,30 @@ def parse(fmt, anno_file, **kwargs):
         try:
             parser = formats[fmt](**kwargs)
         except KeyError:
-            raise TypeError('Invalid parser %s' % fmt)
+            raise TypeError(f'Invalid parser {fmt}')
     elif issubclass(fmt, Parser):
         parser = fmt(**kwargs)
     else:
-        raise TypeError('Invalid parser %s' % fmt)
+        raise TypeError(f'Invalid parser {fmt}')
 
     # Parse Annotations
     if parser.parser_type == ParserType.SINGLE_FILE:
         if type(anno_file) is not str:
-            raise TypeError('Parser <%s> requires a single annotation file' % parser.__class__.__name__)
+            raise TypeError(f'Parser <{parser.__class__.__name__}> requires a single annotation file')
         with open(anno_file, 'r') as f:
             data = parser.deserialize(f.read())
     elif parser.parser_type == ParserType.MULTI_FILE:
         if type(anno_file) is not list:
-            raise TypeError('Parser <%s> requires a list of annotation files' % parser.__class__.__name__)
+            raise TypeError(f'Parser <{parser.__class__.__name__}> requires a list of annotation files')
         data = {}
         for anno in anno_file:
             img_id = os.path.splitext(os.path.basename(anno))[0]
             if img_id in data:
-                raise ValueError('Multiple annotation files with the same name were found (%s)' % img_id)
+                raise ValueError(f'Multiple annotation files with the same name were found ({img_id})')
             with open(anno, 'r') as f:
                 data[img_id] = parser.deserialize(f.read())
     else:
-        raise AttributeError('Parser <%s> has not defined a parser_type class attribute' % parser.__class__.__name__)
+        raise AttributeError(f'Parser <{parser.__class__.__name__}> has not defined a parser_type class attribute')
 
     return data
 
@@ -63,11 +63,11 @@ def generate(fmt, anno, path, **kwargs):
         try:
             parser = formats[fmt](**kwargs)
         except KeyError:
-            raise TypeError('Invalid parser %s' % fmt)
+            raise TypeError(f'Invalid parser {fmt}')
     elif issubclass(fmt, Parser):
         parser = fmt(**kwargs)
     else:
-        raise TypeError('Invalid parser %s' % fmt)
+        raise TypeError(f'Invalid parser {fmt}')
 
     # Write annotations
     if parser.parser_type == ParserType.SINGLE_FILE:
@@ -77,9 +77,9 @@ def generate(fmt, anno, path, **kwargs):
             f.write(parser.serialize(anno))
     elif parser.parser_type == ParserType.MULTI_FILE:
         if not os.path.isdir(path):
-            raise ValueError('Parser <%s> requires a path to a folder' % parser.__class__.__name__)
+            raise ValueError(f'Parser <{parser.__class__.__name__}> requires a path to a folder')
         for img_id,annos in anno.items():
             with open(os.path.join(path, img_id + parser.extension), 'w') as f:
                 f.write(parser.serialize(annos))
     else:
-        raise AttributeError('Parser <%s> has not defined a parser_type class attribute' % parser.__class__.__name__)
+        raise AttributeError(f'Parser <{parser.__class__.__name__}> has not defined a parser_type class attribute')
