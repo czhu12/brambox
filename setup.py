@@ -12,5 +12,6 @@ setup(name='brambox',
                'scripts/show_annotations.py',
                'scripts/swap_image_channel.py',
                'scripts/sparse_link.py',
-               'scripts/replace_image_channel.py'],
+               'scripts/replace_image_channel.py',
+               'scripts/show_training_loss.py'],
       test_suite='tests')
