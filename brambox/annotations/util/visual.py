@@ -85,7 +85,7 @@ def show_annotations(annotations, img_folder, img_ext='.png', show_labels=False,
     else:
         text_col = color
 
-    for img_id, anno in annotations.items():
+    for img_id, anno in sorted(annotations.items()):
         img_path = get_img_fn(img_id, img_folder, img_ext)
         img = cv2.imread(img_path, cv2.IMREAD_UNCHANGED)
         draw_anno_img(img, anno, color, show_labels, True)
