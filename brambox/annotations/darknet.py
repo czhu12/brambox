@@ -39,6 +39,7 @@ class DarknetAnnotation(Annotation):
         elements = string.split()
         if class_label_map is not None:
             self.class_label = class_label_map[int(elements[0])]
+
         self.width = float(elements[3]) * image_width
         self.height = float(elements[4]) * image_height
         self.x_top_left = float(elements[1]) * image_width - self.width / 2
@@ -69,7 +70,7 @@ class DarknetParser(Parser):
             raise TypeError("Darknet parser requires image_height")
 
     def serialize(self, annotations):
-        """ Serialize a list of annotation into one string """
+        """ Serialize a list of annotations into one string """
         result = ""
 
         for anno in annotations:
@@ -81,7 +82,7 @@ class DarknetParser(Parser):
         return result
 
     def deserialize(self, string):
-        """ Deserialize an annotation file into a list of annotation """
+        """ Deserialize an annotation string into a list of annotation """
         result = []
 
         string = string.splitlines()

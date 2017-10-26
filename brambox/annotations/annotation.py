@@ -90,8 +90,9 @@ class Parser:
         pass
 
     def serialize(self, annotations):
-        """ abstract serializer, implement in derived class
+        """ default serializer, can be overloaded in derived class
 
+            The default serializer generates a text string with one annotation per line
             SINGLE_FILE : input dictionary {"image_id": [anno, anno, ...], ...} -> output string
             MULTI_FILE  : input list [anno, anno, ...] -> output string
             Default     : loop through annotations and call serialize
@@ -99,21 +100,22 @@ class Parser:
         result = ""
 
         for anno in annotations:
-            new_anno = annotation_type.create(anno)
+            new_anno = self.annotation_type.create(anno)
             result += new_anno.serialize() + "\n"
 
         return result
 
     def deserialize(self, string):
-        """ abstract deserializer, implement in derived class
+        """ default deserializer, can be overloaded in derived class
 
+            The default deserializer assumes the string contains whitespace separated values, one annotation per line
             SINGLE_FILE : input string -> output dictionary {"image_id": [anno, anno, ...], ...}
             MULTI_FILE  : input string -> output list [anno, anno, ...]
             Default     : loop through lines and call deserialize
         """
         result = []
 
-        for line in string:
-            result += [annotation_type.create(line)]
+        for line in string.splitlines():
+            result += [self.annotation_type.create(line)]
 
         return result

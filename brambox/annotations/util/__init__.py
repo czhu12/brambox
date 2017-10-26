@@ -5,3 +5,4 @@
 
 from .visual import *
 from .convert import *
+from .path import *
