@@ -1,6 +1,7 @@
 import unittest
 from brambox.annotations.annotation import Annotation
 
+
 class TestAnnotation(unittest.TestCase):
 
     def setUp(self):

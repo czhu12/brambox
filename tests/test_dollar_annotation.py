@@ -84,6 +84,7 @@ person 0 0 0 0 0 0 0 0 0 0 0
 dollar_string_comment = """% comment line
 """ + dollar_string
 
+
 class TestDollarParser(unittest.TestCase):
 
     def setUp(self):

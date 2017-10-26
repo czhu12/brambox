@@ -26,4 +26,3 @@ def expand(expr, stride=1, offset=0):
             break
 
         yield filename
-

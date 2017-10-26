@@ -10,6 +10,7 @@ from ..annotation import ParserType, Parser, Annotation
 
 __all__ = ['parse', 'generate']
 
+
 def parse(fmt, anno_file, **kwargs):
     """ Parse any type of annotation format
 
@@ -62,6 +63,7 @@ def parse(fmt, anno_file, **kwargs):
 
     return data
 
+
 def generate(fmt, anno, path, **kwargs):
     """ Generate annotation file(s) in any format
 
@@ -91,7 +93,7 @@ def generate(fmt, anno, path, **kwargs):
     elif parser.parser_type == ParserType.MULTI_FILE:
         if not os.path.isdir(path):
             raise ValueError(f'Parser <{parser.__class__.__name__}> requires a path to a folder')
-        for img_id,annos in anno.items():
+        for img_id, annos in anno.items():
             with open(os.path.join(path, img_id + parser.extension), 'w') as f:
                 f.write(parser.serialize(annos))
     else:

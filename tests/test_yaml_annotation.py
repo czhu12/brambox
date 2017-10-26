@@ -14,6 +14,7 @@ img_2:
   - [0, 0, 0, 0]
 """
 
+
 class TestYamlAnnotation(unittest.TestCase):
 
     def setUp(self):
@@ -31,7 +32,7 @@ class TestYamlAnnotation(unittest.TestCase):
         self.anno.width = 30
         self.anno.height = 40
 
-        key,val = self.anno.serialize()
+        key, val = self.anno.serialize()
         self.assertEqual(key, 'person')
         self.assertEqual(val, [10, 20, 30, 40])
 

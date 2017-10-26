@@ -6,8 +6,8 @@
 # Formats
 from .darknet import *
 from .dollar import *
-#from .pascalvoc import *
-#from .vatic import *
+# from .pascalvoc import *
+# from .vatic import *
 from .yaml import *
 
 # Extra

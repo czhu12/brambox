@@ -7,6 +7,7 @@ darknet_string = """3 0.0 0.0 0.0 0.0
 0 0.0 0.0 0.0 0.0
 """
 
+
 class TestDarknetAnnotation(unittest.TestCase):
 
     def setUp(self):
