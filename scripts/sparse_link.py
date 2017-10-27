@@ -4,6 +4,7 @@ import os
 import sys
 import argparse
 
+import brambox.annotations as bba
 
 def create_link(src, dst, hard, override):
     if override and os.path.exists(dst):
@@ -32,8 +33,9 @@ def main():
     if not os.path.exists(args.outputdir):
         os.makedirs(args.outputdir)
 
-    for i in range(args.offset, len(filenames), args.stride):
-        create_link(os.path.join(args.inputdir, filenames[i]), os.path.join(args.outputdir, filenames[i]), args.hard, args.force)
+    for src in bba.expand(args.inputdir, args.stride, args.offset):
+        dst = os.path.join(args.outputdir, os.path.split(src)[1])
+        create_link(src, dst, args.hard, args.force)
 
 if __name__ == '__main__':
     main()
