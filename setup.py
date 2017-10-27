@@ -14,4 +14,4 @@ setup(name='brambox',
                'scripts/sparse_link.py',
                'scripts/replace_image_channel.py',
                'scripts/show_training_loss.py'],
-      test_suite='tests')
+      test_suite='tests', install_requires=['matplotlib', 'plotly'])

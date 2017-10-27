@@ -1,7 +1,6 @@
-#!python
+#!/usr/bin/env python
 import re
 import argparse
-import matplotlib.pyplot as plt
 
 
 class Batch:
@@ -18,10 +17,14 @@ class Batch:
 
 
 def main():
-
-    parser = argparse.ArgumentParser(description='Parse darknet stdout, plot the loss and indicate weigts file with lowest avg precision and total precision')
-    parser.add_argument('input', help='Input text file containing darknet stdout')
-    parser.add_argument('--weights-step', default=100, help=('Multiple of iterations a new weigts file is saved. This is used to point to the most interesting weights file'))
+    parser = argparse.ArgumentParser(
+        description='Parse DarkNet stdout, plot the loss and indicate weights file '
+                    'with lowest avg precision and total precision.')
+    parser.add_argument('input', help='Input text file containing darknet stdout.')
+    parser.add_argument('--weights-step', default=100, help=
+                        'Multiple of iterations a new weights file is saved. '
+                        'This is used to point to the most interesting weights file.')
+    parser.add_argument('--backend', default='mpl', help='Set the rendering engine of the plot to "mpl" or "ply".')
     args = parser.parse_args()
 
     with open(args.input) as f:
@@ -45,23 +48,46 @@ def main():
     subsampled_values = [v for v in values if v.iteration % args.weights_step == 0]
     sorted_subsampled_values = sorted(subsampled_values, key=lambda v: v.avg_loss)
     for i in range(10):
-        print("Candidate", i+1, "=", sorted_subsampled_values[i])
+        print("Candidate", i + 1, "=", sorted_subsampled_values[i])
 
     # plot loss
     total_losses = [v.total_loss for v in values]
     avg_losses = [v.avg_loss for v in values]
     iterations = [v.iteration for v in values]
 
+    plot(avg_losses, iterations, total_losses, backend=args.backend)
+
+
+def plot(avg_losses, iterations, total_losses, backend='mpl'):
+    if not backend or backend == 'mpl':
+        plot_mpl(avg_losses, iterations, total_losses)
+    elif backend == 'ply':
+        plot_ply(avg_losses, iterations, total_losses)
+
+
+def plot_mpl(avg_losses, iterations, total_losses):
+    import matplotlib.pyplot as plt
     plt.figure(figsize=(10, 8))
     plt.plot(iterations, total_losses, label="total loss", linewidth=1)
     plt.plot(iterations, avg_losses, label="avg loss", linewidth=1)
-
     plt.gcf().suptitle('Training loss', weight='bold')
     plt.gca().set_ylabel('Loss')
     plt.gca().set_xlabel('Iteration')
     plt.gca().set_ylim([0, 10])
     plt.gca().set_xlim(left=0)
     plt.show()
+
+
+def plot_ply(avg_losses, iterations, total_losses):
+    import plotly.offline as po
+    import plotly.graph_objs as go
+
+    plots = list(map(lambda loss: go.Scatter(x=iterations, y=loss, mode='lines'), [total_losses, avg_losses]))
+    plots[0].name = "total loss"
+    plots[1].name = "average loss"
+    layout = go.Layout(title='Training loss', xaxis=dict(title='Iteration'), yaxis=dict(title='Loss', range=[0, 10]))
+    fig = go.Figure(data=plots, layout=layout)
+    po.plot(fig)
 
 
 if __name__ == '__main__':
