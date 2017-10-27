@@ -3,4 +3,7 @@
 # Copyright EAVISE
 #
 
+from . import annotations
+from . import transforms
+
 __all__ = ['annotations', 'transforms']

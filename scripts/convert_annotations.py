@@ -4,7 +4,6 @@ import os
 import sys
 import argparse
 
-import brambox.annotations
 from brambox.annotations import formats
 from brambox.annotations.util.convert import parse, generate
 

@@ -19,6 +19,7 @@ def parse(fmt, anno_file, **kwargs):
         **kwargs  : keyword arguments that are passed to the parser
     """
 
+    #TODO: make stride/offset work on single files
     # Create parser
     if type(fmt) is str:
         try:
