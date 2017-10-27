@@ -68,7 +68,7 @@ def draw_anno_img(img, annotations, color=None, show_labels=False, inline=False)
 
 def show_annotations(annotations, img_folder, img_ext='.png', show_labels=False, color=None, get_img_fn=None):
     """ Display the annotations parsed by the generic parse function
-        
+
         annotations : Ditctionary containing annotations (eg. output of parse())
         img_folder  : Folder containing the images
         img_ext     : Extension of the images
@@ -81,16 +81,19 @@ def show_annotations(annotations, img_folder, img_ext='.png', show_labels=False,
         get_img_fn = lambda img_id, img_folder, img_ext: os.path.join(img_folder, img_id+img_ext)
 
     if color is None:
-        text_col = (0,0,255)
+        text_col = (0, 0, 255)
     else:
         text_col = color
 
     for img_id, anno in sorted(annotations.items()):
         img_path = get_img_fn(img_id, img_folder, img_ext)
         img = cv2.imread(img_path, cv2.IMREAD_UNCHANGED)
+        if len(img.shape) == 2:
+            img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+
         draw_anno_img(img, anno, color, show_labels, True)
         if show_labels:
-            cv2.putText(img, img_id, (10,15), cv2.FONT_HERSHEY_PLAIN, 0.75, text_col, 1, cv2.LINE_AA)
+            cv2.putText(img, img_id, (10, 15), cv2.FONT_HERSHEY_PLAIN, 0.75, text_col, 1, cv2.LINE_AA)
 
         cv2.imshow('Image annotations', img)
         keycode = cv2.waitKey(0)

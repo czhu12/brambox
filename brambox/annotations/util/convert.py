@@ -11,15 +11,16 @@ from ..annotation import ParserType, Parser, Annotation
 __all__ = ['parse', 'generate']
 
 
-def parse(fmt, anno_file, **kwargs):
+def parse(fmt, anno_file, identify=lambda f: os.path.splitext(os.path.basename(f))[0], **kwargs):
     """ Parse any type of annotation format
 
         fmt       : format from the brambox.annotations.format dictionary
         anno_file : annotation filename or array of annotation file names
+        identify  : function/lambda to create a file identifier based on a filename
         **kwargs  : keyword arguments that are passed to the parser
     """
 
-    #TODO: make stride/offset work on single files
+    # TODO: make stride/offset work on single files
     # Create parser
     if type(fmt) is str:
         try:
@@ -38,7 +39,7 @@ def parse(fmt, anno_file, **kwargs):
         with open(anno_file, 'r') as f:
             data = parser.deserialize(f.read())
     elif parser.parser_type == ParserType.MULTI_FILE:
-        if type(anno_file) is str and '%' in anno_file:
+        if type(anno_file) is str:
             try:
                 stride = kwargs['stride']
                 offset = kwargs['offset']
@@ -53,7 +54,7 @@ def parse(fmt, anno_file, **kwargs):
 
         data = {}
         for anno_file in anno_files:
-            img_id = os.path.splitext(os.path.basename(anno_file))[0]
+            img_id = identify(anno_file)
             if img_id in data:
                 raise ValueError(f'Multiple annotation files with the same name were found ({img_id})')
 

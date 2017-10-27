@@ -35,6 +35,8 @@ class DollarAnnotation(Annotation):
         self.occluded = elements[5] != '0'
         self.lost = elements[10] != '0'
 
+        self.object_id = 0
+
 
 class DollarParser(Parser):
     """ Dollar format annotation parser """

@@ -41,16 +41,16 @@ def main():
             class_names = f.read().splitlines()
 
     annotations = bb.annotations.parse(args.inputformat, args.inputannotations,
-                        image_width=args.image_width,
-                        image_height=args.image_height,
-                        class_label_map=class_names,
-                        stride=args.stride,
-                        offset=args.offset)
+                                       image_width=args.image_width,
+                                       image_height=args.image_height,
+                                       class_label_map=class_names,
+                                       stride=args.stride,
+                                       offset=args.offset)
 
     bb.annotations.generate(args.outputformat, annotations, args.outputannotations,
-             image_width=args.image_width,
-             image_height=args.image_height,
-             class_label_map=class_names)
+                            image_width=args.image_width,
+                            image_height=args.image_height,
+                            class_label_map=class_names)
 
     print("Converted", len(annotations), "files")
 

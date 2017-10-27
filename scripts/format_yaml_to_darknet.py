@@ -30,7 +30,9 @@ def main():
     # Convert annotations
     annotations = bb.annotations.parse('yaml', args.input)
     bb.annotations.generate('darknet', annotations, args.output,
-             image_width=args.dimension[0], image_height=args.dimension[1], class_label_map=names)
+                            image_width=args.dimension[0],
+                            image_height=args.dimension[1],
+                            class_label_map=names)
 
 
 if __name__ == '__main__':

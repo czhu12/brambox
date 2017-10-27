@@ -26,18 +26,23 @@ class YamlAnnotation(Annotation):
 
     def serialize(self):
         """ generate a yaml annotation object """
-        return (self.class_label, [self.x_top_left, self.y_top_left, self.width, self.height])
+        return (self.class_label,
+                [round(self.x_top_left),
+                 round(self.y_top_left),
+                 round(self.width),
+                 round(self.height)])
 
     def deserialize(self, yaml_obj, class_label):
         """ parse a yaml annotation object """
         self.class_label = class_label
-        self.x_top_left = yaml_obj[0]
-        self.y_top_left = yaml_obj[1]
-        self.width = yaml_obj[2]
-        self.height = yaml_obj[3]
+        self.x_top_left = float(yaml_obj[0])
+        self.y_top_left = float(yaml_obj[1])
+        self.width = float(yaml_obj[2])
+        self.height = float(yaml_obj[3])
 
         self.lost = False
         self.occluded = False
+        self.object_id = 0
 
 
 class YamlParser(Parser):

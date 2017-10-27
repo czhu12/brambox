@@ -13,10 +13,11 @@ class Annotation:
     def __init__(self):
         """ x_top_left,y_top_left,width,height are in pixel coordinates """
         self.class_label = "x"  # class string label
-        self.x_top_left = 0     # x pixel coordinate top left of the box
-        self.y_top_left = 0     # y pixel coordinate top left of the box
-        self.width = 0          # width of the box in pixels
-        self.height = 0         # height of the box in pixels
+        self.object_id = 0      # object identifier
+        self.x_top_left = 0.0   # x pixel coordinate top left of the box
+        self.y_top_left = 0.0   # y pixel coordinate top left of the box
+        self.width = 0.0        # width of the box in pixels
+        self.height = 0.0       # height of the box in pixels
         self.lost = False       # if object is not seen in the image, if true one must ignore this annotation
         self.occluded = False   # if object is occluded
 
@@ -32,6 +33,7 @@ class Annotation:
             instance.deserialize(obj)
         elif isinstance(obj, Annotation):
             instance.class_label = obj.class_label
+            instance.object_id = obj.object_id
             instance.x_top_left = obj.x_top_left
             instance.y_top_left = obj.y_top_left
             instance.width = obj.width
@@ -47,6 +49,7 @@ class Annotation:
         """ pretty print """
         string = "{ "
         string += "class_label = {}, ".format(self.class_label)
+        string += "object_id = {}, ".format(self.object_id)
         string += "x_top_left = {}, ".format(self.x_top_left)
         string += "y_top_left = {}, ".format(self.y_top_left)
         string += "width = {}, ".format(self.width)
