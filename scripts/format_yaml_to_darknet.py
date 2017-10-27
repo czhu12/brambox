@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!python
 #
 #   Yaml to Darknet annotation converter
 #
@@ -9,7 +9,7 @@
 import os
 import argparse
 
-from brambox.annotations.util.convert import parse, generate
+import brambox as bb
 
 
 def main():
@@ -28,8 +28,8 @@ def main():
         names = None
 
     # Convert annotations
-    annotations = parse('yaml', args.input)
-    generate('darknet', annotations, args.output,
+    annotations = bb.annotations.parse('yaml', args.input)
+    bb.annotations.generate('darknet', annotations, args.output,
              image_width=args.dimension[0], image_height=args.dimension[1], class_label_map=names)
 
 
