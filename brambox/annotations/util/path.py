@@ -7,11 +7,13 @@ import os
 
 __all__ = ["files", "expand"]
 
+
 def files(path):
     """ list all files in a directory """
     for file in os.listdir(path):
         if os.path.isfile(os.path.join(path, file)):
             yield os.path.join(path, file)
+
 
 def expand(expr, stride=1, offset=0):
     """Expand a file sequence expression into multiple filenames
