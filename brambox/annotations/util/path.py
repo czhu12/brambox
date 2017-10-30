@@ -16,9 +16,10 @@ def files(path):
 
 
 def expand(expr, stride=1, offset=0):
-    """Expand a file sequence expression into multiple filenames
+    """Expand a file selection expression into multiple filenames
 
-    A sequence expression is either:
+    A file selection expression can be:
+        * a file itself (just return the filename)
         * a directory
         * a filename containing %d
     This function will yield all filenames found matching this expression
@@ -40,6 +41,9 @@ def expand(expr, stride=1, offset=0):
                 next_file_number += stride
                 yield file
 
+    elif os.path.isfile(expr):
+        yield expr
+
     elif '%' in expr:
         # TODO: refactor this
         very_big_number = 10000000000
@@ -53,3 +57,7 @@ def expand(expr, stride=1, offset=0):
                 break
 
             yield filename
+
+    else:
+        raise TypeError("File selection expression invalid")
+

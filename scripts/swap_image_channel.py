@@ -27,9 +27,9 @@ def main():
 
     # Mix channels
     mix = bb.transforms.ChannelMixer(number_of_channels)
-    mix.setChannels(channels)
-    mix.setInputImages(*img)
-    out = mix.getOutputImage()
+    mix.set_channels(channels)
+    mix.set_input_images(*img)
+    out = mix.get_output_image()
 
     # Save output
     cv2.imwrite(args.output, out)

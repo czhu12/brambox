@@ -99,3 +99,5 @@ def show_annotations(annotations, img_folder, img_ext='.png', show_labels=False,
         keycode = cv2.waitKey(0)
         if keycode == 27:
             return
+        elif keycode == ord('m'):
+            print(img_id)
