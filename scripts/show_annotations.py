@@ -32,12 +32,12 @@ def main():
     img = cv2.imread(firstimage)
 
     annotations = bb.annotations.parse(args.format, args.annofile,
-                                       image_width=img.shape[0],
-                                       image_height=img.shape[1],
+                                       image_width=img.shape[1],
+                                       image_height=img.shape[0],
                                        class_label_map=args.class_names,
                                        stride=args.stride, offset=args.offset)
 
-    print(f'Parsed {annotations} annotation files')
+    print(f'Parsed {len(annotations)} annotation files')
     bb.annotations.show_annotations(annotations, args.imagefolder, img_ext=extension, show_labels=args.show_labels)
 
 if __name__ == '__main__':
