@@ -70,7 +70,7 @@ class YamlParser(Parser):
         return yaml.dump(result)
 
     def deserialize(self, string):
-        """ Deserialize an annotation file into a dictionary of annotation """
+        """ Deserialize an annotation file into a dictionary of annotations """
         yml_obj = yaml.load(string)
 
         result = {}

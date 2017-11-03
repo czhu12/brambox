@@ -8,7 +8,7 @@ from .darknet import *
 from .dollar import *
 from .cvc import *
 # from .pascalvoc import *
-# from .vatic import *
+from .vatic import *
 from .yaml import *
 
 # Extra
