@@ -37,6 +37,10 @@ def draw_anno_img(img, annotations, color=None, show_labels=False, inline=False)
     label_color = {}
     color_counter = 0
     for anno in annotations:
+
+        if anno.lost:
+            continue
+
         # get coord
         pt1 = (int(anno.x_top_left), int(anno.y_top_left))
         pt2 = (int(anno.x_top_left + anno.width), int(anno.y_top_left + anno.height))
