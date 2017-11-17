@@ -1,6 +1,9 @@
-###############################################################
-# BRAMBOX: Basic Recipes for Annotations and Modeling Toolbox #
-# Copyright EAVISE                                            #
-###############################################################
+#
+# BRAMBOX: Basic Recipes for Annotations and Modeling Toolbox
+# Copyright EAVISE
+#
 
-__all__ = ['annotations', 'transforms']
+from . import boxes
+from . import transforms
+
+__all__ = ['boxes', 'transforms']

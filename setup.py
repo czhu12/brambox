@@ -1,17 +1,16 @@
-from setuptools import setup
+import setuptools as setup
 
-setup(name='brambox',
-      version='0.0.1',
-      description='Unified tools for generating PR curves, crunshing image data annotation sets and more',
-      author='EAVISE',
-      packages=['brambox',
-                'brambox.annotations',
-                'brambox.transforms'],
-      scripts=['scripts/convert_annotations.py',
-               'scripts/format_pascalvoc_to_darknet.py',
-               'scripts/show_annotations.py',
-               'scripts/swap_image_channel.py',
-               'scripts/sparse_link.py',
-               'scripts/replace_image_channel.py',
-               'scripts/show_training_loss.py'],
-      test_suite='tests', install_requires=['matplotlib', 'plotly'])
+def find_packages():
+    return ['brambox'] + ['brambox.'+p for p in setup.find_packages('brambox')]
+
+def find_scripts():
+    return setup.findall('scripts')
+
+setup.setup(name='brambox',
+            version='1.0.0',
+            author='EAVISE',
+            description='Unified tools for generating PR curves, crunshing image data annotation sets and more',
+            long_description=open('README.md').read(),
+            packages=find_packages(),
+            scripts=find_scripts(),
+            test_suite='tests')

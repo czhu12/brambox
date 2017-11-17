@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!python
 #
 #   Copyright EAVISE
 #   By Tanguy Ophoff
@@ -7,7 +7,7 @@
 import argparse
 import cv2
 
-from brambox.transforms import ChannelMixer
+import brambox as bb
 
 
 def main():
@@ -26,10 +26,9 @@ def main():
     channels[int(args.channels[0])] = (1, int(args.channels[1]))
 
     # Mix channels
-    mix = ChannelMixer(number_of_channels)
-    mix.set_channels(channels)
-    mix.set_input_images(*img)
-    out = mix.get_output_image()
+    mixer = bb.transforms.ChannelMixer(number_of_channels)
+    mixer.set_channels(channels)
+    out = mixer(*img)
 
     # Save output
     cv2.imwrite(args.output, out)

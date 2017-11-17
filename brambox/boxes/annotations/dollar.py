@@ -1,21 +1,18 @@
 #
 #   Copyright EAVISE
+#   Author: Maarten Vandersteegen
 #
 
-from .annotation import Annotation
+from .annotation import *
 
-__all__ = ["DollarAnnotation"]
+__all__ = ["DollarAnnotation", "DollarParser"]
 
 
 class DollarAnnotation(Annotation):
     """ Dollar image annotation """
 
-    def __init__(self, obj=None, **kwargs):
-        Annotation.__init__(self, obj)
-
     def serialize(self):
         """ generate a dollar annotation string """
-
         string = "{} {} {} {} {} {} 0 0 0 0 {} 0" \
             .format(self.class_label,
                     round(self.x_top_left),
@@ -29,11 +26,6 @@ class DollarAnnotation(Annotation):
 
     def deserialize(self, string):
         """ parse a dollar annotation string """
-
-        # TODO: define our own exception type here
-        if string.startswith('%'):
-            raise ValueError("Commment string, not parsing this")
-
         elements = string.split()
         self.class_label = elements[0]
         self.x_top_left = float(elements[1])
@@ -43,4 +35,23 @@ class DollarAnnotation(Annotation):
         self.occluded = elements[5] != '0'
         self.lost = elements[10] != '0'
 
-        return self
+        self.object_id = 0
+
+
+class DollarParser(Parser):
+    """ Dollar format annotation parser """
+    parser_type = ParserType.MULTI_FILE
+    box_type = DollarAnnotation
+
+    def deserialize(self, string):
+        """ deserialize a dollar string into a list of annotations
+
+        This deserializer checks for header/comment strings in dollar strings
+        """
+        result = []
+
+        for line in string.splitlines():
+            if '%' not in line:
+                result += [self.box_type.create(line)]
+
+        return result
