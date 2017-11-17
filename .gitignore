@@ -3,3 +3,5 @@ dist
 build
 brambox.egg-info
 __pycache__
+.idea/
+*.html
