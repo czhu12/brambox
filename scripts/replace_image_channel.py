@@ -26,8 +26,7 @@ def replace(colorimage, grayimage, channel, convertcode):
 
     mixer = bb.transforms.ChannelMixer(number_of_channels)
     mixer.set_channels(channels)
-    mixer.set_input_images(colorimage, grayimage)
-    out = mixer.get_output_image()
+    out = mixer(colorimage, grayimage)
 
     return out
 
