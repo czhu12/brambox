@@ -39,7 +39,7 @@ class DarknetAnnotation(Annotation):
         elements = string.split()
         if class_label_map is not None:
             self.class_label = class_label_map[int(elements[0])]
-        else
+        else:
             self.class_label = int(elements[0])
 
         self.width = float(elements[3]) * image_width
@@ -56,8 +56,8 @@ class DarknetAnnotation(Annotation):
 
 class DarknetParser(Parser):
     """ Darknet annotation parser """
-    parser_type = ParserType.MULTI_FILE     # Darknet annotations have one file per image
-    annotation_type = DarknetAnnotation     # Darknet annotation type
+    parser_type = ParserType.MULTI_FILE
+    box_type = DarknetAnnotation
 
     def __init__(self, **kwargs):
         try:
@@ -79,7 +79,7 @@ class DarknetParser(Parser):
         for anno in annotations:
             if anno.lost:   # darknet does not support lost type -> ignore
                 continue
-            new_anno = self.annotation_type.create(anno)
+            new_anno = self.box_type.create(anno)
             result += new_anno.serialize(self.class_label_map, self.image_width, self.image_height) + "\n"
 
         return result
@@ -90,7 +90,7 @@ class DarknetParser(Parser):
 
         string = string.splitlines()
         for line in string:
-            anno = self.annotation_type()
+            anno = self.box_type()
             result += [anno.deserialize(line, self.class_label_map, self.image_width, self.image_height)]
 
         return result

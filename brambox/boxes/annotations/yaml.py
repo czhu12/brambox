@@ -47,8 +47,8 @@ class YamlAnnotation(Annotation):
 
 class YamlParser(Parser):
     """ YAML annotation parser """
-    parser_type = ParserType.SINGLE_FILE    # YAML annotation format has one file for all annotations
-    annotation_type = YamlAnnotation        # YAML annotation type
+    parser_type = ParserType.SINGLE_FILE
+    box_type = YamlAnnotation
     extension = '.yaml'
 
     def serialize(self, annotations):
@@ -59,7 +59,7 @@ class YamlParser(Parser):
             for anno in annotations[img_id]:
                 if anno.lost:   # yaml does not support lost type -> ignore
                     continue
-                new_anno = self.annotation_type.create(anno)
+                new_anno = self.box_type.create(anno)
                 key, val = new_anno.serialize()
                 if key not in img_res:
                     img_res[key] = [val]
@@ -78,7 +78,7 @@ class YamlParser(Parser):
             anno_res = []
             for class_label, annotations in yml_obj[img_id].items():
                 for anno_yml in annotations:
-                    anno = self.annotation_type()
+                    anno = self.box_type()
                     anno.deserialize(anno_yml, class_label)
                     anno_res += [anno]
             result[img_id] = anno_res

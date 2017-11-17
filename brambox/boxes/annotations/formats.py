@@ -8,10 +8,10 @@ from .dollar import DollarParser
 from .vatic import VaticParser
 from .yaml import YamlParser
 
-__all__ = ['formats']
+__all__ = ['annotation_formats']
 
 
-formats = {
+annotation_formats = {
     'cvc': CvcParser,
     'darknet': DarknetParser,
     'dollar': DollarParser,

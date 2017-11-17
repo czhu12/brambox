@@ -44,4 +44,4 @@ class CvcAnnotation(Annotation):
 class CvcParser(Parser):
     """ Cvc format annotation parser """
     parser_type = ParserType.MULTI_FILE
-    annotation_type = CvcAnnotation
+    box_type = CvcAnnotation

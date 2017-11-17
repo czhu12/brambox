@@ -3,7 +3,7 @@
 # Copyright EAVISE
 #
 
-from . import annotations
+from . import boxes
 from . import transforms
 
-__all__ = ['annotations', 'transforms']
+__all__ = ['boxes', 'transforms']

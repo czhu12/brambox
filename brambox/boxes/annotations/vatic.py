@@ -56,7 +56,7 @@ class VaticAnnotation(Annotation):
 class VaticParser(Parser):
     """ VATIC tool annotation parser """
     parser_type = ParserType.SINGLE_FILE
-    annotation_type = VaticAnnotation
+    box_type = VaticAnnotation
     extension = '.txt'
 
     def serialize(self, annotations):
@@ -65,7 +65,7 @@ class VaticParser(Parser):
         result = []
         for img_id, annos in annotations.items():
             for anno in annos:
-                new_anno = self.annotation_type.create(anno)
+                new_anno = self.box_type.create(anno)
                 result += [new_anno.serialize(img_id)]
 
         return "\n".join(result)
@@ -79,7 +79,7 @@ class VaticParser(Parser):
             if img_id not in result:
                 result[img_id] = []
 
-            anno = self.annotation_type()
+            anno = self.box_type()
             anno.deserialize(line)
             result[img_id] += [anno]
 

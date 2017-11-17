@@ -41,7 +41,7 @@ class DollarAnnotation(Annotation):
 class DollarParser(Parser):
     """ Dollar format annotation parser """
     parser_type = ParserType.MULTI_FILE
-    annotation_type = DollarAnnotation
+    box_type = DollarAnnotation
 
     def deserialize(self, string):
         """ deserialize a dollar string into a list of annotations
@@ -52,6 +52,6 @@ class DollarParser(Parser):
 
         for line in string.splitlines():
             if '%' not in line:
-                result += [self.annotation_type.create(line)]
+                result += [self.box_type.create(line)]
 
         return result
