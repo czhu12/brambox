@@ -39,6 +39,8 @@ class DarknetAnnotation(Annotation):
         elements = string.split()
         if class_label_map is not None:
             self.class_label = class_label_map[int(elements[0])]
+        else
+            self.class_label = int(elements[0])
 
         self.width = float(elements[3]) * image_width
         self.height = float(elements[4]) * image_height
