@@ -1,5 +1,6 @@
 import unittest
-from brambox.annotations import DollarAnnotation
+from brambox.annotations.annotation import Annotation
+from brambox.annotations import DollarAnnotation, DollarParser
 
 
 class TestDollarAnnotation(unittest.TestCase):
@@ -75,6 +76,40 @@ class TestDollarAnnotation(unittest.TestCase):
         self.anno.deserialize(string)
         self.assertTrue(self.anno.lost)
 
+dollar_string = """x 0 0 0 0 0 0 0 0 0 0 0
+x 0 0 0 0 0 0 0 0 0 0 0
+person 0 0 0 0 0 0 0 0 0 0 0
+"""
+
+dollar_string_comment = """% comment line
+""" + dollar_string
+
+
+class TestDollarParser(unittest.TestCase):
+
+    def setUp(self):
+        self.parser = DollarParser()
+
+    def tearDown(self):
+        pass
+
+    def test_serialize(self):
+        """ test if basic serialize works """
+        testanno1 = Annotation()
+        testanno2 = Annotation()
+        testanno2.class_label = 'person'
+        obj = [testanno1, testanno1, testanno2]
+
+        string = self.parser.serialize(obj)
+        self.assertEqual(string, dollar_string)
+
+    def test_deserialize(self):
+        """ test if basic deserialize works, make sure it ignores comment lines """
+        obj = self.parser.deserialize(dollar_string_comment)
+        self.assertEqual(type(obj), list)
+        self.assertEqual(len(obj), 3)
+        self.assertEqual(obj[0].class_label, 'x')
+        self.assertEqual(obj[2].class_label, 'person')
 
 if __name__ == '__main__':
     unittest.main()

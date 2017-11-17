@@ -4,21 +4,21 @@ import os
 import sys
 import argparse
 
-from brambox.annotations import formats
-from brambox.annotations import parse
-from brambox.annotations import generate
+import brambox as bb
 
 
 def main():
 
     parser = argparse.ArgumentParser(description='Convert annotation file(s) from one format to the other')
-    parser.add_argument('inputformat', choices=formats.keys(), help='Input annotation format')
+    parser.add_argument('inputformat', choices=bb.annotations.formats.keys(), help='Input annotation format')
     parser.add_argument('inputannotations', help='Input annotation file or sequence expression, for example: path/to/anno/I%%08d.txt')
-    parser.add_argument('outputformat', choices=formats.keys(), help='Ouput annotation format')
-    parser.add_argument('outputannotations', help='Output annotation file or sequence expression, for example: path/to/anno/I%%08d.txt')
-    parser.add_argument('--frame-width', dest='frame_width', type=int, default=None, help='Image width info for relative annotation formats')
-    parser.add_argument('--frame-height', dest='frame_height', type=int, default=None, help='Image height info for relative annotation formats')
+    parser.add_argument('outputformat', choices=bb.annotations.formats.keys(), help='Ouput annotation format')
+    parser.add_argument('outputannotations', help='Output annotation file or folder')
+    parser.add_argument('--image-width', dest='image_width', type=int, default=None, help='Image width info for relative annotation formats')
+    parser.add_argument('--image-height', dest='image_height', type=int, default=None, help='Image height info for relative annotation formats')
     parser.add_argument('--class-names', dest='class_names', default=None, help="Class label file for annotation formats using indexes rather than class names")
+    parser.add_argument('--stride', type=int, default=1, help='If a sequence expression is given as input, this stride is used')
+    parser.add_argument('--offset', type=int, default=0, help='If a sequence expression is given as input, this offset is used')
 
     args = parser.parse_args()
 
@@ -40,15 +40,17 @@ def main():
         with open(args.class_names) as f:
             class_names = f.read().splitlines()
 
-    annotations = parse(args.inputannotations, args.inputformat,
-                        frame_width=args.frame_width,
-                        frame_height=args.frame_height,
-                        class_label_map=class_names)
+    annotations = bb.annotations.parse(args.inputformat, args.inputannotations,
+                                       image_width=args.image_width,
+                                       image_height=args.image_height,
+                                       class_label_map=class_names,
+                                       stride=args.stride,
+                                       offset=args.offset)
 
-    generate(annotations, args.outputformat, args.outputannotations,
-             frame_width=args.frame_width,
-             frame_height=args.frame_height,
-             class_label_map=class_names)
+    bb.annotations.generate(args.outputformat, annotations, args.outputannotations,
+                            image_width=args.image_width,
+                            image_height=args.image_height,
+                            class_label_map=class_names)
 
     print("Converted", len(annotations), "files")
 

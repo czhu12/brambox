@@ -10,13 +10,25 @@ You can validate your contributed code on style guide violations using the follo
 pip install pep8
 ```
 
-NOTE: This project is python 3 so on some systems you might want to use 'pip3' instead of 'pip'
+NOTE: This project is python 3.6 so on some systems you might want to use 'pip3.6' or 'python3.6 -m pip' instead of 'pip'
 
 Run it on the repo with:
 
 ```
 cd brambox
 pep8 --max-line-length=200 .
+```
+
+## Running scripts when developping
+
+If you already installed brambox on your system in the past and you are developing on brambox, you might what to use
+brambox from your git clone instead of the one installed on your system. To do that, just make sure you execute a script
+using brambox from inside the root folder of the git repo. Python will look for packages in the current directory first
+before trying to find them in your python path. For example:
+
+```
+cd brambox_git_clone
+./scripts/script_to_test.py     # will use brambox from the git repo
 ```
 
 ## Adding a package

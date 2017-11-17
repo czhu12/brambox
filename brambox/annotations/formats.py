@@ -2,17 +2,19 @@
 #   Copyright EAVISE
 #
 
-from .pascalvoc import PascalVOCAnnotation
-from .vatic import VaticAnnotation
-from .dollar import DollarAnnotation
-from .darknet import DarknetAnnotation
+from .cvc import CvcParser
+from .darknet import DarknetParser
+from .dollar import DollarParser
+from .vatic import VaticParser
+from .yaml import YamlParser
 
-__all__ = ["formats"]
+__all__ = ['formats']
 
 
 formats = {
-    "darknet": DarknetAnnotation,
-    "dollar": DollarAnnotation,
-    "vatic": VaticAnnotation,
-    "pascalvoc": PascalVOCAnnotation
+    'cvc': CvcParser,
+    'darknet': DarknetParser,
+    'dollar': DollarParser,
+    'vatic': VaticParser,
+    'yaml': YamlParser
 }

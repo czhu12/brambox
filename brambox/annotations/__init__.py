@@ -1,12 +1,16 @@
-############################
-# Image annotation formats #
-# Copyright EAVISE         #
-############################
+#
+# Image annotation formats
+# Copyright EAVISE
+#
 
-from .pascalvoc import *
-from .vatic import *
-from .dollar import *
+# Formats
 from .darknet import *
+from .dollar import *
+from .cvc import *
+# from .pascalvoc import *
+from .vatic import *
+from .yaml import *
+
+# Extra
 from .formats import *
-from .parser import *
-from .generator import *
+from .util import *

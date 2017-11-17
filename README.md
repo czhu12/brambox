@@ -8,7 +8,7 @@ Unified tools for generating PR curves, converting image data annotation sets an
 python setup.py install
 ```
 
-NOTE: This project is python 3 so on some systems you might want to use 'python3' instead of 'python'
+NOTE: This project is python 3.6 and higher so on some systems you might want to use 'python3.6' instead of 'python'
 
 ## Usage
 
