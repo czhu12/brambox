@@ -1,6 +1,6 @@
 import unittest
-from brambox.annotations.annotation import Annotation
-from brambox.annotations import YamlAnnotation, YamlParser
+from brambox.boxes.annotations.annotation import Annotation
+from brambox.boxes.annotations import YamlAnnotation, YamlParser
 
 yaml_string = """img_1:
   person:

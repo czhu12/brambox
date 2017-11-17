@@ -1,6 +1,6 @@
 import unittest
-from brambox.annotations.annotation import Annotation
-from brambox.annotations import DollarAnnotation, DollarParser
+from brambox.boxes.annotations.annotation import Annotation
+from brambox.boxes.annotations import DollarAnnotation, DollarParser
 
 
 class TestDollarAnnotation(unittest.TestCase):

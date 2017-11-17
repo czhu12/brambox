@@ -1,6 +1,6 @@
 import unittest
-from brambox.annotations.annotation import Annotation
-from brambox.annotations import DarknetAnnotation, DarknetParser
+from brambox.boxes.annotations.annotation import Annotation
+from brambox.boxes.annotations import DarknetAnnotation, DarknetParser
 
 darknet_string = """3 0.0 0.0 0.0 0.0
 3 0.0 0.0 0.0 0.0

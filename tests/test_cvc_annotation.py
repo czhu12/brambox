@@ -1,6 +1,6 @@
 import unittest
-from brambox.annotations.annotation import Annotation
-from brambox.annotations import CvcAnnotation, CvcParser
+from brambox.boxes.annotations.annotation import Annotation
+from brambox.boxes.annotations import CvcAnnotation, CvcParser
 
 
 class TestCvcAnnotation(unittest.TestCase):
