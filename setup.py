@@ -7,7 +7,7 @@ def find_scripts():
     return setup.findall('scripts')
 
 setup.setup(name='brambox',
-            version='1.0.0',
+            version='1.0.1-beta',
             author='EAVISE',
             description='Unified tools for generating PR curves, crunshing image data annotation sets and more',
             long_description=open('README.md').read(),

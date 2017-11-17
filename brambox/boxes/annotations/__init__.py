@@ -12,4 +12,5 @@ from .vatic import *
 from .yaml import *
 
 # Extra
+from .annotation import Annotation
 from .formats import *

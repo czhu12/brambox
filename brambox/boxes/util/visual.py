@@ -6,8 +6,8 @@
 import os
 import cv2
 
-from ..annotations import annotation as anno
-from ..detections import detection as det
+from ..annotations import Annotation
+from ..detections import Detection
 
 __all__ = ['draw_box', 'show_bounding_boxes']
 
@@ -44,12 +44,12 @@ def draw_box(img, boxes, color=None, show_labels=False, inline=False):
         text = box.class_label
 
         # Type specific settings
-        if isinstance(box, anno.Annotation):
+        if isinstance(box, Annotation):
             if box.lost:
                 continue
             if box.occluded:
                 thickness = 2
-        elif isinstance(box, det.Detection):
+        elif isinstance(box, Detection):
             text = '{} {:.2f}%'.format(box.class_label, box.confidence)
 
         # get coord

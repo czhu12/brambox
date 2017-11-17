@@ -6,4 +6,5 @@
 # Formats
 
 # Extra
+from .detection import Detection
 from .formats import *
