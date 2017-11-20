@@ -53,8 +53,8 @@ def draw_box(img, boxes, color=None, show_labels=False, inline=False):
             text = '{} {:.2f}%'.format(box.class_label, box.confidence)
 
         # get coord
-        pt1 = (int(box.x_top_left), int(anno.y_top_left))
-        pt2 = (int(box.x_top_left + anno.width), int(anno.y_top_left + anno.height))
+        pt1 = (int(box.x_top_left), int(box.y_top_left))
+        pt2 = (int(box.x_top_left + box.width), int(box.y_top_left + box.height))
 
         # get color
         if color is not None:
@@ -73,6 +73,8 @@ def draw_box(img, boxes, color=None, show_labels=False, inline=False):
         # write label
         if show_labels:
             cv2.putText(output, text, (pt1[0], pt1[1]-5), cv2.FONT_HERSHEY_PLAIN, 0.75, use_color, 1, cv2.LINE_AA)
+
+    return output
 
 
 def show_bounding_boxes(boxes, img_folder, img_ext='.png', show_labels=False, color=None, get_img_fn=None):
@@ -104,7 +106,7 @@ def show_bounding_boxes(boxes, img_folder, img_ext='.png', show_labels=False, co
         if show_labels:
             cv2.putText(img, img_id, (10, 15), cv2.FONT_HERSHEY_PLAIN, 0.75, text_col, 1, cv2.LINE_AA)
 
-        cv2.imshow('Image annotations', img)
+        cv2.imshow('Bounding boxes', img)
         while True:
             keycode = cv2.waitKey(0)
             if keycode == 27:
