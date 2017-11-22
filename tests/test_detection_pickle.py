@@ -1,10 +1,9 @@
 import unittest
-from brambox.boxes.annotations.annotation import Annotation
-from brambox.boxes.annotations import PickleParser
+from brambox.boxes.detections.detection import Detection
+from brambox.boxes.detections import PickleParser
 
 
-class TestYamlAnnotation(unittest.TestCase):
-
+class TestPickleDetection(unittest.TestCase):
     def setUp(self):
         self.parser = PickleParser()
 
@@ -13,8 +12,8 @@ class TestYamlAnnotation(unittest.TestCase):
 
     def test_parser_serialize_deserialize(self):
         """ test basic serialization/deserialization with parser """
-        testanno1 = Annotation()
-        testanno2 = Annotation()
+        testanno1 = Detection()
+        testanno2 = Detection()
         testanno2.class_label = 'person'
         obj = {'img_1': [testanno1, testanno2], 'img_2': [testanno1, testanno1, testanno1]}
 
@@ -26,3 +25,4 @@ class TestYamlAnnotation(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+

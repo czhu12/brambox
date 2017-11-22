@@ -9,7 +9,6 @@ darknet_string = """3 0.0 0.0 0.0 0.0
 
 
 class TestDarknetAnnotation(unittest.TestCase):
-
     def setUp(self):
         self.image_width = 1000
         self.image_height = 500

@@ -2,9 +2,13 @@ import unittest
 from brambox.boxes.annotations.annotation import Annotation
 from brambox.boxes.annotations import CvcAnnotation, CvcParser
 
+cvc_string = """0 0 0 0 1 0 0 0 0 0 0
+0 0 0 0 1 0 0 0 0 0 0
+3 0 0 0 1 0 0 0 0 0 0
+"""
+
 
 class TestCvcAnnotation(unittest.TestCase):
-
     def setUp(self):
         self.anno = CvcAnnotation()
 
@@ -46,14 +50,7 @@ class TestCvcAnnotation(unittest.TestCase):
         self.assertEqual(self.anno.object_id, 3)
 
 
-cvc_string = """0 0 0 0 1 0 0 0 0 0 0
-0 0 0 0 1 0 0 0 0 0 0
-3 0 0 0 1 0 0 0 0 0 0
-"""
-
-
 class TestCvcParser(unittest.TestCase):
-
     def setUp(self):
         self.parser = CvcParser()
 
@@ -76,6 +73,7 @@ class TestCvcParser(unittest.TestCase):
         self.assertEqual(type(obj), list)
         self.assertEqual(len(obj), 3)
         self.assertEqual(obj[2].x_top_left, 3)
+
 
 if __name__ == '__main__':
     unittest.main()

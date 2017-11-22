@@ -3,7 +3,6 @@ from brambox.boxes.box import Box
 
 
 class TestBox(unittest.TestCase):
-
     def setUp(self):
         self.box = Box()
         assert type(self.box) == Box
@@ -39,3 +38,7 @@ class TestBox(unittest.TestCase):
         self.assertEqual(self.box.y_top_left, 5)
         self.assertEqual(self.box.width, 2.5)
         self.assertEqual(self.box.height, 2.5)
+
+
+if __name__ == '__main__':
+    unittest.main()

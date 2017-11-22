@@ -26,7 +26,6 @@ img_2:
 
 
 class TestYamlAnnotation(unittest.TestCase):
-
     def setUp(self):
         self.anno = YamlAnnotation()
         self.parser = YamlParser()

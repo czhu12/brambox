@@ -2,9 +2,16 @@ import unittest
 from brambox.boxes.annotations.annotation import Annotation
 from brambox.boxes.annotations import DollarAnnotation, DollarParser
 
+dollar_string = """x 0 0 0 0 0 0 0 0 0 0 0
+x 0 0 0 0 0 0 0 0 0 0 0
+person 0 0 0 0 0 0 0 0 0 0 0
+"""
+
+dollar_string_comment = """% comment line
+""" + dollar_string
+
 
 class TestDollarAnnotation(unittest.TestCase):
-
     def setUp(self):
         self.anno = DollarAnnotation()
 
@@ -76,17 +83,8 @@ class TestDollarAnnotation(unittest.TestCase):
         self.anno.deserialize(string)
         self.assertTrue(self.anno.lost)
 
-dollar_string = """x 0 0 0 0 0 0 0 0 0 0 0
-x 0 0 0 0 0 0 0 0 0 0 0
-person 0 0 0 0 0 0 0 0 0 0 0
-"""
-
-dollar_string_comment = """% comment line
-""" + dollar_string
-
 
 class TestDollarParser(unittest.TestCase):
-
     def setUp(self):
         self.parser = DollarParser()
 
@@ -110,6 +108,7 @@ class TestDollarParser(unittest.TestCase):
         self.assertEqual(len(obj), 3)
         self.assertEqual(obj[0].class_label, 'x')
         self.assertEqual(obj[2].class_label, 'person')
+
 
 if __name__ == '__main__':
     unittest.main()

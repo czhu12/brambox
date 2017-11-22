@@ -4,8 +4,7 @@ import cv2
 import brambox.boxes as bbb
 
 
-class TestBox(unittest.TestCase):
-
+class TestDrawBox(unittest.TestCase):
     def setUp(self):
         self.img = np.zeros((50,50,3), dtype=np.uint8)
         self.res = self.img.copy()
@@ -21,10 +20,15 @@ class TestBox(unittest.TestCase):
         pass
 
     def test_drawing(self):
+        """ Test drawing function """
         img_b = bbb.draw_box(self.img, [self.anno], (255,255,255))
         self.assertTrue(np.array_equal(self.res, img_b))
 
     def test_inline_drawing(self):
+        """ Test inline drawing """
         bbb.draw_box(self.img, [self.anno], (255,255,255), False, True)
         self.assertTrue(np.array_equal(self.res, self.img))
 
+
+if __name__ == '__main__':
+    unittest.main()
