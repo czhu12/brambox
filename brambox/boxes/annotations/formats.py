@@ -7,6 +7,7 @@ from .darknet import DarknetParser
 from .dollar import DollarParser
 from .vatic import VaticParser
 from .yaml import YamlParser
+from .pickle import PickleParser
 
 __all__ = ['annotation_formats']
 
@@ -16,5 +17,6 @@ annotation_formats = {
     'darknet': DarknetParser,
     'dollar': DollarParser,
     'vatic': VaticParser,
-    'yaml': YamlParser
+    'yaml': YamlParser,
+    'pickle': PickleParser
 }
