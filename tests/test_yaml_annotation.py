@@ -4,14 +4,24 @@ from brambox.boxes.annotations import YamlAnnotation, YamlParser
 
 yaml_string = """img_1:
   person:
-  - [0, 0, 0, 0]
+  - coords: [0, 0, 0, 0]
+    lost: False
+    occluded: False
   x:
-  - [0, 0, 0, 0]
+  - coords: [0, 0, 0, 0]
+    lost: False
+    occluded: False
 img_2:
   x:
-  - [0, 0, 0, 0]
-  - [0, 0, 0, 0]
-  - [0, 0, 0, 0]
+  - coords: [0, 0, 0, 0]
+    lost: False
+    occluded: False
+  - coords: [0, 0, 0, 0]
+    lost: False
+    occluded: False
+  - coords: [0, 0, 0, 0]
+    lost: False
+    occluded: False
 """
 
 
@@ -31,20 +41,24 @@ class TestYamlAnnotation(unittest.TestCase):
         self.anno.y_top_left = 20
         self.anno.width = 30
         self.anno.height = 40
+        self.anno.lost = True
+        self.anno.occluded = False
 
         key, val = self.anno.serialize()
         self.assertEqual(key, 'person')
-        self.assertEqual(val, [10, 20, 30, 40])
+        self.assertEqual(val['coords'], [10, 20, 30, 40])
+        self.assertTrue(val['lost'])
+        self.assertFalse(val['occluded'])
 
     def test_anno_deserialize(self):
         """ test if deserialization of one annotation works """
-        self.anno.deserialize([10, 20, 30, 40], 'person')
+        self.anno.deserialize({'coords': [10, 20, 30, 40], 'lost': True, 'occluded': True}, 'person')
         self.assertEqual(self.anno.x_top_left, 10)
         self.assertEqual(self.anno.y_top_left, 20)
         self.assertEqual(self.anno.width, 30)
         self.assertEqual(self.anno.height, 40)
-        self.assertFalse(self.anno.occluded)
-        self.assertFalse(self.anno.lost)
+        self.assertTrue(self.anno.occluded)
+        self.assertTrue(self.anno.lost)
 
     def test_parser_serialize(self):
         """ test basic serialization with parser """
@@ -56,7 +70,6 @@ class TestYamlAnnotation(unittest.TestCase):
         string = self.parser.serialize(obj)
         self.assertEqual(string, yaml_string)
 
-    # TODO: test if img_1 contains one anno 'x' and one anno 'person'
     def test_parser_deserialize(self):
         """ test basic deserialization with parser """
         obj = self.parser.deserialize(yaml_string)

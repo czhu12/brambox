@@ -3,16 +3,26 @@
 #   Author: Tanguy Ophoff
 #
 #   YAML annotation format
+#   Human readable annotation format
+#
 #   example file
 #       img1:
 #           car:
-#               - [x,y,w,h]
+#               - coords: [x,y,w,h]
+#                 lost: False
+#                 occluded: True
 #           person:
-#               - [x,y,w,h]
-#               - [x,y,w,h]
+#               - coords: [x,y,w,h]
+#                 lost: False
+#                 occluded: False
+#               - coords: [x,y,w,h]
+#                 lost: False
+#                 occluded: False
 #       img2:
 #           car:
-#               - [x,y,w,h]
+#               - coords: [x,y,w,h]
+#                 lost: True
+#                 occluded: True
 #
 
 import yaml
@@ -27,21 +37,23 @@ class YamlAnnotation(Annotation):
     def serialize(self):
         """ generate a yaml annotation object """
         return (self.class_label,
-                [round(self.x_top_left),
-                 round(self.y_top_left),
-                 round(self.width),
-                 round(self.height)])
+                {
+                    'coords': [round(self.x_top_left), round(self.y_top_left), round(self.width), round(self.height)],
+                    'lost': self.lost,
+                    'occluded': self.occluded
+                }
+               )
 
     def deserialize(self, yaml_obj, class_label):
         """ parse a yaml annotation object """
         self.class_label = class_label
-        self.x_top_left = float(yaml_obj[0])
-        self.y_top_left = float(yaml_obj[1])
-        self.width = float(yaml_obj[2])
-        self.height = float(yaml_obj[3])
+        self.x_top_left = float(yaml_obj['coords'][0])
+        self.y_top_left = float(yaml_obj['coords'][1])
+        self.width = float(yaml_obj['coords'][2])
+        self.height = float(yaml_obj['coords'][3])
+        self.lost = yaml_obj['lost']
+        self.occluded = yaml_obj['occluded']
 
-        self.lost = False
-        self.occluded = False
         self.object_id = 0
 
 
@@ -57,8 +69,6 @@ class YamlParser(Parser):
         for img_id in annotations:
             img_res = {}
             for anno in annotations[img_id]:
-                if anno.lost:   # yaml does not support lost type -> ignore
-                    continue
                 new_anno = self.box_type.create(anno)
                 key, val = new_anno.serialize()
                 if key not in img_res:
