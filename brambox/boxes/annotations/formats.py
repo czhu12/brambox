@@ -18,5 +18,5 @@ annotation_formats = {
     'dollar': DollarParser,
     'vatic': VaticParser,
     'yaml': YamlParser,
-    'pickle': PickleParser
+    'pickle': PickleParser,
 }
