@@ -47,6 +47,9 @@ class Box:
         self.height = self.height * value
         return self
 
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
     def serialize(self):
         """ abstract serializer, implement in derived class """
         raise NotImplementedError
@@ -68,6 +71,8 @@ class Parser:
     parser_type = ParserType.UNDEFINED  # Derived classes should set the correct parser_type
     box_type = Box                      # Derived classes should set the correct box
     extension = '.txt'                  # Derived classes should set the correct extension
+    read_mode = 'r'                     # Derived classes should set the correct readmode
+    write_mode = 'w'                    # Derived classes should set the correct writemode
 
     def __init__(self, **kwargs):
         pass

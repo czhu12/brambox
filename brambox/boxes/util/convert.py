@@ -36,7 +36,7 @@ def parse(fmt, box_file, identify=lambda f: os.path.splitext(os.path.basename(f)
     if parser.parser_type == ParserType.SINGLE_FILE:
         if type(box_file) is not str:
             raise TypeError(f'Parser <{parser.__class__.__name__}> requires a single annotation file')
-        with open(box_file, 'r') as f:
+        with open(box_file, parser.read_mode) as f:
             data = parser.deserialize(f.read())
     elif parser.parser_type == ParserType.MULTI_FILE:
         if type(box_file) is str:
@@ -57,7 +57,7 @@ def parse(fmt, box_file, identify=lambda f: os.path.splitext(os.path.basename(f)
             if img_id in data:
                 raise ValueError(f'Multiple bounding box files with the same name were found ({img_id})')
 
-            with open(box_file, 'r') as f:
+            with open(box_file, parser.read_mode) as f:
                 data[img_id] = parser.deserialize(f.read())
     else:
         raise AttributeError(f'Parser <{parser.__class__.__name__}> has not defined a parser_type class attribute')
@@ -89,13 +89,13 @@ def generate(fmt, box, path, **kwargs):
     if parser.parser_type == ParserType.SINGLE_FILE:
         if os.path.isdir(path):
             path = os.path.join(path, 'boxes' + parser.extension)
-        with open(path, 'w') as f:
+        with open(path, parser.write_mode) as f:
             f.write(parser.serialize(box))
     elif parser.parser_type == ParserType.MULTI_FILE:
         if not os.path.isdir(path):
             raise ValueError(f'Parser <{parser.__class__.__name__}> requires a path to a folder')
         for img_id, boxes in box.items():
-            with open(os.path.join(path, img_id + parser.extension), 'w') as f:
+            with open(os.path.join(path, img_id + parser.extension), parser.write_mode) as f:
                 f.write(parser.serialize(boxes))
     else:
         raise AttributeError(f'Parser <{parser.__class__.__name__}> has not defined a parser_type class attribute')

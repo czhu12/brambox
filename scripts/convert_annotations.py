@@ -39,14 +39,14 @@ def main():
         with open(args.class_names) as f:
             class_names = f.read().splitlines()
 
-    annotations = bbb.parse(args.inputformat, args.inputannotations,
+    annotations = bbb.parse('anno_'+args.inputformat, args.inputannotations,
                                        image_width=args.image_width,
                                        image_height=args.image_height,
                                        class_label_map=class_names,
                                        stride=args.stride,
                                        offset=args.offset)
 
-    bbb.generate(args.outputformat, annotations, args.outputannotations,
+    bbb.generate('anno_'+args.outputformat, annotations, args.outputannotations,
                             image_width=args.image_width,
                             image_height=args.image_height,
                             class_label_map=class_names)
