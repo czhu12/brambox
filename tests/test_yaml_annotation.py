@@ -5,23 +5,23 @@ from brambox.boxes.annotations import YamlAnnotation, YamlParser
 yaml_string = """img_1:
   person:
   - coords: [0, 0, 0, 0]
-    lost: False
-    occluded: False
+    lost: false
+    occluded: false
   x:
   - coords: [0, 0, 0, 0]
-    lost: False
-    occluded: False
+    lost: false
+    occluded: false
 img_2:
   x:
   - coords: [0, 0, 0, 0]
-    lost: False
-    occluded: False
+    lost: false
+    occluded: false
   - coords: [0, 0, 0, 0]
-    lost: False
-    occluded: False
+    lost: false
+    occluded: false
   - coords: [0, 0, 0, 0]
-    lost: False
-    occluded: False
+    lost: false
+    occluded: false
 """
 
 
