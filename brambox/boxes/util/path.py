@@ -49,6 +49,7 @@ def expand(expr, stride=1, offset=0):
     A file selection expression can be:
         * a file itself (just return the filename)
         * a directory
+        * a wildcard containing '*'
         * a filename containing %d
     This function will return a generator object that produces full filesnames
 

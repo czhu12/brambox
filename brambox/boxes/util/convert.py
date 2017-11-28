@@ -44,7 +44,8 @@ def parse(fmt, box_file, identify=lambda f: os.path.splitext(os.path.basename(f)
                 stride = kwargs['stride']
                 offset = kwargs['offset']
             except KeyError:
-                raise TypeError('If an expandable sequence expression is given, parameters "stride" and "offset" are required')
+                stride = 1
+                offset = 0
             box_files = expand(box_file, stride, offset)
         elif type(box_file) is list:
             box_files = box_file

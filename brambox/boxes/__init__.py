@@ -5,5 +5,6 @@
 
 from . import annotations
 from . import detections
+from .graph import *
 from .util import *
 from .formats import *
