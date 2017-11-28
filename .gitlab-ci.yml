@@ -4,5 +4,6 @@ build:
     script:
         - pip install opencv-python
         - pip install pyyaml
+        - pip install scipy
         - python setup.py build
         - python setup.py test
