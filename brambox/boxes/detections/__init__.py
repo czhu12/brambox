@@ -4,6 +4,7 @@
 #
 
 # Formats
+from .coco import *
 from .pickle import *
 from .yaml import *
 
