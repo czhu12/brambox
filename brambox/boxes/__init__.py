@@ -8,3 +8,4 @@ from . import detections
 from .graph import *
 from .util import *
 from .formats import *
+from .box import Box

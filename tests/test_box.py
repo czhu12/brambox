@@ -1,5 +1,5 @@
 import unittest
-from brambox.boxes.box import Box
+from brambox.boxes import Box
 
 
 class TestBox(unittest.TestCase):
