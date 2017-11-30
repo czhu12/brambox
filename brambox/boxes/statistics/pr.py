@@ -3,17 +3,53 @@
 #   Author: Maarten Vandersteegen
 #
 
+from statistics import mean
 import numpy as np
 import scipy.interpolate
 
-__all__ = ['get_pr', 'get_average_precision']
+__all__ = ['pr', 'ap', 'mean_ap']
 
 
-def get_pr(detection_results, ground_truth, overlap_threshold=0.5):
-    """Calculate a list of precision recall values that can be plotted into a graph
-    detection_results   -- dict of detection objects per image
-    ground_truth        -- dicht of annotation objects per image
-    Returns precision, recall
+def pr(detections, ground_truth, overlap_threshold=0.5, class_labels=None):
+    """ Compute precision and recall values for all the classes
+
+        detections          -- dict of detections per image (eg. parse())
+        ground_truth        -- dict of annotations per image (eg. parse())
+        overlap_threshold   -- minimum iou value needed to count detection as true positive
+        class_labels        -- list of classes you want to compute PR (default: all classes)
+
+        Returns dict of (p,r) tuples for every class
+    """
+    # Get unique class_labels
+    if class_labels is not None:
+        classes = set(class_labels)
+    else:
+        classes = set()
+        for key,val in ground_truth.items():
+            for box in val:
+                classes.add(box.class_label)
+        for key,val in detections.items():
+            for box in val:
+                classes.add(box.class_label)
+
+    # Compute PR for every class
+    result = {}
+    for label in classes:
+        det_filtered = {key: list(filter(lambda box: box.class_label == label, val)) for key,val in detections.items()}
+        gt_filtered = {key: list(filter(lambda box: box.class_label == label, val)) for key,val in ground_truth.items()}
+        result[label] = pr_single(det_filtered, gt_filtered, overlap_threshold)
+
+    return result
+
+
+def pr_single(detection_results, ground_truth, overlap_threshold):
+    """ Compute a list of precision recall values that can be plotted into a graph
+
+        detection_results   -- dict of detection objects per image
+        ground_truth        -- dict of annotation objects per image
+        overlap_threshold   -- minimum iou threshold for true positive
+
+        Returns precision, recall
     """
     found = 0
 
@@ -79,12 +115,13 @@ def get_pr(detection_results, ground_truth, overlap_threshold=0.5):
     return precision, recall
 
 
-def get_average_precision(precision, recall, num_of_samples=100):
-    """Calculate the average precision from a given pr-curve
-    The average precision is defined as the area under the curve
-    precision   -- list of precision values
-    recall      -- list of recall values
-    samples     -- number of samples to take from the curve to measure the average precision
+def ap(precision, recall, num_of_samples=100):
+    """ Compute the average precision from a given pr-curve
+        The average precision is defined as the area under the curve
+
+        precision           -- list of precision values
+        recall              -- list of recall values
+        num_of_samples      -- number of samples to take from the curve to measure the average precision
     """
     samples = np.arange(0., 1., 1.0/num_of_samples)
     p = np.array(precision)
@@ -94,26 +131,10 @@ def get_average_precision(precision, recall, num_of_samples=100):
     return avg
 
 
-def get_iou(a, b):
-    """Calculate the intersection over union between two boxes
-    a -- first box
-    b -- second box
-    The function returns the IUO value which is defined as:
-    IOU = intersection(a, b) / (area(a) + area(b) - intersection(a, b))
+def mean_ap(pr, num_of_samples=100):
+    """ Compute mean average precision over the classes
+    
+        pr                  -- dict containing (p,r) tuples per class (eg. pr())
+        num_of_samples      -- number of samples to take from the curve to measure the average precision
     """
-
-    intersection_top_left_x = max(a.x_top_left, b.x_top_left)
-    intersection_top_left_y = max(a.y_top_left, b.y_top_left)
-    intersection_bottom_right_x = min(a.x_top_left + a.width,  b.x_top_left + b.width)
-    intersection_bottom_right_y = min(a.y_top_left + a.height, b.y_top_left + b.height)
-
-    intersection_width = intersection_bottom_right_x - intersection_top_left_x
-    intersection_height = intersection_bottom_right_y - intersection_top_left_y
-
-    if intersection_width <= 0 or intersection_height <= 0:
-        return 0.0
-
-    intersection_area = intersection_width * intersection_height
-    union_area = a.width * a.height + b.width * b.height - intersection_area
-
-    return intersection_area / union_area
+    return mean([ap(p,r,num_of_samples) for _,(p,r) in pr.items()])
