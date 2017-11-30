@@ -43,7 +43,7 @@ class YamlAnnotation(Annotation):
                     'lost': self.lost,
                     'occluded': self.occluded
                 }
-               )
+                )
 
     def deserialize(self, yaml_obj, class_label):
         """ parse a yaml annotation object """

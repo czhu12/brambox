@@ -27,7 +27,7 @@ class DollarAnnotation(Annotation):
     def deserialize(self, string):
         """ parse a dollar annotation string """
         elements = string.split()
-        self.class_label = '' if elements[0] == '?' else elements[0] 
+        self.class_label = '' if elements[0] == '?' else elements[0]
         self.x_top_left = float(elements[1])
         self.y_top_left = float(elements[2])
         self.width = float(elements[3])

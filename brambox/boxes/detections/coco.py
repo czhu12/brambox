@@ -20,7 +20,7 @@ class CocoDetection(Detection):
 
     def deserialize(self, json_obj):
         """ parse a json detection object """
-        #TODO: class label map
+        # TODO: class label map
         self.class_label = str(json_obj['category_id'])
         self.x_top_left = float(json_obj['bbox'][0])
         self.y_top_left = float(json_obj['bbox'][1])
@@ -56,4 +56,3 @@ class CocoParser(Parser):
             result[img_id] += [det]
 
         return result
-

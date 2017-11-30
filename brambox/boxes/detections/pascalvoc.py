@@ -34,6 +34,7 @@ class PascalVOCDetection(Detection):
 
         return elements[0]
 
+
 class PascalVOCParser(Parser):
     """ Pascal VOC detection parser """
     parser_type = ParserType.SINGLE_FILE

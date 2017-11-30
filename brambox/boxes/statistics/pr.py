@@ -25,18 +25,18 @@ def pr(detections, ground_truth, overlap_threshold=0.5, class_labels=None):
         classes = set(class_labels)
     else:
         classes = set()
-        for key,val in ground_truth.items():
+        for key, val in ground_truth.items():
             for box in val:
                 classes.add(box.class_label)
-        for key,val in detections.items():
+        for key, val in detections.items():
             for box in val:
                 classes.add(box.class_label)
 
     # Compute PR for every class
     result = {}
     for label in classes:
-        det_filtered = {key: list(filter(lambda box: box.class_label == label, val)) for key,val in detections.items()}
-        gt_filtered = {key: list(filter(lambda box: box.class_label == label, val)) for key,val in ground_truth.items()}
+        det_filtered = {key: list(filter(lambda box: box.class_label == label, val)) for key, val in detections.items()}
+        gt_filtered = {key: list(filter(lambda box: box.class_label == label, val)) for key, val in ground_truth.items()}
         result[label] = pr_single(det_filtered, gt_filtered, overlap_threshold)
 
     return result
@@ -133,8 +133,8 @@ def ap(precision, recall, num_of_samples=100):
 
 def mean_ap(pr, num_of_samples=100):
     """ Compute mean average precision over the classes
-    
+
         pr                  -- dict containing (p,r) tuples per class (eg. pr())
         num_of_samples      -- number of samples to take from the curve to measure the average precision
     """
-    return mean([ap(p,r,num_of_samples) for _,(p,r) in pr.items()])
+    return mean([ap(p, r, num_of_samples) for _, (p, r) in pr.items()])

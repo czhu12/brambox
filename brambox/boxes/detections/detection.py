@@ -46,7 +46,9 @@ class Detection(b.Box):
 
         return string
 
+
 ParserType = b.ParserType
+
 
 class Parser(b.Parser):
     """ Generic parser class """

@@ -15,6 +15,7 @@ def files(path):
         if os.path.isfile(os.path.join(path, file)):
             yield os.path.join(path, file)
 
+
 def strider(elements, stride, offset):
     """ yield input elements with given stride and offset """
     next_element = offset
@@ -27,6 +28,7 @@ def strider(elements, stride, offset):
         if i == next_element:
             next_element += stride
             yield elem
+
 
 def modulo_expand(expr, stride, offset):
     """ """
@@ -42,6 +44,7 @@ def modulo_expand(expr, stride, offset):
             break
 
         yield filename
+
 
 def expand(expr, stride=1, offset=0):
     """Expand a file selection expression into multiple filenames
@@ -72,4 +75,3 @@ def expand(expr, stride=1, offset=0):
 
     else:
         raise TypeError("File selection expression invalid")
-

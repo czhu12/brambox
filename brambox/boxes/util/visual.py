@@ -89,7 +89,7 @@ def show_bounding_boxes(boxes, img_folder, img_ext='.png', show_labels=False, co
     print('Showing bounding boxes:\n\tPress a key to show the next image\n\tPress ESC to stop viewing images')
 
     if get_img_fn is None:
-        get_img_fn = lambda img_id, img_folder, img_ext: os.path.join(img_folder, img_id+img_ext)
+        def get_img_fn(img_id, img_folder, img_ext): os.path.join(img_folder, img_id+img_ext)
 
     if color is None:
         text_col = (0, 0, 255)

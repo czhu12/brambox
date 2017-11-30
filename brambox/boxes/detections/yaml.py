@@ -12,7 +12,7 @@
 #                 score: 56.76
 #           person:
 #               - coords: [x,y,w,h]
-#                 score: 90.1294132 
+#                 score: 90.1294132
 #               - coords: [x,y,w,h]
 #                 score: 12.120
 #       img2:
@@ -38,7 +38,7 @@ class YamlDetection(Detection):
                     'coords': [round(self.x_top_left), round(self.y_top_left), round(self.width), round(self.height)],
                     'score': self.confidence*100,
                 }
-               )
+                )
 
     def deserialize(self, yaml_obj, class_label):
         """ parse a yaml detection object """
@@ -89,4 +89,3 @@ class YamlParser(Parser):
             result[img_id] = det_res
 
         return result
-

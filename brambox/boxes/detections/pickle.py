@@ -11,6 +11,7 @@ from .detection import *
 
 __all__ = ["PickleParser"]
 
+
 class PickleParser(Parser):
     """ Pickle detection parser """
     parser_type = ParserType.SINGLE_FILE
@@ -23,7 +24,7 @@ class PickleParser(Parser):
         """ Serialize input dictionary of annotations into one string """
         result = {}
         for img_id in annotations:
-            img_res = [] 
+            img_res = []
             for anno in annotations[img_id]:
                 img_res.append(self.box_type.create(anno))
             result[img_id] = img_res
@@ -33,4 +34,3 @@ class PickleParser(Parser):
     def deserialize(self, bytestream):
         """ Deserialize an annotation file into a dictionary of annotations """
         return pickle.loads(bytestream)
-
