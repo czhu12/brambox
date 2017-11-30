@@ -3,16 +3,16 @@ from brambox.boxes.annotations.annotation import Annotation
 from brambox.boxes.annotations import YamlAnnotation, YamlParser
 
 yaml_string = """img_1:
+  '?':
+  - coords: [0, 0, 0, 0]
+    lost: false
+    occluded: false
   person:
   - coords: [0, 0, 0, 0]
     lost: false
     occluded: false
-  x:
-  - coords: [0, 0, 0, 0]
-    lost: false
-    occluded: false
 img_2:
-  x:
+  '?':
   - coords: [0, 0, 0, 0]
     lost: false
     occluded: false

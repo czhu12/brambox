@@ -32,21 +32,22 @@ class YamlDetection(Detection):
 
     def serialize(self):
         """ generate a yaml detection object """
-        return (self.class_label,
+        class_label = '?' if self.class_label == '' else self.class_label
+        return (class_label,
                 {
                     'coords': [round(self.x_top_left), round(self.y_top_left), round(self.width), round(self.height)],
-                    'score': self.confidence,
+                    'score': self.confidence*100,
                 }
                )
 
     def deserialize(self, yaml_obj, class_label):
         """ parse a yaml detection object """
-        self.class_label = class_label
+        self.class_label = '' if class_label == '?' else class_label
         self.x_top_left = float(yaml_obj['coords'][0])
         self.y_top_left = float(yaml_obj['coords'][1])
         self.width = float(yaml_obj['coords'][2])
         self.height = float(yaml_obj['coords'][3])
-        self.confidence = yaml_obj['score']
+        self.confidence = yaml_obj['score'] / 100
 
         self.object_id = 0
 

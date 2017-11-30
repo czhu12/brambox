@@ -15,8 +15,10 @@ class DarknetAnnotation(Annotation):
         """ generate a darknet annotation string """
         if class_label_map is not None:
             class_label_index = class_label_map.index(self.class_label)
+        elif self.class_label == '':
+            class_label_index = '?'
         else:
-            class_label_index = 0
+            class_label_index = int(self.class_label)
 
         x_center = self.x_top_left + float(self.width) / 2
         y_center = self.y_top_left + float(self.height) / 2
@@ -40,7 +42,10 @@ class DarknetAnnotation(Annotation):
         if class_label_map is not None:
             self.class_label = class_label_map[int(elements[0])]
         else:
-            self.class_label = elements[0]
+            if elements[0] == '?':
+                self.class_label = ''
+            else:
+                self.class_label = elements[0]
 
         self.width = float(elements[3]) * image_width
         self.height = float(elements[4]) * image_height

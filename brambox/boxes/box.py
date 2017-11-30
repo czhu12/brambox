@@ -11,7 +11,7 @@ class Box:
     """ Generic bounding box representation """
     def __init__(self):
         """ x_top_left,y_top_left,width,height are in pixel coordinates """
-        self.class_label = "x"  # class string label
+        self.class_label = ''   # class string label
         self.object_id = 0      # object identifier
         self.x_top_left = 0.0   # x pixel coordinate top left of the box
         self.y_top_left = 0.0   # y pixel coordinate top left of the box

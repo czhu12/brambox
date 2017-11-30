@@ -36,7 +36,8 @@ class YamlAnnotation(Annotation):
 
     def serialize(self):
         """ generate a yaml annotation object """
-        return (self.class_label,
+        class_label = '?' if self.class_label == '' else self.class_label
+        return (class_label,
                 {
                     'coords': [round(self.x_top_left), round(self.y_top_left), round(self.width), round(self.height)],
                     'lost': self.lost,
@@ -46,7 +47,7 @@ class YamlAnnotation(Annotation):
 
     def deserialize(self, yaml_obj, class_label):
         """ parse a yaml annotation object """
-        self.class_label = class_label
+        self.class_label = '' if class_label == '?' else class_label
         self.x_top_left = float(yaml_obj['coords'][0])
         self.y_top_left = float(yaml_obj['coords'][1])
         self.width = float(yaml_obj['coords'][2])
@@ -74,7 +75,7 @@ class YamlParser(Parser):
                 if key not in img_res:
                     img_res[key] = [val]
                 else:
-                    img_res[key] += [val]
+                    img_res[key].append(val)
             result[img_id] = img_res
 
         return yaml.dump(result)

@@ -2,8 +2,8 @@ import unittest
 from brambox.boxes.annotations.annotation import Annotation
 from brambox.boxes.annotations import DollarAnnotation, DollarParser
 
-dollar_string = """x 0 0 0 0 0 0 0 0 0 0 0
-x 0 0 0 0 0 0 0 0 0 0 0
+dollar_string = """? 0 0 0 0 0 0 0 0 0 0 0
+? 0 0 0 0 0 0 0 0 0 0 0
 person 0 0 0 0 0 0 0 0 0 0 0
 """
 
@@ -47,14 +47,14 @@ class TestDollarAnnotation(unittest.TestCase):
 
         self.anno.occluded = 1
         string = self.anno.serialize()
-        self.assertEqual(string, "x 0 0 0 0 1 0 0 0 0 0 0")
+        self.assertEqual(string, "? 0 0 0 0 1 0 0 0 0 0 0")
 
     def test_serialize_lost(self):
         """ test if lost flag is serialized """
 
         self.anno.lost = 1
         string = self.anno.serialize()
-        self.assertEqual(string, "x 0 0 0 0 0 0 0 0 0 1 0")
+        self.assertEqual(string, "? 0 0 0 0 0 0 0 0 0 1 0")
 
     def test_deserialize(self):
         """ test if major fields, label,x,y,w,h are processed """
@@ -106,7 +106,7 @@ class TestDollarParser(unittest.TestCase):
         obj = self.parser.deserialize(dollar_string_comment)
         self.assertEqual(type(obj), list)
         self.assertEqual(len(obj), 3)
-        self.assertEqual(obj[0].class_label, 'x')
+        self.assertEqual(obj[0].class_label, '')
         self.assertEqual(obj[2].class_label, 'person')
 
 

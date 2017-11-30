@@ -15,7 +15,7 @@ class Detection(b.Box):
     def __init__(self):
         """ x_top_left,y_top_left,width,height are in pixel coordinates """
         super(Detection, self).__init__()
-        self.confidence = 0.0       # Confidence score in percentage
+        self.confidence = 0.0       # Confidence score between 0-1
 
     @classmethod
     def create(cls, obj=None):

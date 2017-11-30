@@ -22,7 +22,7 @@ class VaticAnnotation(Annotation):
         lost = int(self.lost)
         occluded = int(self.occluded)
         generated = 0
-        class_label = self.class_label
+        class_label = '?' if self.class_label == '' else self.class_label
 
         string = "{} {} {} {} {} {} {} {} {} {}" \
             .format(object_id,
@@ -51,6 +51,8 @@ class VaticAnnotation(Annotation):
         self.lost = elements[6] != '0'
         self.occluded = elements[7] != '0'
         self.class_label = elements[9].strip('\"')
+        if self.class_label == '?':
+            self.class_label = ''
 
 
 class VaticParser(Parser):

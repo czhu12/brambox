@@ -14,7 +14,7 @@ class DollarAnnotation(Annotation):
     def serialize(self):
         """ generate a dollar annotation string """
         string = "{} {} {} {} {} {} 0 0 0 0 {} 0" \
-            .format(self.class_label,
+            .format(self.class_label if len(self.class_label) != 0 else '?',
                     round(self.x_top_left),
                     round(self.y_top_left),
                     round(self.width),
@@ -27,7 +27,7 @@ class DollarAnnotation(Annotation):
     def deserialize(self, string):
         """ parse a dollar annotation string """
         elements = string.split()
-        self.class_label = elements[0]
+        self.class_label = '' if elements[0] == '?' else elements[0] 
         self.x_top_left = float(elements[1])
         self.y_top_left = float(elements[2])
         self.width = float(elements[3])

@@ -12,7 +12,7 @@ class TestDarknetAnnotation(unittest.TestCase):
     def setUp(self):
         self.image_width = 1000
         self.image_height = 500
-        self.class_label_map = ['person', 'car', 'tv', 'x']
+        self.class_label_map = ['person', 'car', 'tv', '']
         self.anno = DarknetAnnotation()
         self.parser = DarknetParser(image_width=self.image_width,
                                     image_height=self.image_height,
@@ -41,7 +41,7 @@ class TestDarknetAnnotation(unittest.TestCase):
     def test_anno_serialize_no_label_map(self):
         """ if class_label_map is None, the class label index must be 0 """
         string = self.anno.serialize(None, self.image_width, self.image_height)
-        self.assertEqual(string, '0 0.0 0.0 0.0 0.0')
+        self.assertEqual(string, '? 0.0 0.0 0.0 0.0')
 
     def test_anno_deserialize(self):
         """ test if deserialization of one annotation works """
@@ -85,7 +85,7 @@ class TestDarknetAnnotation(unittest.TestCase):
         obj = self.parser.deserialize(darknet_string)
         self.assertEqual(type(obj), list)
         self.assertEqual(len(obj), 3)
-        self.assertEqual(obj[0].class_label, 'x')
+        self.assertEqual(obj[0].class_label, '')
         self.assertEqual(obj[2].class_label, 'person')
 
 
