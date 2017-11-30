@@ -3,9 +3,10 @@
 # Copyright EAVISE
 #
 
+from .box import Box
+from .formats import *
 from . import annotations
 from . import detections
-from .graph import *
+
+from .statistics import *
 from .util import *
-from .formats import *
-from .box import Box
