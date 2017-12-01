@@ -3,7 +3,7 @@ from brambox.boxes.detections.detection import Detection
 from brambox.boxes.detections import PascalVOCDetection, PascalVOCParser
 
 pascalvoc_string = """img1 0.9090 10.01 20.02 30.03 40.04
-img2 0.1234 40.0 30.0 20.0 10.0
+img2 0.1234 40.0 30.0 60.0 40.0
 img2 0.75 0.00 25.00 50.00 75.00
 """
 
@@ -24,8 +24,8 @@ class TestPascalVOCDetection(unittest.TestCase):
         self.assertAlmostEqual(self.det.confidence, 0.9090)
         self.assertAlmostEqual(self.det.x_top_left, 10.01)
         self.assertAlmostEqual(self.det.y_top_left, 20.02)
-        self.assertAlmostEqual(self.det.width, 30.03)
-        self.assertAlmostEqual(self.det.height, 40.04)
+        self.assertAlmostEqual(self.det.width, 20.02)
+        self.assertAlmostEqual(self.det.height, 20.02)
 
     def test_parser_deserialize(self):
         """ test basic deserialization with parser """
@@ -37,7 +37,7 @@ class TestPascalVOCDetection(unittest.TestCase):
         self.assertAlmostEqual(obj['img1'][0].confidence, 0.9090)
         self.assertAlmostEqual(obj['img2'][1].x_top_left, 0)
         self.assertAlmostEqual(obj['img2'][0].width, 20)
-        self.assertAlmostEqual(obj['img2'][1].height, 75)
+        self.assertAlmostEqual(obj['img2'][1].height, 50)
 
 
 if __name__ == '__main__':

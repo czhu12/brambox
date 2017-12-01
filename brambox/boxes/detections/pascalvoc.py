@@ -3,7 +3,7 @@
 #   Author: Tanguy Ophoff
 #
 #   Pascal VOC detection format
-#   1 file per class: img_id class_score x_left y_upper width height
+#   1 file per class: img_id class_score x_left y_upper x_right y_lower
 #
 
 import yaml
@@ -27,8 +27,8 @@ class PascalVOCDetection(Detection):
         self.confidence = float(elements[1])
         self.x_top_left = float(elements[2])
         self.y_top_left = float(elements[3])
-        self.width = float(elements[4])
-        self.height = float(elements[5])
+        self.width = float(elements[4]) - self.x_top_left
+        self.height = float(elements[5]) - self.y_top_left
 
         self.object_id = 0
 
