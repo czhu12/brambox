@@ -12,12 +12,17 @@ __all__ = ['parse', 'generate']
 
 
 # TODO: make stride/offset work on single files
-def parse(fmt, box_file, identify=lambda f: os.path.splitext(os.path.basename(f))[0], **kwargs):
+def parse(fmt, box_file, identify=None, **kwargs):
     """ Parse any type of annotation format
 
         fmt       : format from the brambox.boxes.format dictionary
         box_file  : bounding box filename or array of bounding box file names
-        identify  : function/lambda to create a file identifier based on a filename
+        identify  : function/lambda to create an image/frame identifier based on:
+                        * if single file: the parsed identifiers in the file
+                        * if multi file: the filename
+                    if not provided the image/frame identifier is created:
+                        * if single file: by taking the parsed identifier in the file
+                        * if multi file: by taking the name of the file without extension
         **kwargs  : keyword arguments that are passed to the parser
     """
 
@@ -38,6 +43,11 @@ def parse(fmt, box_file, identify=lambda f: os.path.splitext(os.path.basename(f)
             raise TypeError(f'Parser <{parser.__class__.__name__}> requires a single annotation file')
         with open(box_file, parser.read_mode) as f:
             data = parser.deserialize(f.read())
+
+        # rename the image/frame ids if requested
+        if identify is not None:
+            data = {identify(key): value for key, value in data.items()}
+
     elif parser.parser_type == ParserType.MULTI_FILE:
         if type(box_file) is str:
             try:
@@ -53,6 +63,11 @@ def parse(fmt, box_file, identify=lambda f: os.path.splitext(os.path.basename(f)
             raise TypeError(f'Parser <{parser.__class__.__name__}> requires a list of annotation files or an expandable file expression')
 
         data = {}
+
+        # set default identify function for muti file parsers
+        if identify is None:
+            identify = lambda f: os.path.splitext(os.path.basename(f))[0]
+
         for box_file in box_files:
             img_id = identify(box_file)
             if img_id in data:
