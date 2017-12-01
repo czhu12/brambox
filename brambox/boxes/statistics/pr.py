@@ -7,6 +7,8 @@ from statistics import mean
 import numpy as np
 import scipy.interpolate
 
+from .util import *
+
 __all__ = ['pr', 'ap', 'mean_ap']
 
 
@@ -77,7 +79,7 @@ def pr_single(detection_results, ground_truth, overlap_threshold):
             best_overlap = overlap_threshold
             best_annotation = None
             for annotation in annotations:
-                overlap = get_iou(annotation, detection)
+                overlap = iou(annotation, detection)
                 if overlap < best_overlap:
                     continue
                 best_overlap = overlap
