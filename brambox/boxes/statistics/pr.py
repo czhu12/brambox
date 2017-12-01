@@ -53,11 +53,12 @@ def pr_single(detection_results, ground_truth, overlap_threshold):
 
         Returns precision, recall
     """
-    found = 0
-
     all_matches = []
     num_detections = 0
     num_annotations = 0
+
+    # Make copy to not alter the reference
+    detection_results = detection_results.copy()
 
     # make sure len(detection_results) == len(ground_truth) by inserting empty detections lists
     for image_id, annotations in ground_truth.items():
@@ -69,12 +70,15 @@ def pr_single(detection_results, ground_truth, overlap_threshold):
     for image_id, detections in detection_results.items():
 
         # [:] is to copy the annotations instead of returning a reference
-        annotations = ground_truth[image_id][:]
+        if image_id in ground_truth:
+            annotations = ground_truth[image_id][:]
+        else:
+            annotations = []
 
         # sort detections by confidence, highest confidence first
         detections = sorted(detections, key=lambda d: d.confidence, reverse=True)
-
         num_detections += len(detections)
+
         for detection in detections:
             best_overlap = overlap_threshold
             best_annotation = None
