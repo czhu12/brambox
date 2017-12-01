@@ -20,7 +20,7 @@ def pr(detections, ground_truth, overlap_threshold=0.5, class_labels=None):
         overlap_threshold   -- minimum iou value needed to count detection as true positive
         class_labels        -- list of classes you want to compute PR (default: all classes)
 
-        Returns dict of (p,r) tuples for every class
+        Returns dict of (p,r) tuples for every class, dict key is the class label
     """
     # Get unique class_labels
     if class_labels is not None:

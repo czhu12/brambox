@@ -18,10 +18,14 @@ class CocoDetection(Detection):
 
         raise NotImplementedError
 
-    def deserialize(self, json_obj):
+    def deserialize(self, json_obj, class_label_map):
         """ parse a json detection object """
-        # TODO: class label map
-        self.class_label = str(json_obj['category_id'])
+
+        if class_label_map is not None:
+            self.class_label = class_label_map[json_obj['category_id'] - 1]
+        else:
+            self.class_label = str(json_obj['category_id'])
+
         self.x_top_left = float(json_obj['bbox'][0])
         self.y_top_left = float(json_obj['bbox'][1])
         self.width = float(json_obj['bbox'][2])
@@ -36,6 +40,12 @@ class CocoParser(Parser):
     parser_type = ParserType.SINGLE_FILE
     box_type = CocoDetection
     extension = '.json'
+
+    def __init__(self, **kwargs):
+        try:
+            self.class_label_map = kwargs['class_label_map']
+        except KeyError:
+            raise TypeError("Coco format requires 'class_label_map' keyword arguments")
 
     def serialize(self, detections):
         """ Serialize input detection to a json string"""
@@ -52,7 +62,7 @@ class CocoParser(Parser):
             if img_id not in result:
                 result[img_id] = []
             det = self.box_type()
-            det.deserialize(json_det)
+            det.deserialize(json_det, self.class_label_map)
             result[img_id] += [det]
 
         return result
