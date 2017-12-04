@@ -5,6 +5,7 @@
 
 # Formats
 from .coco import *
+from .dollar import *
 from .pickle import *
 from .yaml import *
 from .pascalvoc import *

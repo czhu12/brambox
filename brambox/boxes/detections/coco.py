@@ -45,10 +45,10 @@ class CocoParser(Parser):
         try:
             self.class_label_map = kwargs['class_label_map']
         except KeyError:
-            raise TypeError("Coco format requires 'class_label_map' keyword arguments")
+            raise TypeError("Coco detection format requires 'class_label_map' keyword arguments")
 
     def serialize(self, detections):
-        """ Serialize input detection to a json string"""
+        """ Serialize input detection to a json string """
 
         raise NotImplementedError
 
