@@ -12,13 +12,13 @@ from .util import *
 __all__ = ['pr', 'ap', 'mean_ap']
 
 
-def pr(detections, ground_truth, overlap_threshold=0.5, class_labels=None):
+def pr(detections, ground_truth, overlap_threshold=0.5, class_label_map=None):
     """ Compute precision and recall values for all the classes
 
         detections          -- dict of detections per image (eg. parse())
         ground_truth        -- dict of annotations per image (eg. parse())
         overlap_threshold   -- minimum iou value needed to count detection as true positive
-        class_labels        -- list of classes you want to compute PR (default: all classes)
+        class_label_map     -- list of classes you want to compute PR (default: all classes)
 
         Returns dict of (p,r) tuples for every class, dict key is the class label
     """

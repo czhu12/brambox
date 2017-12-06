@@ -66,7 +66,7 @@ def parse(fmt, box_file, identify=None, **kwargs):
 
         # set default identify function for muti file parsers
         if identify is None:
-            identify = lambda f: os.path.splitext(os.path.basename(f))[0]
+            def identify(f): return os.path.splitext(os.path.basename(f))[0]
 
         for box_file in box_files:
             img_id = identify(box_file)
