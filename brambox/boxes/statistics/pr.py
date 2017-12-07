@@ -23,8 +23,8 @@ def pr(detections, ground_truth, overlap_threshold=0.5, class_label_map=None):
         Returns dict of (p,r) tuples for every class, dict key is the class label
     """
     # Get unique class_labels
-    if class_labels is not None:
-        classes = set(class_labels)
+    if class_label_map is not None:
+        classes = set(class_label_map)
     else:
         classes = set()
         for key, val in ground_truth.items():
