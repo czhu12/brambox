@@ -35,13 +35,14 @@ class Detection(b.Box):
     def __str__(self):
         """ pretty print """
         string = "Detection { "
-        string += "\tclass_label = {}, ".format(self.class_label)
-        string += "\tobject_id = {}, ".format(self.object_id)
-        string += "\tx_top_left = {}, ".format(self.x_top_left)
-        string += "\ty_top_left = {}, ".format(self.y_top_left)
-        string += "\twidth = {}, ".format(self.width)
-        string += "\theight = {}, ".format(self.height)
-        string += "\tconfidence = {}".format(self.confidence)
+        string += "\tclass_label = {self.class_label}, "
+        string += "\tobject_id = {self.object_id}, "
+        string += "\tx_top_left = {self.x_top_left}, "
+        string += "\ty_top_left = {self.y_top_left}, "
+        string += "\twidth = {self.width}, "
+        string += "\theight = {self.height}, "
+        string += "\tignore = {self.ignore}, "
+        string += "\tconfidence = {self.confidence}, "
         string += "}"
 
         return string

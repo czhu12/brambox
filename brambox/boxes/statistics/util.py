@@ -3,16 +3,10 @@
 #   Author: Maarten Vandersteegen
 #
 
-__all__ = ['iou']
+__all__ = ['iou', 'iob']
 
-
-def iou(a, b):
-    """Calculate the intersection over union between two boxes
-    The function returns the IUO value which is defined as:
-    IOU = intersection(a, b) / (area(a) + area(b) - intersection(a, b))
-
-    a   -- first box
-    b   -- second box
+def intersection(a, b):
+    """Calculate the intersection area between two boxes
     """
     intersection_top_left_x = max(a.x_top_left, b.x_top_left)
     intersection_top_left_y = max(a.y_top_left, b.y_top_left)
@@ -25,7 +19,24 @@ def iou(a, b):
     if intersection_width <= 0 or intersection_height <= 0:
         return 0.0
 
-    intersection_area = intersection_width * intersection_height
+    return intersection_width * intersection_height
+
+def iou(a, b):
+    """Calculate the intersection over union between two boxes
+    The function returns the IUO value which is defined as:
+    IOU = intersection(a, b) / (area(a) + area(b) - intersection(a, b))
+
+    a   -- first box
+    b   -- second box
+    """
+    intersection_area = intersection(a, b)
     union_area = a.width * a.height + b.width * b.height - intersection_area
 
     return intersection_area / union_area
+
+def iob(a, b):
+    """Calculate the intersection over b between two boxes
+    The function returns the value which is defined as:
+    IOB = intersection(a, b) / (area(b))
+    """
+    return intersection(a, b) / (b.width * b.height)

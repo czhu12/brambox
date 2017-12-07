@@ -38,14 +38,15 @@ class Annotation(b.Box):
     def __str__(self):
         """ pretty print """
         string = "Annotation { "
-        string += "\tclass_label = {}, ".format(self.class_label)
-        string += "\tobject_id = {}, ".format(self.object_id)
-        string += "\tx_top_left = {}, ".format(self.x_top_left)
-        string += "\ty_top_left = {}, ".format(self.y_top_left)
-        string += "\twidth = {}, ".format(self.width)
-        string += "\theight = {}, ".format(self.height)
-        string += "\tlost = {}, ".format(self.lost)
-        string += "\toccluded = {}".format(self.occluded)
+        string += "\tclass_label = {self.class_label}, "
+        string += "\tobject_id = {self.object_id}, "
+        string += "\tx_top_left = {self.x_top_left}, "
+        string += "\ty_top_left = {self.y_top_left}, "
+        string += "\twidth = {self.width}, "
+        string += "\theight = {self.height}, "
+        string += "\tignore = {self.ignore}, "
+        string += "\tlost = {self.lost}, "
+        string += "\toccluded = {self.occluded}"
         string += "}"
 
         return string

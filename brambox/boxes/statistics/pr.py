@@ -22,9 +22,9 @@ def pr(detections, ground_truth, overlap_threshold=0.5, class_label_map=None):
 
         Returns dict of (p,r) tuples for every class, dict key is the class label
     """
-    # Get unique class_labels
-    if class_labels is not None:
-        classes = set(class_labels)
+    # Get unique class_label_map
+    if class_label_map is not None:
+        classes = set(class_label_map)
     else:
         classes = set()
         for key, val in ground_truth.items():
@@ -44,6 +44,26 @@ def pr(detections, ground_truth, overlap_threshold=0.5, class_label_map=None):
     return result
 
 
+def match_detection_to_annotations(detection, annotations, overlap_threshold, oa=iou):
+    """calculate the best match (largest overlap area) between a given detection and
+    a list of annotations.
+    detection           -- detection to match
+    annotations         -- annotations to search for the best match
+    overlap_threshold   -- minimum overlap area to consider a match
+    oa                  -- overlap area calculation function
+    """
+    best_overlap = overlap_threshold
+    best_annotation = None
+    for annotation in annotations:
+        overlap = oa(annotation, detection)
+        if overlap < best_overlap:
+            continue
+        best_overlap = overlap
+        best_annotation = annotation
+
+    return best_annotation
+
+
 def pr_single(detection_results, ground_truth, overlap_threshold):
     """ Compute a list of precision recall values that can be plotted into a graph
 
@@ -54,7 +74,6 @@ def pr_single(detection_results, ground_truth, overlap_threshold):
         Returns precision, recall
     """
     all_matches = []
-    num_detections = 0
     num_annotations = 0
 
     # Make copy to not alter the reference
@@ -64,35 +83,29 @@ def pr_single(detection_results, ground_truth, overlap_threshold):
     for image_id, annotations in ground_truth.items():
         if image_id not in detection_results:
             detection_results[image_id] = []
-        num_annotations += len(annotations)
 
     # run over every image
     for image_id, detections in detection_results.items():
 
+        annotations = []
+        ignored_annotations = []
         # [:] is to copy the annotations instead of returning a reference
-        if image_id in ground_truth:
-            annotations = ground_truth[image_id][:]
-        else:
-            annotations = []
+        for annotation in ground_truth[image_id][:]:
+            if annotation.ignore:
+                ignored_annotations += [annotation]
+            else:
+                annotations += [annotation]
 
+        num_annotations += len(annotations)
         # sort detections by confidence, highest confidence first
         detections = sorted(detections, key=lambda d: d.confidence, reverse=True)
-        num_detections += len(detections)
 
         for detection in detections:
-            best_overlap = overlap_threshold
-            best_annotation = None
-            for annotation in annotations:
-                overlap = iou(annotation, detection)
-                if overlap < best_overlap:
-                    continue
-                best_overlap = overlap
-                best_annotation = annotation
-
-            if best_annotation is not None:
-                annotations.remove(best_annotation)
+            matched_annotation = match_detection_to_annotations(detection, annotations, overlap_threshold, iou)
+            if matched_annotation is not None:
+                annotations.remove(matched_annotation)
                 all_matches.append((detection.confidence, True))
-            else:
+            elif match_detection_to_annotations(detection, ignored_annotations, overlap_threshold, iob) is None:
                 all_matches.append((detection.confidence, False))
 
     # sort matches by confidence from high to low
