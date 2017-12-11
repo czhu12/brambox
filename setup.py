@@ -1,10 +1,13 @@
 import setuptools as setup
 
+
 def find_packages():
     return ['brambox'] + ['brambox.'+p for p in setup.find_packages('brambox')]
 
+
 def find_scripts():
     return setup.findall('scripts')
+
 
 setup.setup(name='brambox',
             version='1.0.1-beta',

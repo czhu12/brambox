@@ -21,8 +21,7 @@ class TestPickleDetection(unittest.TestCase):
         obj2 = self.parser.deserialize(bytestream)
 
         self.assertEqual(obj, obj2)
-        
+
 
 if __name__ == '__main__':
     unittest.main()
-

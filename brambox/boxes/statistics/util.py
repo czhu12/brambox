@@ -7,6 +7,7 @@
 
 __all__ = ['iou', 'iob', 'graph', 'match_for_graphs']
 
+
 def intersection(a, b):
     """Calculate the intersection area between two boxes
     """

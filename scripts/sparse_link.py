@@ -6,6 +6,7 @@ import argparse
 
 import brambox.boxes as bbb
 
+
 def create_link(src, dst, hard, override):
     if override and os.path.exists(dst):
         os.remove(dst)

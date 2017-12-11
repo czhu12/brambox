@@ -31,10 +31,10 @@ def main():
     img = cv2.imread(firstimage)
 
     boxes = bbb.parse(args.format, args.annofile,
-                            image_width=img.shape[1],
-                            image_height=img.shape[0],
-                            class_label_map=args.class_names,
-                            stride=args.stride, offset=args.offset)
+                      image_width=img.shape[1],
+                      image_height=img.shape[0],
+                      class_label_map=args.class_names,
+                      stride=args.stride, offset=args.offset)
 
     print(f'Parsed {len(annotations)} annotation files')
     bbb.show_bounding_boxes(boxes, args.imagefolder, img_ext=extension, show_labels=args.show_labels)

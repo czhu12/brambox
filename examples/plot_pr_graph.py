@@ -3,18 +3,21 @@ import os
 import brambox.boxes as bbb
 import matplotlib.pyplot as plt
 
-identify = lambda f: os.path.splitext("/".join(f.rsplit('/')[-3:]))[0]
+
+def identify(f):
+    return os.path.splitext("/".join(f.rsplit('/')[-3:]))[0]
+
 
 def main():
     ground_truth = bbb.parse('anno_dollar', 'data/annotations/*/*/*.txt', identify)
     detection_results = bbb.parse('det_coco', 'data/coco_results.json')
 
     pr_dict = bbb.pr(detection_results, ground_truth, 0.4)
-    ap_dict = {key: ap(p,r) for key,(p,r) in pr.items()}
+    ap_dict = {key: ap(p, r) for key, (p, r) in pr.items()}
 
     plt.figure(figsize=(12, 10))
     for key in pr_dict:
-        p,r = pr_dict[key]
+        p, r = pr_dict[key]
         ap = ap_dict[key]
         plt.plot(r, p, label=f'{key} (ap = {round(ap, 3)})', linewidth=2)
 

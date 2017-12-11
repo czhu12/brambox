@@ -12,11 +12,11 @@ class TestCocoDetection(unittest.TestCase):
 
     def test_det_deserialize(self):
         """ test if deserialization of one detection works """
-        self.det.deserialize({"image_id":"V000/I00019.png",
-                                "category_id":1,
-                                "bbox":[506.547791, 216.665741, 20.434814, 39.914307],
-                                "score":0.436614},
-                                None)
+        self.det.deserialize({"image_id": "V000/I00019.png",
+                              "category_id": 1,
+                              "bbox": [506.547791, 216.665741, 20.434814, 39.914307],
+                              "score": 0.436614},
+                             None)
 
         self.assertAlmostEqual(self.det.x_top_left, 506.547791)
         self.assertAlmostEqual(self.det.y_top_left, 216.665741)

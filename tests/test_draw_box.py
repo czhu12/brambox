@@ -6,9 +6,9 @@ import brambox.boxes as bbb
 
 class TestDrawBox(unittest.TestCase):
     def setUp(self):
-        self.img = np.zeros((50,50,3), dtype=np.uint8)
+        self.img = np.zeros((50, 50, 3), dtype=np.uint8)
         self.res = self.img.copy()
-        cv2.rectangle(self.res, (1,5), (11,20), (255,255,255), 2)
+        cv2.rectangle(self.res, (1, 5), (11, 20), (255, 255, 255), 2)
 
         self.anno = bbb.annotations.Annotation()
         self.anno.x_top_left = 1
@@ -21,12 +21,12 @@ class TestDrawBox(unittest.TestCase):
 
     def test_drawing(self):
         """ Test drawing function """
-        img_b = bbb.draw_box(self.img, [self.anno], (255,255,255))
+        img_b = bbb.draw_box(self.img, [self.anno], (255, 255, 255))
         self.assertTrue(np.array_equal(self.res, img_b))
 
     def test_inline_drawing(self):
         """ Test inline drawing """
-        bbb.draw_box(self.img, [self.anno], (255,255,255), False, True)
+        bbb.draw_box(self.img, [self.anno], (255, 255, 255), False, True)
         self.assertTrue(np.array_equal(self.res, self.img))
 
 

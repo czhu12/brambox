@@ -46,6 +46,7 @@ def mr_fppi_single(detection_results, ground_truth, overlap_threshold):
 
     return miss_rate, fppi
 
+
 def lamr(miss_rate, fppi, num_of_samples=9):
     """ Compute the log average miss-rate from a given MR-FPPI curve
         The log average miss-rate is defined as the average of a number of evenly spaced log miss-rate
@@ -62,6 +63,7 @@ def lamr(miss_rate, fppi, num_of_samples=9):
     log_interpolated = np.log(interpolated)
     avg = sum(log_interpolated) / len(log_interpolated)
     return np.exp(avg)
+
 
 def mean_lamr():
     """TODO
