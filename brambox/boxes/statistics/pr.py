@@ -2,6 +2,8 @@
 #   Copyright EAVISE
 #   Author: Maarten Vandersteegen
 #
+#   Functions for generating PR-curve axis and calculating AP and mean AP
+#
 
 from statistics import mean
 import numpy as np
@@ -13,7 +15,7 @@ __all__ = ['pr', 'ap', 'mean_ap']
 
 
 def pr(detections, ground_truth, overlap_threshold=0.5, class_label_map=None):
-    """ Compute precision and recall values for all the classes
+    """ Compute precision and recall values for multiple classes
 
         detections          -- dict of detections per image (eg. parse())
         ground_truth        -- dict of annotations per image (eg. parse())
@@ -22,46 +24,7 @@ def pr(detections, ground_truth, overlap_threshold=0.5, class_label_map=None):
 
         Returns dict of (p,r) tuples for every class, dict key is the class label
     """
-    # Get unique class_label_map
-    if class_label_map is not None:
-        classes = set(class_label_map)
-    else:
-        classes = set()
-        for key, val in ground_truth.items():
-            for box in val:
-                classes.add(box.class_label)
-        for key, val in detections.items():
-            for box in val:
-                classes.add(box.class_label)
-
-    # Compute PR for every class
-    result = {}
-    for label in classes:
-        det_filtered = {key: list(filter(lambda box: box.class_label == label, val)) for key, val in detections.items()}
-        gt_filtered = {key: list(filter(lambda box: box.class_label == label, val)) for key, val in ground_truth.items()}
-        result[label] = pr_single(det_filtered, gt_filtered, overlap_threshold)
-
-    return result
-
-
-def match_detection_to_annotations(detection, annotations, overlap_threshold, oa=iou):
-    """calculate the best match (largest overlap area) between a given detection and
-    a list of annotations.
-    detection           -- detection to match
-    annotations         -- annotations to search for the best match
-    overlap_threshold   -- minimum overlap area to consider a match
-    oa                  -- overlap area calculation function
-    """
-    best_overlap = overlap_threshold
-    best_annotation = None
-    for annotation in annotations:
-        overlap = oa(annotation, detection)
-        if overlap < best_overlap:
-            continue
-        best_overlap = overlap
-        best_annotation = annotation
-
-    return best_annotation
+    return graph(detections, ground_truth, overlap_threshold, class_label_map, pr_single)
 
 
 def pr_single(detection_results, ground_truth, overlap_threshold):
@@ -73,60 +36,11 @@ def pr_single(detection_results, ground_truth, overlap_threshold):
 
         Returns precision, recall
     """
-    all_matches = []
-    num_annotations = 0
 
-    # Make copy to not alter the reference
-    detection_results = detection_results.copy()
+    tps, fps, num_annotations, _ = match_for_graphs(detection_results, ground_truth, overlap_threshold)
 
-    # make sure len(detection_results) == len(ground_truth) by inserting empty detections lists
-    for image_id, annotations in ground_truth.items():
-        if image_id not in detection_results:
-            detection_results[image_id] = []
-
-    # run over every image
-    for image_id, detections in detection_results.items():
-
-        annotations = []
-        ignored_annotations = []
-        # [:] is to copy the annotations instead of returning a reference
-        for annotation in ground_truth[image_id][:]:
-            if annotation.ignore:
-                ignored_annotations += [annotation]
-            else:
-                annotations += [annotation]
-
-        num_annotations += len(annotations)
-        # sort detections by confidence, highest confidence first
-        detections = sorted(detections, key=lambda d: d.confidence, reverse=True)
-
-        for detection in detections:
-            matched_annotation = match_detection_to_annotations(detection, annotations, overlap_threshold, iou)
-            if matched_annotation is not None:
-                annotations.remove(matched_annotation)
-                all_matches.append((detection.confidence, True))
-            elif match_detection_to_annotations(detection, ignored_annotations, overlap_threshold, iob) is None:
-                all_matches.append((detection.confidence, False))
-
-    # sort matches by confidence from high to low
-    all_matches = sorted(all_matches, key=lambda d: d[0], reverse=True)
-
-    recall = []
     precision = []
-    tps = []
-    fps = []
-    tp_counter = 0
-    fp_counter = 0
-
-    # all matches in dataset
-    for det in all_matches:
-        if det[1]:
-            tp_counter += 1
-        else:
-            fp_counter += 1
-        tps.append(tp_counter)
-        fps.append(fp_counter)
-
+    recall = []
     for tp, fp in zip(tps, fps):
         recall.append(tp / num_annotations)
         precision.append(tp / (fp + tp))
