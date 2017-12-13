@@ -15,8 +15,15 @@ class Annotation(b.Box):
     def __init__(self):
         """ x_top_left,y_top_left,width,height are in pixel coordinates """
         super(Annotation, self).__init__()
-        self.lost = False       # if object is not seen in the image, if true one must ignore this annotation
-        self.occluded = False   # if object is occluded
+        self.lost = False               # if object is not seen in the image, if true one must ignore this annotation
+        self.occluded = False           # if object is occluded
+
+        # variables below are only valid if the 'occluded' flag is True and
+        # represent a bounding box that indicates the visible area inside the normal bounding box
+        self.visible_x_top_left = 0.0   # x position top left in pixels
+        self.visible_y_top_left = 0.0   # y position top left in pixels
+        self.visible_width = 0.0        # width in pixels
+        self.visible_height = 0.0       # height in pixels
 
     @classmethod
     def create(cls, obj=None):
@@ -29,9 +36,17 @@ class Annotation(b.Box):
         if isinstance(obj, Annotation):
             instance.lost = obj.lost
             instance.occluded = obj.occluded
+            instance.visible_x_top_left = obj.visible_x_top_left
+            instance.visible_y_top_left = obj.visible_y_top_left
+            instance.visible_width = obj.visible_width
+            instance.visible_height = boj.visible_height
         elif isinstance(obj, det.Detection):
             instance.lost = False
             instance.occluded = False
+            instance.visible_x_top_left = 0.0
+            instance.visible_y_top_left = 0.0
+            instance.visible_width = 0.0
+            instance.visible_height = 0.0
 
         return instance
 

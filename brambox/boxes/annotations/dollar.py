@@ -13,13 +13,17 @@ class DollarAnnotation(Annotation):
 
     def serialize(self):
         """ generate a dollar annotation string """
-        string = "{} {} {} {} {} {} 0 0 0 0 {} 0" \
+        string = "{} {} {} {} {} {} {} {} {} {} {} 0" \
             .format(self.class_label if len(self.class_label) != 0 else '?',
                     round(self.x_top_left),
                     round(self.y_top_left),
                     round(self.width),
                     round(self.height),
                     int(self.occluded),
+                    round(self.visible_x_top_left),
+                    round(self.visible_y_top_left),
+                    round(self.visible_width),
+                    round(self.visible_height),
                     int(self.lost))
 
         return string
@@ -33,6 +37,10 @@ class DollarAnnotation(Annotation):
         self.width = float(elements[3])
         self.height = float(elements[4])
         self.occluded = elements[5] != '0'
+        self.visible_x_top_left = float(elements[6])
+        self.visible_y_top_left = float(elements[7])
+        self.visible_width = float(elements[8])
+        self.visible_height = float(elements[9])
         self.lost = elements[10] != '0'
 
         self.object_id = 0
