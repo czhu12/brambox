@@ -37,16 +37,17 @@ class Detection(b.Box):
         string = 'Detection {'
         string += f'class_label = {self.class_label}, '
         string += f'object_id = {self.object_id}, '
-        string += f'x_top_left = {self.x_top_left}, '
-        string += f'y_top_left = {self.y_top_left}, '
-        string += f'width = {self.width}, '
-        string += f'height = {self.height}, '
+        string += f'x = {self.x_top_left}, '
+        string += f'y = {self.y_top_left}, '
+        string += f'w = {self.width}, '
+        string += f'h = {self.height}, '
         string += f'ignore = {self.ignore}, '
-        string += f'confidence = {self.confidence}, '
+        string += f'confidence = {self.confidence}'
         string += '}'
 
         return string
 
+    __repr__ = __str__
 
 ParserType = b.ParserType
 

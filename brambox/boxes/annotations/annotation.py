@@ -55,17 +55,22 @@ class Annotation(b.Box):
         string = 'Annotation {'
         string += f'class_label = {self.class_label}, '
         string += f'object_id = {self.object_id}, '
-        string += f'x_top_left = {self.x_top_left}, '
-        string += f'y_top_left = {self.y_top_left}, '
-        string += f'width = {self.width}, '
-        string += f'height = {self.height}, '
+        string += f'x = {self.x_top_left}, '
+        string += f'y = {self.y_top_left}, '
+        string += f'w = {self.width}, '
+        string += f'h = {self.height}, '
         string += f'ignore = {self.ignore}, '
         string += f'lost = {self.lost}, '
-        string += f'occluded = {self.occluded}'
+        string += f'occluded = {self.occluded}, '
+        string += f'visible_x = {self.visible_x_top_left}, '
+        string += f'visible_y = {self.visible_y_top_left}, '
+        string += f'visible_w = {self.visible_width}, '
+        string += f'visible_h = {self.visible_height}'
         string += '}'
 
         return string
 
+    __repr__ = __str__
 
 ParserType = b.ParserType
 
