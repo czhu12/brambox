@@ -52,17 +52,17 @@ class Annotation(b.Box):
 
     def __str__(self):
         """ pretty print """
-        string = "Annotation { "
-        string += "\tclass_label = {self.class_label}, "
-        string += "\tobject_id = {self.object_id}, "
-        string += "\tx_top_left = {self.x_top_left}, "
-        string += "\ty_top_left = {self.y_top_left}, "
-        string += "\twidth = {self.width}, "
-        string += "\theight = {self.height}, "
-        string += "\tignore = {self.ignore}, "
-        string += "\tlost = {self.lost}, "
-        string += "\toccluded = {self.occluded}"
-        string += "}"
+        string = 'Annotation {'
+        string += f'class_label = {self.class_label}, '
+        string += f'object_id = {self.object_id}, '
+        string += f'x_top_left = {self.x_top_left}, '
+        string += f'y_top_left = {self.y_top_left}, '
+        string += f'width = {self.width}, '
+        string += f'height = {self.height}, '
+        string += f'ignore = {self.ignore}, '
+        string += f'lost = {self.lost}, '
+        string += f'occluded = {self.occluded}'
+        string += '}'
 
         return string
 
