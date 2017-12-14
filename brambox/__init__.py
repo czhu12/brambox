@@ -5,5 +5,6 @@
 
 from . import boxes
 from . import transforms
+from .version import *
 
 __all__ = ['boxes', 'transforms']
