@@ -18,6 +18,7 @@ annotation_formats = {
     'darknet': DarknetParser,
     'dollar': DollarParser,
     'pickle': PickleParser,
+    'pascalvoc': PascalVOCParser,
     'vatic': VaticParser,
     'yaml': YamlParser,
 }
