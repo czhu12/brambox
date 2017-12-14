@@ -16,23 +16,61 @@ class PascalVOCAnnotation(Annotation):
 
     def serialize(self):
         """ generate a Pascal VOC object xml string """
-        raise NotImplementedError
+        string = '<object>\n'
+        string += f'\t<name>{self.class_label}</name>\n'
+        string += '\t<pose>Unspecified</pose>\n'
+        string += f'\t<truncated>{int(self.occluded)}</truncated>\n'
+        string += '\t<difficult>0</difficult>\n'
+        string += '\t<bndbox>\n'
+        string += f'\t\t<xmin>{self.x_top_left}</xmin>\n'
+        string += f'\t\t<ymin>{self.y_top_left}</ymin>\n'
+        string += f'\t\t<xmax>{self.x_top_left + self.width}</xmax>\n'
+        string += f'\t\t<ymax>{self.y_top_left + self.height}</ymax>\n'
+        string += '\t</bndbox>\n'
+        string += '</object>\n'
 
-    def deserialize(self, string):
+        return string
+
+    def deserialize(self, xml_obj):
         """ parse a Pascal VOC xml annotation string """
-        raise NotImplementedError
+        self.class_label = xml_obj.find('name').text
+        self.occluded = xml_obj.find('truncated').text == '1'
+
+        box = xml_obj.find('bndbox')
+        self.x_top_left = float(box[0].text)
+        self.y_top_left = float(box[1].text)
+        self.width = float(int(box[2].text) - int(box[0].text))
+        self.height = float(int(box[3].text) - int(box[1].text))
+
+        self.object_id = 0
+        self.lost = None
+
+        return self
 
 
 class PascalVOCParser(Parser):
-    """ YAML annotation parser """
+    """ Pascal VOC annotation parser """
     parser_type = ParserType.MULTI_FILE
     box_type = PascalVOCAnnotation
     extension = '.xml'
 
     def serialize(self, annotations):
-        """ Serialize input dictionary of annotations into one string """
-        raise NotImplementedError
+        """ Serialize a list of annotations into one string """
+        result = '<annotation>\n'
+
+        for anno in annotations:
+            new_anno = self.box_type.create(anno)
+            result += new_anno.serialize()
+
+        return result + '</annotation>\n'
 
     def deserialize(self, string):
-        """ Deserialize an annotation file into a dictionary of annotations """
-        raise NotImplementedError
+        """ Deserialize an annotation string into a list of annotation """
+        result = []
+
+        root = ET.fromstring(string)
+        for obj in root.iter('object'):
+            anno = self.box_type()
+            result += [anno.deserialize(obj)]
+
+        return result
