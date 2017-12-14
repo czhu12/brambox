@@ -1,0 +1,7 @@
+# Runtime dependencies
+opencv-python
+
+# Development dependencies
+pycodestyle
+
+-e .

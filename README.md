@@ -4,11 +4,13 @@ Unified tools for generating PR curves, converting image data annotation sets an
 ## How to install
 
 ```bash
-pip install .
-# OR
-python setup.py install
+# For usage only
+pip install -r requirements.txt
+
+# For development
+pip install -r develop.txt
 ```
-NOTE: This project is python 3.6 and higher so on some systems you might want to use 'python3.6' instead of 'python'
+>This project is python 3.6 and higher so on some systems you might want to use 'pip3' instead of 'pip'
 
 ## Usage
 The toolbox contains both library packages and scripts.

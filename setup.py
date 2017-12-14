@@ -27,4 +27,11 @@ setup.setup(name='brambox',
             long_description=open('README.md').read(),
             packages=find_packages(),
             scripts=find_scripts(),
-            test_suite='tests')
+            test_suite='tests',
+            install_requires=[
+                'pyyaml',
+                'numpy',
+                'scipy',
+                'matplotlib',
+            ],
+            )
