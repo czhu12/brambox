@@ -37,10 +37,10 @@ class PascalVOCAnnotation(Annotation):
         self.occluded = xml_obj.find('truncated').text == '1'
 
         box = xml_obj.find('bndbox')
-        self.x_top_left = float(box[0].text)
-        self.y_top_left = float(box[1].text)
-        self.width = float(int(box[2].text) - int(box[0].text))
-        self.height = float(int(box[3].text) - int(box[1].text))
+        self.x_top_left = float(box.find('xmin').text)
+        self.y_top_left = float(box.find('ymin').text)
+        self.width = float(int(box.find('xmax').text) - self.x_top_left)
+        self.height = float(int(box.find('ymax').text) - self.y_top_left)
 
         self.object_id = 0
         self.lost = None
