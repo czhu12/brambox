@@ -75,7 +75,8 @@ def graph(detections, ground_truth, overlap_threshold, class_label_map, graph_fu
     for label in classes:
         det_filtered = {key: list(filter(lambda box: box.class_label == label, val)) for key, val in detections.items()}
         gt_filtered = {key: list(filter(lambda box: box.class_label == label, val)) for key, val in ground_truth.items()}
-        result[label] = graph_fun(det_filtered, gt_filtered, overlap_threshold)
+        if len(det_filtered) > 0 and len(gt_filtered) > 0:
+            result[label] = graph_fun(det_filtered, gt_filtered, overlap_threshold)
 
     return result
 
