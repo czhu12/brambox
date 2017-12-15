@@ -58,12 +58,12 @@ def ap(precision, recall, num_of_samples=100):
         num_of_samples      -- number of samples to take from the curve to measure the average precision
     """
     samples = np.arange(0., 1., 1.0/num_of_samples)
-    if len(p) > 1 and len(r) > 1:
+    if len(precision) > 1 and len(recall) > 1:
         p = np.array(precision)
         r = np.array(recall)
         interpolated = scipy.interpolate.interp1d(r, p, fill_value=(1., 0.), bounds_error=False)(samples)
         avg = sum(interpolated) / len(interpolated)
-    elif len(p) > 0 and len(r) > 0:
+    elif len(precision) > 0 and len(recall) > 0:
         # 1 point on PR: AP is box between (0,0) and (p,r)
         avg = precision[0] * recall[0]
     else:
