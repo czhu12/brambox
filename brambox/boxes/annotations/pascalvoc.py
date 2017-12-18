@@ -20,7 +20,7 @@ class PascalVOCAnnotation(Annotation):
         string += f'\t<name>{self.class_label}</name>\n'
         string += '\t<pose>Unspecified</pose>\n'
         string += f'\t<truncated>{int(self.occluded)}</truncated>\n'
-        string += '\t<difficult>0</difficult>\n'
+        string += f'\t<difficult>{int(self.difficult)}</difficult>\n'
         string += '\t<bndbox>\n'
         string += f'\t\t<xmin>{self.x_top_left}</xmin>\n'
         string += f'\t\t<ymin>{self.y_top_left}</ymin>\n'
@@ -35,6 +35,7 @@ class PascalVOCAnnotation(Annotation):
         """ parse a Pascal VOC xml annotation string """
         self.class_label = xml_obj.find('name').text
         self.occluded = xml_obj.find('truncated').text == '1'
+        self.difficult = xml_obj.find('difficult').text == '1'
 
         box = xml_obj.find('bndbox')
         self.x_top_left = float(box.find('xmin').text)

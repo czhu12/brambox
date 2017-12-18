@@ -16,6 +16,7 @@ class Annotation(b.Box):
         """ x_top_left,y_top_left,width,height are in pixel coordinates """
         super(Annotation, self).__init__()
         self.lost = False       # if object is not seen in the image, if true one must ignore this annotation
+        self.difficult = False  # if the object is considered difficult
         self.occluded = False   # if object is occluded
 
     @classmethod
@@ -29,6 +30,7 @@ class Annotation(b.Box):
         if isinstance(obj, Annotation):
             instance.lost = obj.lost
             instance.occluded = obj.occluded
+            instance.difficult = obj.difficult
         elif isinstance(obj, det.Detection):
             instance.lost = False
             instance.occluded = False
@@ -46,7 +48,8 @@ class Annotation(b.Box):
         string += f'height = {self.height}, '
         string += f'ignore = {self.ignore}, '
         string += f'lost = {self.lost}, '
-        string += f'occluded = {self.occluded}'
+        string += f'occluded = {self.occluded}, '
+        string += f'difficult = {self.difficult}'
         string += '}'
 
         return string

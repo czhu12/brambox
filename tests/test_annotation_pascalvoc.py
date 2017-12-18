@@ -8,7 +8,7 @@ xml_string = """<annotation>
 \t<name>horse</name>
 \t<pose>Unspecified</pose>
 \t<truncated>0</truncated>
-\t<difficult>0</difficult>
+\t<difficult>1</difficult>
 \t<bndbox>
 \t\t<xmin>100</xmin>
 \t\t<ymin>200</ymin>
@@ -63,6 +63,7 @@ class TestPascalVOCAnnotation(unittest.TestCase):
         self.anno.height = 40
         self.anno.lost = False
         self.anno.occluded = True
+        self.anno.difficult = False
 
         string = self.anno.serialize()
         self.assertEqual(string, xml_single_string)
@@ -85,6 +86,7 @@ class TestPascalVOCAnnotation(unittest.TestCase):
         testanno1.y_top_left = 200
         testanno1.width = 200
         testanno1.height = 200
+        testanno1.difficult = True
         testanno2 = Annotation()
         testanno2.class_label = 'person'
         testanno2.x_top_left = 1
@@ -102,6 +104,7 @@ class TestPascalVOCAnnotation(unittest.TestCase):
         self.assertEqual(type(obj), list)
         self.assertEqual(len(obj), 2)
         self.assertEqual(obj[0].class_label, 'horse')
+        self.assertTrue(obj[0].difficult)
 
 
 if __name__ == '__main__':
