@@ -50,7 +50,7 @@ def draw_box(img, boxes, color=None, show_labels=False, inline=False):
             if box.occluded:
                 thickness = 2
         elif isinstance(box, Detection):
-            text = '{} {:.2f}%'.format(box.class_label, box.confidence)
+            text = f'{box.class_label} {100*box.confidence:.2f}%'
 
         # get coord
         pt1 = (int(box.x_top_left), int(box.y_top_left))

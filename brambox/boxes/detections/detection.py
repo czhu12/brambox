@@ -49,6 +49,7 @@ class Detection(b.Box):
 
     __repr__ = __str__
 
+
 ParserType = b.ParserType
 
 
