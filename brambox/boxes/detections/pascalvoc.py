@@ -6,7 +6,6 @@
 #   1 file per class: img_id class_score x_left y_upper x_right y_lower
 #
 
-import yaml
 from .detection import *
 
 __all__ = ["PascalVOCDetection", "PascalVOCParser"]

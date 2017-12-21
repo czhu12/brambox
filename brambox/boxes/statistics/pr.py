@@ -5,6 +5,7 @@
 #   Functions for generating PR-curve axis and calculating AP and mean AP
 #
 
+import math
 from statistics import mean
 import numpy as np
 import scipy.interpolate
@@ -57,10 +58,17 @@ def ap(precision, recall, num_of_samples=100):
         num_of_samples      -- number of samples to take from the curve to measure the average precision
     """
     samples = np.arange(0., 1., 1.0/num_of_samples)
-    p = np.array(precision)
-    r = np.array(recall)
-    interpolated = scipy.interpolate.interp1d(r, p, fill_value=(1., 0.), bounds_error=False)(samples)
-    avg = sum(interpolated) / len(interpolated)
+    if len(precision) > 1 and len(recall) > 1:
+        p = np.array(precision)
+        r = np.array(recall)
+        interpolated = scipy.interpolate.interp1d(r, p, fill_value=(1., 0.), bounds_error=False)(samples)
+        avg = sum(interpolated) / len(interpolated)
+    elif len(precision) > 0 and len(recall) > 0:
+        # 1 point on PR: AP is box between (0,0) and (p,r)
+        avg = precision[0] * recall[0]
+    else:
+        # Should never happen (graph filters out classes where no det/gt are found)
+        avg = float('nan')
     return avg
 
 
@@ -70,4 +78,6 @@ def mean_ap(pr, num_of_samples=100):
         pr                  -- dict containing (p,r) tuples per class (eg. pr())
         num_of_samples      -- number of samples to take from the curve to measure the average precision
     """
-    return mean([ap(p, r, num_of_samples) for _, (p, r) in pr.items()])
+    aps = [ap(p, r, num_of_samples) for _, (p, r) in pr.items()]
+    aps = [ap for ap in aps if not math.isnan(ap)]
+    return mean(aps)

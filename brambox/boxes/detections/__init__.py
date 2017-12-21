@@ -6,9 +6,9 @@
 # Formats
 from .coco import *
 from .dollar import *
+from .pascalvoc import *
 from .pickle import *
 from .yaml import *
-from .pascalvoc import *
 
 # Extra
 from .detection import Detection
