@@ -5,7 +5,8 @@
 #   Functions for filtering bounding boxes prior to generating curve data
 #
 
-__all__ = ['image_bounds', 'occlusion_area', 'height_range', 'expanded_height_range', 'label', 'filter_boxes']
+__all__ = ['image_bounds', 'occlusion_area', 'height_range', 'expanded_height_range',
+            'label', 'filter_ignore', 'filter_discard']
 
 
 def image_bounds(box, bounds=(0, 0, float('Inf'), float('Inf'))):
@@ -61,7 +62,7 @@ def label(box, accepted_labels=[]):
     """
     return box.class_label in accepted_labels
 
-def filter_boxes(boxes, filter_fun, *args, **kwargs):
+def filter_ignore(boxes, filter_fun, *args, **kwargs):
     """Mark boxes as 'ignore' when they do not pass the provided filter function
     boxes       -- dict with lists of boxes
     filter_fun  -- a filter function to be applied
@@ -71,4 +72,14 @@ def filter_boxes(boxes, filter_fun, *args, **kwargs):
         for box in values:
             if not box.ignore and not filter_fun(box, *args, **kwargs):
                 box.ignore = True
+
+
+def filter_discard(boxes, filter_fun, *args, **kwargs):
+    """Delete boxes when they do not pass the provided filter function
+    boxes       -- dict with lists of boxes
+    filter_fun  -- a filter function to be applied
+    """
+
+    for image_id, values in boxes.items():
+        values[:] = [box for box in values if filter_fun(box, *args, **kwargs)]
 
