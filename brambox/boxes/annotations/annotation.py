@@ -41,7 +41,7 @@ class Annotation(b.Box):
             instance.visible_x_top_left = obj.visible_x_top_left
             instance.visible_y_top_left = obj.visible_y_top_left
             instance.visible_width = obj.visible_width
-            instance.visible_height = boj.visible_height
+            instance.visible_height = obj.visible_height
         elif isinstance(obj, det.Detection):
             instance.lost = False
             instance.occluded = False

@@ -8,6 +8,7 @@ def find_packages():
 def find_scripts():
     return setup.findall('scripts')
 
+
 def get_version():
     with open('VERSION', 'r') as f:
         version = f.read().splitlines()[0]
@@ -17,7 +18,7 @@ def get_version():
         f.write('# Copyright EAVISE\n')
         f.write('#\n\n')
         f.write(f'__version__ = "{version}"\n')
-    
+
     return version
 
 setup.setup(name='brambox',

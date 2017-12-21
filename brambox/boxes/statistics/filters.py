@@ -6,7 +6,7 @@
 #
 
 __all__ = ['image_bounds', 'occlusion_area', 'height_range', 'expanded_height_range',
-            'label', 'filter_ignore', 'filter_discard']
+           'label', 'filter_ignore', 'filter_discard']
 
 
 def image_bounds(box, bounds=(0, 0, float('Inf'), float('Inf'))):
@@ -15,7 +15,8 @@ def image_bounds(box, bounds=(0, 0, float('Inf'), float('Inf'))):
     bounds      -- [left, top, right, bottom] pixel positions to mark the image bounds
     """
     return box.x_top_left >= bounds[0] and box.x_top_left + box.width <= bounds[2] and \
-           box.y_top_left >= bounds[1] and box.y_top_left + box.height <= bounds[3]
+        box.y_top_left >= bounds[1] and box.y_top_left + box.height <= bounds[3]
+
 
 def occlusion_area(box, visible_range=(0, float('Inf'))):
     """Return True if the visible fraction of an object, denotated by a bouding box, falls between
@@ -38,12 +39,14 @@ def occlusion_area(box, visible_range=(0, float('Inf'))):
 
     return visible_fraction >= visible_range[0] and visible_fraction <= visible_range[1]
 
+
 def height_range(box, height_range=(0, float('Inf'))):
     """Return True if the height of a given box lies within the given range
     box             -- box object to test
     height_range    -- height range in pixels (lower, upper)
     """
     return box.height >= height_range[0] and box.height <= height_range[1]
+
 
 def expanded_height_range(box, height_range=(0, float('Inf')), r=1.25):
     """Return True if the height of a given box lies within the given range after scaling
@@ -55,12 +58,14 @@ def expanded_height_range(box, height_range=(0, float('Inf')), r=1.25):
     expanded_range = (height_range[0] / r, height_range[1] * r)
     return box.height >= expanded_range[0] and box.height <= expanded_range[1]
 
+
 def label(box, accepted_labels=[]):
     """Return True if the 'class_label' of 'box' is found inside the 'acceted_labels'
     box             -- box object to test
     accepted_labels -- list of labels that should pass the filter
     """
     return box.class_label in accepted_labels
+
 
 def filter_ignore(boxes, filter_fun, *args, **kwargs):
     """Mark boxes as 'ignore' when they do not pass the provided filter function
@@ -82,4 +87,3 @@ def filter_discard(boxes, filter_fun, *args, **kwargs):
 
     for image_id, values in boxes.items():
         values[:] = [box for box in values if filter_fun(box, *args, **kwargs)]
-
