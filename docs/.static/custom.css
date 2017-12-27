@@ -1,0 +1,27 @@
+.wy-side-nav-search {
+  background: #FFFFFF;  
+}
+
+.wy-side-nav-search a:hover {
+  background: #FFFFFF00;
+}
+
+.wy-side-nav-search a {
+    display: block;
+}
+
+a {
+  color: #2980B9;
+}
+
+a:visited {
+  color: #2e90d1;
+}
+
+a:hover {
+  color: #58a6da;
+}
+
+.wy-menu a, .wy-menu a:hover, .wy-menu a:visited {
+    color: #b3b3b3;
+}
