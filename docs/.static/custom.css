@@ -1,5 +1,5 @@
 .wy-side-nav-search {
-  background: #FFFFFF;  
+  background: #FCFCFC;
 }
 
 .wy-side-nav-search a:hover {
@@ -8,6 +8,16 @@
 
 .wy-side-nav-search a {
     display: block;
+}
+
+.wy-nav-content {
+  min-height: 100vh;
+  max-width: 1000px;
+}
+
+@media screen and (min-width: 1400px) {
+.wy-nav-content-wrap {
+  background: #FFFFFF;
 }
 
 a {

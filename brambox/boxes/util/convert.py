@@ -1,5 +1,6 @@
 #
 #   Copyright EAVISE
+#   Author: Maarten Vandersteegen
 #   Author: Tanguy Ophoff
 #
 
@@ -13,17 +14,34 @@ __all__ = ['parse', 'generate']
 
 # TODO: make stride/offset work on single files
 def parse(fmt, box_file, identify=None, **kwargs):
-    """ Parse any type of annotation format
+    """ Parse any type of bounding box format.
 
-        fmt       : format from the brambox.boxes.format dictionary
-        box_file  : bounding box filename or array of bounding box file names
-        identify  : function/lambda to create an image/frame identifier based on:
-                        * if single file: the parsed identifiers in the file
-                        * if multi file: the filename
-                    if not provided the image/frame identifier is created:
-                        * if single file: by taking the parsed identifier in the file
-                        * if multi file: by taking the name of the file without extension
-        **kwargs  : keyword arguments that are passed to the parser
+    Args:
+        fmt (str or class): Format from the :mod:`brambox.boxes.format <brambox.boxes>` dictionary
+        box_file (list or string): Bounding box filename or array of bounding box file names
+        identify (function, optional): Function to create an image identifier
+        **kwargs: Keyword arguments that are passed to the parser
+
+    Returns:
+        dict: Dictionary containing the bounding boxes for every image `{"image_id": [box, box, ...], ...}`
+
+    Note:
+        The `identify` function will be used to generate `image_id` tags. |br|
+        If the format is of the type :any:`brambox.boxes.box.ParserType.SINGLE_FILE`,
+        the identify function gets the existing `image_id` tags as input. The default is to not change the tags. |br|
+        If the format is of the type :any:`brambox.boxes.box.ParserType.MULTI_FILE`,
+        the identify function gets the path of the current file as input. The default is to get the name of the file without extensions.
+
+    Warning:
+        The `box_file` parameter can be either a list or string. |br|
+        If the format is of the type :any:`brambox.boxes.box.ParserType.SINGLE_FILE`,
+        then only a string is accepted and this is used as the filename. |br|
+        If the format is of the type :any:`brambox.boxes.box.ParserType.MULTI_FILE`,
+        then you can either pass a list or a string.
+        A list will be used as is, namely every string of the list gets used as a filename.
+        If you use a string, it will first be expanded with the :func:`~brambox.boxes.expand` function
+        to generate a list of strings. This expand function can take optional stride and offset parameters,
+        which can be passed via keyword arguments.
     """
 
     # Create parser
@@ -82,12 +100,19 @@ def parse(fmt, box_file, identify=None, **kwargs):
 
 
 def generate(fmt, box, path, **kwargs):
-    """ Generate boxtation file(s) in any format
+    """ Generate bounding box file(s) in any format.
 
-        fmt       : format from the brambox.boxes.format dictionary
-        path      : path to the boxes file (folder in case of multiple boxes)
-        box       : dictionary containing box objects per image (eg. output of parse())
-        **kwargs  : keyword arguments that are passed to the parser
+    Args:
+        fmt (str or class): Format from the :mod:`brambox.boxes.format <brambox.boxes>` dictionary
+        path (str): Path to the bounding box file/folder
+        box (dict): Dictionary containing box objects per image `{"image_id": [box, box, ...], ...}`
+        **kwargs (dict): Keyword arguments that are passed to the parser
+
+    Warning:
+        If the format is of the type :any:`brambox.boxes.box.ParserType.SINGLE_FILE`,
+        then the `path` parameter should contain a path to a **file**. |br|
+        If the format is of the type :any:`brambox.boxes.box.ParserType.MULTI_FILE`,
+        then the `path` parameter should contain a path to a **folder**.
     """
 
     # Create parser

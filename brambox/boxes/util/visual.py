@@ -13,13 +13,17 @@ __all__ = ['draw_box', 'show_bounding_boxes']
 
 
 def draw_box(img, boxes, color=None, show_labels=False, inline=False):
-    """ Returns an image with the bounding boxes drawn
+    """ Returns an image with the bounding boxes drawn.
 
-        img         : image to draw on
-        boxes       : list of bounding boxes to draw
-        color       : color to use for drawing (if none, every label will get its own color, up to 8 labels)
-        show_labels : whether or not to print the label names
-        inline      : whether to draw on the image or take a copy
+    Args:
+        img (np.ndarray): Image to draw on
+        boxes (list): Bounding boxes to draw
+        color (tuple, optional): Color to use for drawing; Default **every label will get its own color, up to 8 labels**
+        show_labels (Boolean, optional): Whether or not to print the label names; Default **False**
+        inline (Boolean, optional): Whether to draw on the image or take a copy; Default **False**
+
+    Returns:
+        np.ndarray: Image with bounding boxes drawn
     """
     colors = [
         (0, 0, 255),
@@ -78,13 +82,20 @@ def draw_box(img, boxes, color=None, show_labels=False, inline=False):
 
 
 def show_bounding_boxes(boxes, img_folder, img_ext='.png', show_labels=False, color=None, get_img_fn=None):
-    """ Display the bounding boxes parsed by the generic parse function
+    """ Display the bounding boxes parsed by the generic parse function.
 
-        boxes       : Dictionary containing bounding boxes (eg. output of parse())
-        img_folder  : Folder containing the images
-        img_ext     : Extension of the images
-        show_labels : Boolean indicating whether or not to display the labels on the images
-        get_img_fn  : Function that will be called to get the image path. Gets called with : img_id, img_folder, img_ext
+    Args:
+        boxes (dict): Dictionary containing box objects per image `{"image_id": [box, box, ...], ...}`
+        img_folder (str): Folder containing the images
+        img_ext (str, optional): Extension of the images; Default **'.png'**
+        show_labels (Boolean, optional): Whether or not to print the label names; Default **False**
+        color (tuple, optional): Color to use for drawing; Default **every label will get its own color, up to 8 labels**
+        get_img_fn (function): Function that will be called to get the image path
+
+    Note:
+        The `get_img_fn` function takes three parameters `img_id`, `img_folder` and `img_ext`.
+        It should return the full path to the image.
+        The default function will join the `img_folder` and `img_id`+`img_ext`.
     """
     print('Showing bounding boxes:\n\tPress a key to show the next image\n\tPress ESC to stop viewing images')
 
