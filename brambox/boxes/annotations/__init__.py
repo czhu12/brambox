@@ -1,7 +1,7 @@
-#
-# Image annotation formats
-# Copyright EAVISE
-#
+"""
+Brambox boxes annotations module |br|
+This package contains the actual annotation parsers. These parsers can be used to parse and generate annotation files.
+"""
 
 # Formats
 from .cvc import *

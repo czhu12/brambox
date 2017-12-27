@@ -11,7 +11,23 @@ __all__ = ['Annotation', 'ParserType', 'Parser']
 
 
 class Annotation(b.Box):
-    """ Generic annotation representation """
+    """ This is a generic annotation class that provides some base functionality all annotations need.
+    It builds upon :class:`~brambox.boxes.box.Box`.
+
+    Attributes:
+        lost (Boolean): Flag indicating whether the annotation is visible in the image; Default **False**
+        difficult (Boolean): Flag indicating whether the annotation is considered difficult; Default **False**
+        occluded (Boolean): Flag indicating whether the annotation is occluded; Default **False**
+        ignore (Boolean): Flag that is used to ignore a bounding box during statistics processing; Default **False**
+        visible_x_top_left (Number): X pixel coordinate of the top left corner of the bounding box that is visible; Default **0.0**
+        visible_y_top_left (Number): Y pixel coordinate of the top left corner of the bounding box that is visible; Default **0.0**
+        visible_width (Number): Width of the visible bounding box in pixels; Default **0.0**
+        visible_height (Number): Height of the visible bounding box in pixels; Default **0.0**
+
+    Note:
+        The `visible_x_top_left`, `visible_y_top_left`, `visible_width`and `visible_height` attributes
+        are only valid when the `occluded` flag is set to **True**.
+    """
     def __init__(self):
         """ x_top_left,y_top_left,width,height are in pixel coordinates """
         super(Annotation, self).__init__()
@@ -29,7 +45,15 @@ class Annotation(b.Box):
 
     @classmethod
     def create(cls, obj=None):
-        """ Create an annotation from a string or other box object """
+        """ Create an annotation from a string or other box object.
+
+        Args:
+            obj (Box or string, optional): Bounding box object to copy attributes from or string to deserialize
+
+        Note:
+            The obj can be both an :class:`~brambox.boxes.annotations.Annotation` or a :class:`~brambox.boxes.detections.Detection`.
+            For Annotations every attribute is copied over, for Detections the flags are all set to **False**.
+        """
         instance = super(Annotation, cls).create(obj)
 
         if obj is None:
@@ -45,6 +69,7 @@ class Annotation(b.Box):
             instance.visible_height = obj.visible_height
         elif isinstance(obj, det.Detection):
             instance.lost = False
+            instance.difficult = False
             instance.occluded = False
             instance.visible_x_top_left = 0.0
             instance.visible_y_top_left = 0.0

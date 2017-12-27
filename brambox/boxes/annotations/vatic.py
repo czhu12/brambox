@@ -2,6 +2,11 @@
 #   Copyright EAVISE
 #   Author: Maarten Vandersteegen
 #
+"""
+Vatic
+-----
+**TODO:** Maarten
+"""
 
 from .annotation import *
 

@@ -3,6 +3,11 @@
 #   Author: Maarten Vandersteegen
 #   NOTE: this coco format is based on the output of the darknet DL framework
 #
+"""
+Coco
+----
+**TODO:** Maarten
+"""
 
 import json
 from .detection import *

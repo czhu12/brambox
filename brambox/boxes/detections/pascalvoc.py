@@ -2,9 +2,24 @@
 #   Copyright EAVISE
 #   Author: Tanguy Ophoff
 #
-#   Pascal VOC detection format
-#   1 file per class: img_id class_score x_left y_upper x_right y_lower
-#
+"""
+Pascal VOC
+----------
+This parser can parse detections in the `pascal voc`_ format.
+This format consists of one file per class of detection. |br|
+confidence_scores are saved as a number between 0-1, coordinates are saved as pixel values.
+
+Args:
+    class_label (string): This keyword argument contains the `class_label` for the current file that is being parsed.
+
+Example:
+    >>> person.txt
+        <img_000> <confidence_score> <x_left> <y_upper> <x_right> <y_lower>
+        <img_000> <confidence_score> <x_left> <y_upper> <x_right> <y_lower>
+        <img_073> <confidence_score> <x_left> <y_upper> <x_right> <y_lower>
+    >>> cat.txt
+        <img_011> <confidence_score> <x_left> <y_upper> <x_right> <y_lower>
+"""
 
 from .detection import *
 

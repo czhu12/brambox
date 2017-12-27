@@ -2,6 +2,11 @@
 #   Copyright EAVISE
 #   Author: Maarten Vandersteegen
 #
+"""
+CVC
+---
+**TODO:** Maarten
+"""
 
 from .annotation import *
 

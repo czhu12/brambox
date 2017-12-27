@@ -1,8 +1,40 @@
 #
 #   Copyright EAVISE
 #   By Tanguy Ophoff
-#   TODO : Not converted to new style
 #
+"""
+Pascal VOC
+----------
+This parser can parse annotations in the `pascal voc`_ format.
+This format consists of one xml file for every image.
+
+Example:
+    >>> image_000.xml
+        <annotation>
+          <object>
+            <name>horse</name>
+            <truncated>1</truncated>
+            <difficult>0</difficult>
+            <bndbox>
+              <xmin>100</xmin>
+              <ymin>200</ymin>
+              <xmax>300</xmax>
+              <ymax>400</ymax>
+            </bndbox>
+          </object>
+          <object>
+            <name>person</name>
+            <truncated>0</truncated>
+            <difficult>1</difficult>
+            <bndbox>
+              <xmin>110</xmin>
+              <ymin>20</ymin>
+              <xmax>200</xmax>
+              <ymax>350</ymax>
+            </bndbox>
+          </object>
+        </annotation>
+"""
 
 import xml.etree.ElementTree as ET
 

@@ -2,10 +2,12 @@
 #   Copyright EAVISE
 #   Author: Tanguy Ophoff
 #
-#   Pickle annotation format
-#   Who doesnt want an insanely fast format
-#
-
+"""
+Pickle
+------
+This parser generates a binary file of your annotations that can be parsed really fast.
+If you are using a python library for training your network, you can use this format to quickly read your annotations.
+"""
 import pickle
 from .annotation import *
 

@@ -3,6 +3,11 @@
 #   Author: Maarten Vandersteegen
 #   NOTE: for parsing PeopleDetect and dollar toolbox detection output
 #
+"""
+Dollar
+------
+**TODO:** Maarten
+"""
 
 from .detection import *
 

@@ -2,24 +2,28 @@
 #   Copyright EAVISE
 #   Author: Tanguy Ophoff
 #
-#   YAML detection format
-#   Human readable detection format
-#
-#   example file
-#       img1:
-#           car:
-#               - coords: [x,y,w,h]
-#                 score: 56.76
-#           person:
-#               - coords: [x,y,w,h]
-#                 score: 90.1294132
-#               - coords: [x,y,w,h]
-#                 score: 12.120
-#       img2:
-#           car:
-#               - coords: [x,y,w,h]
-#                 score: 50
-#
+"""
+YAML
+----
+This parser generates a lightweight human readable detection format.
+With only one file for the entire dataset, this format will save you precious HDD space and will also be parsed faster.
+
+Example:
+    >>> detections.yaml
+        img1:
+          car:
+            - coords: [x,y,w,h]
+              score: 56.76
+          person:
+            - coords: [x,y,w,h]
+              score: 90.1294132
+            - coords: [x,y,w,h]
+              score: 12.120
+        img2:
+          car:
+            - coords: [x,y,w,h]
+              score: 50
+"""
 
 import yaml
 from .detection import *

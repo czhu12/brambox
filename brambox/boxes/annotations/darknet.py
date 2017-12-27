@@ -2,6 +2,26 @@
 #   Copyright EAVISE
 #   Author: Tanguy Ophoff
 #
+"""
+Darknet
+-------
+This is a parser for the annotation format used by darknet_.
+This format has one file for every image of the dataset, containing the annotations of that image. |br|
+The coordinates in this file are saved as relative coordinates of the image dimensions.
+
+Args:
+    image_width (Number): This keyword argument is used to get the width of the images.
+    image_height (Number): This keyword argument is used to get the height of the images.
+    class_label_map (list): This keyword argument contains a list of the differenct classes. It is used to convert between `class_label_indices` and `class_labels`.
+
+Example:
+    >>> image_000.txt
+        <class_label_index> <x_center> <y_center> <width> <height>
+        <class_label_index> <x_center> <y_center> <width> <height>
+        <class_label_index> <x_center> <y_center> <width> <height>
+    >>> image_001.txt
+        <class_label_index> <x_center> <y_center> <width> <height>
+"""
 
 from .annotation import *
 

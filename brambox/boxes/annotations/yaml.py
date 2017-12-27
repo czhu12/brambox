@@ -2,28 +2,33 @@
 #   Copyright EAVISE
 #   Author: Tanguy Ophoff
 #
-#   YAML annotation format
-#   Human readable annotation format
-#
-#   example file
-#       img1:
-#           car:
-#               - coords: [x,y,w,h]
-#                 lost: False
-#                 occluded: True
-#           person:
-#               - coords: [x,y,w,h]
-#                 lost: False
-#                 occluded: False
-#               - coords: [x,y,w,h]
-#                 lost: False
-#                 occluded: False
-#       img2:
-#           car:
-#               - coords: [x,y,w,h]
-#                 lost: True
-#                 occluded: True
-#
+"""
+YAML
+----
+This parser generates a lightweight human readable annotation format.
+With only one file for the entire dataset, this format will save you precious HDD space and will also be parsed faster.
+
+Example:
+    >>> annotations.yaml
+        img1:
+          car:
+            - coords: [x,y,w,h]
+              lost: False
+              occluded: True
+          person:
+            - coords: [x,y,w,h]
+              lost: False
+              occluded: False
+            - coords: [x,y,w,h]
+              lost: False
+              occluded: False
+        img2:
+          car:
+            - coords: [x,y,w,h]
+              lost: True
+              occluded: True
+"""
+
 
 import yaml
 from .annotation import *

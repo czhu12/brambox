@@ -2,9 +2,12 @@
 #   Copyright EAVISE
 #   Author: Tanguy Ophoff
 #
-#   Pickle detection format
-#   Who doesnt want an insanely fast format
-#
+"""
+Pickle
+------
+This parser generates a binary file of your detections that can be parsed really fast.
+If you are using a python library for testing your network, you can use this format to quickly save your detections.
+"""
 
 import pickle
 from .detection import *
@@ -21,7 +24,7 @@ class PickleParser(Parser):
     write_mode = 'wb'
 
     def serialize(self, annotations):
-        """ Serialize input dictionary of annotations into one string """
+        """ Serialize input dictionary of annotations into one bytestream """
         result = {}
         for img_id in annotations:
             img_res = []
