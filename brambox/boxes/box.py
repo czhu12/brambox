@@ -53,20 +53,8 @@ class Box:
 
         return instance
 
-    def rescale(self, value):
-        """ Rescale the bounding box according to a value.
-
-        Args:
-            value (Number): Number to scale the bounding box
-        """
-        self.x_top_left = self.x_top_left * value
-        self.y_top_left = self.y_top_left * value
-        self.width = self.width * value
-        self.height = self.height * value
-        return self
-
     def __eq__(self, other):
-        # TODO: refactor: use almost equal for floats
+        # TODO: refactor -> use almost equal for floats
         return self.__dict__ == other.__dict__
 
     def serialize(self):
