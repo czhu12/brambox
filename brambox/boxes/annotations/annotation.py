@@ -25,8 +25,8 @@ class Annotation(b.Box):
         visible_height (Number): Height of the visible bounding box in pixels; Default **0.0**
 
     Note:
-        The `visible_x_top_left`, `visible_y_top_left`, `visible_width`and `visible_height` attributes
-        are only valid when the `occluded` flag is set to **True**.
+        The ``visible_x_top_left``, ``visible_y_top_left``, ``visible_width`` and ``visible_height`` attributes
+        are only valid when the ``occluded`` flag is set to **True**.
     """
     def __init__(self):
         """ x_top_left,y_top_left,width,height are in pixel coordinates """

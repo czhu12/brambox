@@ -85,7 +85,7 @@ def show_bounding_boxes(boxes, img_folder, img_ext='.png', show_labels=False, co
     """ Display the bounding boxes parsed by the generic parse function.
 
     Args:
-        boxes (dict): Dictionary containing box objects per image `{"image_id": [box, box, ...], ...}`
+        boxes (dict): Dictionary containing box objects per image ``{"image_id": [box, box, ...], ...}``
         img_folder (str): Folder containing the images
         img_ext (str, optional): Extension of the images; Default **'.png'**
         show_labels (Boolean, optional): Whether or not to print the label names; Default **False**
@@ -93,9 +93,9 @@ def show_bounding_boxes(boxes, img_folder, img_ext='.png', show_labels=False, co
         get_img_fn (function): Function that will be called to get the image path
 
     Note:
-        The `get_img_fn` function takes three parameters `img_id`, `img_folder` and `img_ext`.
+        The ``get_img_fn`` function takes three parameters ``img_id``, ``img_folder`` and ``img_ext``.
         It should return the full path to the image.
-        The default function will join the `img_folder` and `img_id`+`img_ext`.
+        The default function will join the ``img_folder`` and ``img_id`` + ``img_ext``.
     """
     print('Showing bounding boxes:\n\tPress a key to show the next image\n\tPress ESC to stop viewing images')
 

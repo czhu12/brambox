@@ -12,7 +12,7 @@ The coordinates in this file are saved as relative coordinates of the image dime
 Args:
     image_width (Number): This keyword argument is used to get the width of the images.
     image_height (Number): This keyword argument is used to get the height of the images.
-    class_label_map (list): This keyword argument contains a list of the differenct classes. It is used to convert between `class_label_indices` and `class_labels`.
+    class_label_map (list): This keyword argument contains a list of the differenct classes. It is used to convert between ``class_label_indices`` and ``class_labels``.
 
 Example:
     >>> image_000.txt

@@ -1,6 +1,7 @@
 #
 #   Copyright EAVISE
 #   Author: Maarten Vandersteegen
+#   Author: Tanguy Ophoff
 #
 #   Functions for generating PR-curve values and calculating average precision
 #

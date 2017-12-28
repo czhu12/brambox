@@ -1,6 +1,7 @@
 #
 #   Copyright EAVISE
 #   Author: Maarten Vandersteegen
+#   Author: Tanguy Ophoff
 #
 #   Common functions for this package
 #
@@ -9,7 +10,7 @@ __all__ = ['iou', 'ioa', 'match_detections']
 
 
 def iou(a, b):
-    """Calculate the intersection over union between two boxes
+    """ Calculate the intersection over union between two boxes
     The function returns the IUO value which is defined as:
     IOU = intersection(a, b) / (area(a) + area(b) - intersection(a, b))
 

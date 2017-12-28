@@ -1,13 +1,17 @@
 .wy-side-nav-search {
-  background: #FCFCFC;
+  background: #fcfcfc;
 }
 
 .wy-side-nav-search a:hover {
-  background: #FFFFFF00;
+  background: #ffffff00;
 }
 
 .wy-side-nav-search a {
     display: block;
+}
+
+.wy-side-nav-search div.version {
+  color: #2980b9;
 }
 
 .wy-nav-content {
@@ -17,11 +21,11 @@
 
 @media screen and (min-width: 1400px) {
 .wy-nav-content-wrap {
-  background: #FFFFFF;
+  background: #ffffff;
 }
 
 a {
-  color: #2980B9;
+  color: #2980b9;
 }
 
 a:visited {

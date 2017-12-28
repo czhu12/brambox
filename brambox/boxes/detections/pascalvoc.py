@@ -10,7 +10,7 @@ This format consists of one file per class of detection. |br|
 confidence_scores are saved as a number between 0-1, coordinates are saved as pixel values.
 
 Args:
-    class_label (string): This keyword argument contains the `class_label` for the current file that is being parsed.
+    class_label (string): This keyword argument contains the ``class_label`` for the current file that is being parsed.
 
 Example:
     >>> person.txt

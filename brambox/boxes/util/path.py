@@ -58,7 +58,7 @@ def expand(expr, stride=1, offset=0):
         generator: Iterable object that produces full filenames
 
     Note:
-        The `expr` parameter can be one of the following expressions:
+        The ``expr`` parameter can be one of the following expressions:
 
         - a file itself -> return filename
         - a directory -> return files from directory

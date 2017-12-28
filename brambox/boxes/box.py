@@ -100,8 +100,8 @@ class Parser:
 
         Note:
             The format of the box parameter depends on the type of parser. |br|
-            If it is a :any:`brambox.boxes.box.ParserType.SINGLE_FILE`, the box parameter should be a dictionary `{"image_id": [box, box, ...], ...}`. |br|
-            If it is a :any:`brambox.boxes.box.ParserType.MULTI_FILE`, the box parameter should be a list `[box, box, ...]`.
+            If it is a :any:`brambox.boxes.box.ParserType.SINGLE_FILE`, the box parameter should be a dictionary ``{"image_id": [box, box, ...], ...}``. |br|
+            If it is a :any:`brambox.boxes.box.ParserType.MULTI_FILE`, the box parameter should be a list ``[box, box, ...]``.
         """
         if self.parser_type != ParserType.MULTI_FILE:
             raise TypeError('The default implementation of serialize only works with MULTI_FILE')
@@ -115,7 +115,7 @@ class Parser:
 
     def deserialize(self, string):
         """ Deserialization function that can be overloaded in the derived class.
-        The default deserialize will create new `box_type` objects and call the deserialize function of these objects with every line of the input string.
+        The default deserialize will create new ``box_type`` objects and call the deserialize function of these objects with every line of the input string.
 
         Args:
             string (string): Input string to deserialize
@@ -125,8 +125,8 @@ class Parser:
 
         Note:
             The format of the box return value depends on the type of parser. |br|
-            If it is a :any:`brambox.boxes.box.ParserType.SINGLE_FILE`, the return value should be a dictionary `{"image_id": [box, box, ...], ...}`. |br|
-            If it is a :any:`brambox.boxes.box.ParserType.MULTI_FILE`, the return value should be a list `[box, box, ...]`.
+            If it is a :any:`brambox.boxes.box.ParserType.SINGLE_FILE`, the return value should be a dictionary ``{"image_id": [box, box, ...], ...}``. |br|
+            If it is a :any:`brambox.boxes.box.ParserType.MULTI_FILE`, the return value should be a list ``[box, box, ...]``.
         """
         if self.parser_type != ParserType.MULTI_FILE:
             raise TypeError('The default implementation of deserialize only works with MULTI_FILE')
