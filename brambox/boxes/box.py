@@ -87,8 +87,10 @@ class Parser:
             MULTI_FILE  : input list [box, box, ...] -> output string
             Default     : loop through annotations and call serialize
         """
-        result = ""
+        if self.parser_type != ParserType.MULTI_FILE:
+            raise TypeError('The default implementation of serialize only works with MULTI_FILE')
 
+        result = ""
         for b in box:
             new_box = self.box_type.create(b)
             result += new_box.serialize() + "\n"
@@ -103,8 +105,10 @@ class Parser:
             MULTI_FILE  : input string -> output list [box, box, ...]
             Default     : loop through lines and call deserialize
         """
-        result = []
+        if self.parser_type != ParserType.MULTI_FILE:
+            raise TypeError('The default implementation of deserialize only works with MULTI_FILE')
 
+        result = []
         for line in string.splitlines():
             result += [self.box_type.create(line)]
 
