@@ -1,9 +1,57 @@
 image: python:3.6.3-jessie
 
-build:
-    script:
-        - pip install opencv-python
-        - pip install pyyaml
-        - pip install scipy
-        - python setup.py install
-        - python setup.py test
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/pip-cache"
+
+cache:
+  paths:
+    - "$CI_PROJECT_DIR/pip-cache"
+  key: "$CI_PROJECT_ID"
+
+before_script:
+  - pip install -r develop.txt
+
+stages:
+  - test
+  - deploy
+
+test:
+  stage: test
+  script:
+    - make test
+  artifacts:
+    paths:
+      - .coverage
+    expire_in: 1 hour
+
+lint:
+  stage: test
+  script:
+    - make lint
+
+coverage:
+  stage: deploy
+  only:
+    - master
+    - develop
+  script:
+    - make coverage
+  coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
+  artifacts:
+    paths:
+      - .coverage
+      - htmlcov
+    expire_in: 1 week
+
+pages:
+  stage: deploy
+  only:
+    - tags
+  script:
+    - make docs
+    - mv docs/.build/html public/
+    - make coverage
+    - mv htmlcov public/coverage
+  artifacts:
+    paths:
+      - public

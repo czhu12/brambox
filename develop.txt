@@ -3,8 +3,9 @@ opencv-python
 
 # Development dependencies
 pycodestyle
+coverage
 git+https://github.com/sphinx-doc/sphinx  # Need sphinx 1.7 with py3.6 format strings
-guzzle_sphinx_theme
+sphinx_rtd_theme
 recommonmark
 
 -e .

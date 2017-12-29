@@ -6,7 +6,7 @@
 Darknet
 -------
 This is a parser for the annotation format used by darknet_.
-This format has one file for every image of the dataset, containing the annotations of that image. |br|
+This format has one file for every image of the dataset, containing the annotations of that image.
 The coordinates in this file are saved as relative coordinates of the image dimensions.
 
 Args:
@@ -21,6 +21,8 @@ Example:
         <class_label_index> <x_center> <y_center> <width> <height>
     >>> image_001.txt
         <class_label_index> <x_center> <y_center> <width> <height>
+
+.. _darknet: https://pjreddie.com/darknet
 """
 
 from .annotation import *

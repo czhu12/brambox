@@ -34,6 +34,8 @@ Example:
             </bndbox>
           </object>
         </annotation>
+
+.. _pascal voc: http://host.robots.ox.ac.uk/pascal/VOC/
 """
 
 import xml.etree.ElementTree as ET

@@ -47,7 +47,7 @@ def modulo_expand(expr, stride, offset):
 
 
 def expand(expr, stride=1, offset=0):
-    """Expand a file selection expression into multiple filenames.
+    """ Expand a file selection expression into multiple filenames.
 
     Args:
         expr (str): File sequence expression

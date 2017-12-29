@@ -19,6 +19,8 @@ Example:
         <img_073> <confidence_score> <x_left> <y_upper> <x_right> <y_lower>
     >>> cat.txt
         <img_011> <confidence_score> <x_left> <y_upper> <x_right> <y_lower>
+
+.. _pascal voc: http://host.robots.ox.ac.uk/pascal/VOC/
 """
 
 from .detection import *
