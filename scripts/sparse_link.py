@@ -18,7 +18,6 @@ def create_link(src, dst, hard, override):
 
 
 def main():
-
     parser = argparse.ArgumentParser(description='Create a directory with symbolic links to files in another directory')
     parser.add_argument('inputdir', help='Input directory')
     parser.add_argument('outputdir', help='Output directory')
@@ -37,6 +36,7 @@ def main():
     for src in bbb.expand(args.inputdir, args.stride, args.offset):
         dst = os.path.join(args.outputdir, os.path.split(src)[1])
         create_link(src, dst, args.hard, args.force)
+
 
 if __name__ == '__main__':
     main()

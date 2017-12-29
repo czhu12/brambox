@@ -33,5 +33,6 @@ def main():
     # Save output
     cv2.imwrite(args.output, out)
 
+
 if __name__ == '__main__':
     main()

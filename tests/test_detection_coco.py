@@ -24,6 +24,7 @@ class TestCocoDetection(unittest.TestCase):
         self.assertAlmostEqual(self.det.height, 39.914307)
         self.assertAlmostEqual(self.det.confidence, 0.436614)
 
+
 json_string = """[
 {"image_id":"img_1", "category_id":1, "bbox":[506.547791, 216.665741, 20.434814, 39.914307], "score":0.436614},
 {"image_id":"img_2", "category_id":1, "bbox":[72.131500, 207.804199, 32.555908, 63.634766], "score":0.125948},
@@ -54,6 +55,7 @@ class TestCocoParser(unittest.TestCase):
         obj = self.parser.deserialize(json_string)
         self.assertEqual(obj['img_1'][0].class_label, 'person')
         self.assertEqual(obj['img_2'][1].class_label, 'car')
+
 
 if __name__ == '__main__':
     unittest.main()

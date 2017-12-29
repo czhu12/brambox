@@ -39,5 +39,6 @@ def main():
     print(f'Parsed {len(annotations)} annotation files')
     bbb.show_bounding_boxes(boxes, args.imagefolder, img_ext=extension, show_labels=args.show_labels)
 
+
 if __name__ == '__main__':
     main()
