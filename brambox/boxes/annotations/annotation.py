@@ -18,6 +18,7 @@ class Annotation(b.Box):
         self.lost = False               # if object is not seen in the image, if true one must ignore this annotation
         self.difficult = False          # if the object is considered difficult
         self.occluded = False           # if object is occluded
+        self.ignore = False             # if true, this bounding box will not be considered in statistics processing
 
         # variables below are only valid if the 'occluded' flag is True and
         # represent a bounding box that indicates the visible area inside the normal bounding box

@@ -17,7 +17,6 @@ class Box:
         self.y_top_left = 0.0   # y pixel coordinate top left of the box
         self.width = 0.0        # width of the box in pixels
         self.height = 0.0       # height of the box in pixels
-        self.ignore = False     # if true, this bounding box will not be considered in statistics processing
 
     @classmethod
     def create(cls, obj=None):

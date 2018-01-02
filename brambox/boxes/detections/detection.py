@@ -41,7 +41,6 @@ class Detection(b.Box):
         string += f'y = {self.y_top_left}, '
         string += f'w = {self.width}, '
         string += f'h = {self.height}, '
-        string += f'ignore = {self.ignore}, '
         string += f'confidence = {self.confidence}'
         string += '}'
 
