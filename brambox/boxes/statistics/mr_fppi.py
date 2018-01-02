@@ -10,33 +10,20 @@ import scipy.interpolate
 
 from .util import *
 
-__all__ = ['mr_fppi', 'lamr', 'mean_lamr']
+__all__ = ['mr_fppi', 'lamr']
 
 
-def mr_fppi(detections, ground_truth, overlap_threshold=0.5, class_label_map=None):
-    """ Compute miss-rate vs FPPI values for multiple classes
-
-        detections          -- dict of detections per image (eg. parse())
-        ground_truth        -- dict of annotations per image (eg. parse())
-        overlap_threshold   -- minimum iou value needed to count detection as true positive
-        class_label_map     -- list of classes you want to compute PR (default: all classes)
-
-        Returns dict of (mr,fppi) tuples for every class, dict key is the class label
-    """
-    return graph(detections, ground_truth, overlap_threshold, class_label_map, mr_fppi_single)
-
-
-def mr_fppi_single(detection_results, ground_truth, overlap_threshold):
+def mr_fppi(detections, ground_truth, overlap_threshold):
     """ Compute a list of miss-rate FPPI values that can be plotted into a graph
 
-        detection_results   -- dict of detection objects per image
+        detections   -- dict of detection objects per image
         ground_truth        -- dict of annotation objects per image
         overlap_threshold   -- minimum iou threshold for true positive
 
         Returns precision, recall
     """
-
-    tps, fps, num_annotations, num_images = match_for_graphs(detection_results, ground_truth, overlap_threshold)
+    num_images = len(ground_truth)
+    tps, fps, num_annotations = match_detections(detections, ground_truth, overlap_threshold)
 
     miss_rate = []
     fppi = []
@@ -63,9 +50,3 @@ def lamr(miss_rate, fppi, num_of_samples=9):
     log_interpolated = np.log(interpolated)
     avg = sum(log_interpolated) / len(log_interpolated)
     return np.exp(avg)
-
-
-def mean_lamr():
-    """TODO
-    """
-    raise NotImplementedError
