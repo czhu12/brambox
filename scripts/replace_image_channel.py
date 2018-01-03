@@ -37,7 +37,7 @@ def main():
     parser = argparse.ArgumentParser(description='This script replaces a color image channel from a multichannel image (RGB, RGBA,...) with a grayscale image channel')
     parser.add_argument('colorimages', help='Color image file(s) selection sequence')
     parser.add_argument('grayimagedir', help='Directory with grayscale images')
-    parser.add_argument('outdir', help='Output filename or directory')
+    parser.add_argument('outdir', help='Output directory')
     parser.add_argument('--colorconvert', type=int, default=-1, help='Apply a color conversion on colorimage before replacement. ' +
                         'By default no conversion is applied. See opencv cv::ColorConversionCodes enum for the integer value to use')
     parser.add_argument('-c', '--channel', type=int, default=0, help='Channel number to be replaced')
@@ -45,11 +45,17 @@ def main():
     parser.add_argument('--offset', type=int, default=0, help='For image sequences: start with a certain offset, may be negative')
     args = parser.parse_args()
 
-    for colorfile in bb.annotations.expand(args.colorimages, args.stride, args.offset):
+    if not os.path.exists(args.outdir):
+        print("Error: directory", args.outdir, "does not exists")
+        return
+
+    for colorfile in bb.boxes.expand(args.colorimages, args.stride, args.offset):
         colorimage = cv2.imread(colorfile)
         commonfilename = os.path.split(colorfile)[1]
-        grayimage = cv2.imread(os.path.join(args.grayimagedir, commonfilename))
+        grayfile = os.path.join(args.grayimagedir, commonfilename)
+        grayimage = cv2.imread(grayfile)
         if colorimage is None or grayimage is None:
+            print("Could not find", colorfile, "or", grayfile, ", quitting")
             break
         out = replace(colorimage, grayimage, args.channel, args.colorconvert)
         cv2.imwrite(os.path.join(args.outdir, commonfilename), out)
