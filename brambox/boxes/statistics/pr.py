@@ -17,13 +17,15 @@ __all__ = ['pr', 'ap']
 
 
 def pr(detections, ground_truth, overlap_threshold=0.5):
-    """ Compute a list of precision recall values that can be plotted into a graph
+    """ Compute a list of precision recall values that can be plotted into a graph.
 
-        detections   -- dict of detection objects per image
-        ground_truth        -- dict of annotation objects per image
-        overlap_threshold   -- minimum iou threshold for true positive
+    Args:
+        detections (dict): Detection objects per image
+        ground_truth (dict): Annotation objects per image
+        overlap_threshold (Number, optional): Minimum iou threshold for true positive; Default **0.5**
 
-        Returns precision, recall
+    Returns:
+        tuple: **[precision_values]**, **[recall_values]**
     """
     tps, fps, num_annotations = match_detections(detections, ground_truth, overlap_threshold)
 
@@ -37,12 +39,16 @@ def pr(detections, ground_truth, overlap_threshold=0.5):
 
 
 def ap(precision, recall, num_of_samples=100):
-    """ Compute the average precision from a given pr-curve
-        The average precision is defined as the area under the curve
+    """ Compute the average precision from a given pr-curve.
+    The average precision is defined as the area under the curve.
 
-        precision           -- list of precision values
-        recall              -- list of recall values
-        num_of_samples      -- number of samples to take from the curve to measure the average precision
+    Args:
+        precision (list): Precision values
+        recall (list): Recall values
+        num_of_samples (int, optional): Number of samples to take from the curve to measure the average precision; Default **100**
+
+    Returns:
+        Number: average precision
     """
     if len(precision) > 1 and len(recall) > 1:
         p = np.array(precision)

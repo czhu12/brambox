@@ -42,6 +42,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.napoleon',
     'sphinx.ext.intersphinx',
+    'sphinx.ext.mathjax',
     'directives',
     ]
 napoleon_use_ivar = True
@@ -49,6 +50,7 @@ napoleon_use_param = False
 autodoc_member_order = 'bysource'
 autodoc_mock_imports = []
 intersphinx_mapping = {
+    'python': ('https://docs.python.org/3.6', None),
     }
 
 # Add any paths that contain templates here, relative to this directory.

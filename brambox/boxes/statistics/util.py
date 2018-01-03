@@ -10,12 +10,17 @@ __all__ = ['iou', 'ioa', 'match_detections']
 
 
 def iou(a, b):
-    """ Calculate the intersection over union between two boxes
-    The function returns the IUO value which is defined as:
-    IOU = intersection(a, b) / (area(a) + area(b) - intersection(a, b))
+    """ Compute the intersection over union between two boxes.
+    The function returns the ``IUO``, which is defined as:
 
-    a   -- first box
-    b   -- second box
+    :math:`IOU = \\frac { {intersection}(a, b) } { {union}(a, b) }`
+
+    Args:
+        a (brambox.boxes.box.Box): First bounding box
+        b (brambox.boxes.box.Box): Second bounding box
+
+    Returns:
+        Number: Intersection over union
     """
     intersection_area = intersection(a, b)
     union_area = a.width * a.height + b.width * b.height - intersection_area
@@ -24,9 +29,24 @@ def iou(a, b):
 
 
 def ioa(a, b, denominator='b'):
-    """ Calculate the intersection over area between two boxes a and b.
-    The function returns the value which is defined as:
-    IOB = intersection(a, b) / (area(selected_box))
+    """ Compute the intersection over area between two boxes a and b.
+    The function returns the ``IOA``, which is defined as:
+
+    :math:`IOA = \\frac { {intersection}(a, b) } { {area}(denominator) }`
+
+    Args:
+        a (brambox.boxes.box.Box): First bounding box
+        b (brambox.boxes.box.Box): Second bounding box
+        denominator (string, optional): String indicating from which box to compute the area; Default **'b'**
+
+    Returns:
+        Number: Intersection over union
+
+    Note:
+        The `denominator` can be one of 4 different values.
+        If the parameter is equal to **'a'** or **'b'**, the area of that box will be used as the denominator.
+        If the parameter is equal to **'min'**, the smallest of both boxes will be used
+        and if it is equal to **'max'**, the biggest box will be used.
     """
     if denominator == 'min':
         div = min(a.width * a.height, b.width * b.height)
@@ -41,18 +61,18 @@ def ioa(a, b, denominator='b'):
 
 
 def match_detections(detection_results, ground_truth, overlap_threshold, overlap_fn=iou):
-    """ Match detection results with gound truth and return true and false positive rates
+    """ Match detection results with gound truth and return true and false positive rates.
+    This function will return a list of values as the true and false positive rates.
+    These values represent the rates at increasing confidence thresholds.
 
-        detection_results   -- dict of detection objects per image
-        ground_truth        -- dict of annotation objects per image
-        overlap_threshold   -- minimum iou threshold for true positive
-        overlap_fn          -- overlap area calculation function
+    Args:
+        detection_results (dict): Detection objects per image
+        ground_truth (dict): Annotation objects per image
+        overlap_threshold (Number): Minimum overlap threshold for true positive
+        overlap_fn (function, optional): Overlap area calculation function; Default :func:`~brambox.boxes.iou`
 
-        Returns the following stats:
-
-        tps                 -- a list of true positive values
-        fps                 -- a list of false positive values
-        num_annotations     -- integer with the number of included annotations
+    Returns:
+        list: **[true_positives]**, **[false_positives]**, **num_annotations**
     """
     all_matches = []
     num_annotations = 0
@@ -107,7 +127,15 @@ def match_detections(detection_results, ground_truth, overlap_threshold, overlap
 
 
 def intersection(a, b):
-    """ Calculate the intersection area between two boxes """
+    """ Calculate the intersection area between two boxes.
+
+    Args:
+        a (brambox.boxes.box.Box): First bounding box
+        b (brambox.boxes.box.Box): Second bounding box
+
+    Returns:
+        Number: Intersection area
+    """
     intersection_top_left_x = max(a.x_top_left, b.x_top_left)
     intersection_top_left_y = max(a.y_top_left, b.y_top_left)
     intersection_bottom_right_x = min(a.x_top_left + a.width,  b.x_top_left + b.width)
@@ -123,12 +151,13 @@ def intersection(a, b):
 
 
 def match_detection_to_annotations(detection, annotations, overlap_threshold, overlap_fn):
-    """ Compute the best match (largest overlap area) between a given detection and
-    a list of annotations.
-    detection           -- detection to match
-    annotations         -- annotations to search for the best match
-    overlap_threshold   -- minimum overlap area to consider a match
-    overlap_fn          -- overlap area calculation function
+    """ Compute the best match (largest overlap area) between a given detection and a list of annotations.
+
+    Args:
+        detection (brambox.boxes.detections.Detection): Detection to match
+        annotations (list): Annotations to search for the best match
+        overlap_threshold (Number): Minimum overlap threshold to consider detection and annotation as matched
+        overlap_fn (function): Overlap area calculation function
     """
     best_overlap = overlap_threshold
     best_annotation = None
