@@ -12,14 +12,15 @@ from ..box import ParserType, Parser, Box
 __all__ = ['parse', 'generate']
 
 
-# TODO: make stride/offset work on single files
-def parse(fmt, box_file, identify=None, **kwargs):
+def parse(fmt, box_file, identify=None, offset=0, stride=1, **kwargs):
     """ Parse any type of bounding box format.
 
     Args:
         fmt (str or class): Format from the :mod:`brambox.boxes.format <brambox.boxes>` dictionary
         box_file (list or string): Bounding box filename or array of bounding box file names
         identify (function, optional): Function to create an image identifier
+        offset (int, optional): Skip images untill offset; Default **0**
+        stride (int, optional): Only read every n'th file; Default **1**
         **kwargs: Keyword arguments that are passed to the parser
 
     Returns:
@@ -62,30 +63,45 @@ def parse(fmt, box_file, identify=None, **kwargs):
         with open(box_file, parser.read_mode) as f:
             data = parser.deserialize(f.read())
 
-        # rename the image/frame ids if requested
+        # Offset
+        if offset > 0:
+            keys = sorted(list(data.keys()))
+            while offset > 0:
+                offset -= 1
+                del data[keys[offset]]
+
+        # Stride
+        if stride > 1:
+            new_data = {}
+            keys = sorted(list(data.keys()))
+            length = len(keys)
+            number = offset
+
+            while number < 0:
+                number += stride
+
+            while number < length:
+                new_data[keys[number]] = data[keys[number]]
+                number += stride
+
+            data = new_data
+
+        # Identify
         if identify is not None:
             data = {identify(key): value for key, value in data.items()}
-
     elif parser.parser_type == ParserType.MULTI_FILE:
         if type(box_file) is str:
-            try:
-                stride = kwargs['stride']
-                offset = kwargs['offset']
-            except KeyError:
-                stride = 1
-                offset = 0
             box_files = expand(box_file, stride, offset)
         elif type(box_file) is list:
             box_files = box_file
         else:
             raise TypeError(f'Parser <{parser.__class__.__name__}> requires a list of annotation files or an expandable file expression')
 
-        data = {}
-
-        # set default identify function for muti file parsers
+        # Default identify
         if identify is None:
             def identify(f): return os.path.splitext(os.path.basename(f))[0]
 
+        data = {}
         for box_file in box_files:
             img_id = identify(box_file)
             if img_id in data:

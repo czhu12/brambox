@@ -32,18 +32,17 @@ def strider(elements, stride, offset):
 
 def modulo_expand(expr, stride, offset):
     """ Expands a path with a **%d** to files with different numbers. """
-    # TODO: refactor this
-    very_big_number = 10000000000
-    for file_number in range(offset, very_big_number, stride):
-        if file_number < 0:
-            continue
+    # Support negative offset
+    number = offset
+    while (number < 0):
+        number += stride
 
-        filename = expr % file_number
-
+    while True:
+        filename = expr % number
         if not os.path.isfile(filename):
             break
-
         yield filename
+        number += stride
 
 
 def expand(expr, stride=1, offset=0):
