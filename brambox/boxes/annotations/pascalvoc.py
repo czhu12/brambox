@@ -47,7 +47,6 @@ __all__ = ['PascalVOCAnnotation', 'PascalVOCParser']
 
 class PascalVOCAnnotation(Annotation):
     """ Pascal VOC image annotation """
-
     def serialize(self):
         """ generate a Pascal VOC object xml string """
         string = '<object>\n'
@@ -58,8 +57,8 @@ class PascalVOCAnnotation(Annotation):
         string += '\t<bndbox>\n'
         string += f'\t\t<xmin>{self.x_top_left}</xmin>\n'
         string += f'\t\t<ymin>{self.y_top_left}</ymin>\n'
-        string += f'\t\t<xmax>{self.x_top_left + self.width}</xmax>\n'
-        string += f'\t\t<ymax>{self.y_top_left + self.height}</ymax>\n'
+        string += f'\t\t<xmax>{self.x_top_left + self.width - 1}</xmax>\n'
+        string += f'\t\t<ymax>{self.y_top_left + self.height - 1}</ymax>\n'
         string += '\t</bndbox>\n'
         string += '</object>\n'
 
@@ -74,8 +73,8 @@ class PascalVOCAnnotation(Annotation):
         box = xml_obj.find('bndbox')
         self.x_top_left = float(box.find('xmin').text)
         self.y_top_left = float(box.find('ymin').text)
-        self.width = float(int(box.find('xmax').text) - self.x_top_left)
-        self.height = float(int(box.find('ymax').text) - self.y_top_left)
+        self.width = float(int(box.find('xmax').text) - self.x_top_left + 1)
+        self.height = float(int(box.find('ymax').text) - self.y_top_left + 1)
 
         self.object_id = 0
         self.lost = None

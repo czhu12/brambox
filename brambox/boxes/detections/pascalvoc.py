@@ -30,7 +30,6 @@ __all__ = ["PascalVOCDetection", "PascalVOCParser"]
 
 class PascalVOCDetection(Detection):
     """ Pascal VOC image detection """
-
     def serialize(self):
         """ generate a Pascal VOC detection string """
         raise NotImplementedError
@@ -43,8 +42,8 @@ class PascalVOCDetection(Detection):
         self.confidence = float(elements[1])
         self.x_top_left = float(elements[2])
         self.y_top_left = float(elements[3])
-        self.width = float(elements[4]) - self.x_top_left
-        self.height = float(elements[5]) - self.y_top_left
+        self.width = float(elements[4]) - self.x_top_left + 1
+        self.height = float(elements[5]) - self.y_top_left + 1
 
         self.object_id = 0
 

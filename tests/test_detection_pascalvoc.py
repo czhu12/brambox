@@ -2,9 +2,9 @@ import unittest
 from brambox.boxes.detections.detection import Detection
 from brambox.boxes.detections import PascalVOCDetection, PascalVOCParser
 
-pascalvoc_string = """img1 0.9090 10.01 20.02 30.03 40.04
-img2 0.1234 40.0 30.0 60.0 40.0
-img2 0.75 0.00 25.00 50.00 75.00
+pascalvoc_string = """img1 0.9090 10.01 20.02 29.03 39.04
+img2 0.1234 40.0 30.0 59.0 39.0
+img2 0.75 0.00 25.00 49.00 74.00
 """
 
 
@@ -18,7 +18,7 @@ class TestPascalVOCDetection(unittest.TestCase):
 
     def test_det_deserialize(self):
         """ test if deserialization of one detection works """
-        self.det.deserialize('img_id 0.9090 10.01 20.02 30.03 40.04', 'person')
+        self.det.deserialize('img_id 0.9090 10.01 20.02 29.03 39.04', 'person')
 
         self.assertEqual(self.det.class_label, 'person')
         self.assertAlmostEqual(self.det.confidence, 0.9090)

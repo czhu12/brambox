@@ -12,8 +12,8 @@ xml_string = """<annotation>
 \t<bndbox>
 \t\t<xmin>100</xmin>
 \t\t<ymin>200</ymin>
-\t\t<xmax>300</xmax>
-\t\t<ymax>400</ymax>
+\t\t<xmax>299</xmax>
+\t\t<ymax>399</ymax>
 \t</bndbox>
 </object>
 <object>
@@ -24,8 +24,8 @@ xml_string = """<annotation>
 \t<bndbox>
 \t\t<xmin>1</xmin>
 \t\t<ymin>2</ymin>
-\t\t<xmax>3</xmax>
-\t\t<ymax>4</ymax>
+\t\t<xmax>2</xmax>
+\t\t<ymax>3</ymax>
 \t</bndbox>
 </object>
 </annotation>
@@ -39,8 +39,8 @@ xml_single_string = """<object>
 \t<bndbox>
 \t\t<xmin>10</xmin>
 \t\t<ymin>20</ymin>
-\t\t<xmax>40</xmax>
-\t\t<ymax>60</ymax>
+\t\t<xmax>39</xmax>
+\t\t<ymax>59</ymax>
 \t</bndbox>
 </object>
 """
