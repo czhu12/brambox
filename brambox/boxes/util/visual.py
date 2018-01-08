@@ -4,125 +4,155 @@
 #
 
 import os
-import cv2
+from PIL import Image, ImageDraw, ImageFont
+try:
+    import cv2
+    import numpy as np
+except ModuleNotFoundError:
+    cv2 = None
 
 from ..annotations import Annotation
 from ..detections import Detection
 
-__all__ = ['draw_box', 'show_bounding_boxes']
+__all__ = ['draw_boxes']
+
+try:
+    font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf', 10)
+except FileNotFoundError:
+    font = ImageFont.load_default()
 
 
-def draw_box(img, boxes, color=None, show_labels=False, inline=False):
-    """ Returns an image with the bounding boxes drawn.
+def draw_boxes(img, boxes, color=None, show_labels=False, ignore=None, method=1):
+    """ Draws bounding boxes on the image.
 
     Args:
-        img (np.ndarray): Image to draw on
+        img (OpenCV image or PIL image or filename): Image to draw on
         boxes (list): Bounding boxes to draw
-        color (tuple, optional): Color to use for drawing; Default **every label will get its own color, up to 8 labels**
+        color (dict or list, optional): Color to use for drawing; Default **every label will get its own color, up to 8 labels**
         show_labels (Boolean, optional): Whether or not to print the label names; Default **False**
-        inline (Boolean, optional): Whether to draw on the image or take a copy; Default **False**
+        ignore (Boolean, optional): Whether are not to draw ignored annotations transparently; Default **Draw all annotations, regardless of ignore**
+        method (draw_boxes.METHOD_CV or draw_boxes.METHOD_PIL, optional): Whether to use OpenCV or Pillow for opening the image (only useful when filename given); Default: **draw_boxes.METHOD_PIL**
 
     Returns:
-        np.ndarray: Image with bounding boxes drawn
+        OpenCV or PIL image: Image with bounding boxes drawn
+
+    Note:
+        the ``ignore`` parameter controls what happens with ignored annotations. |br|
+        If set to **True** ignored annotations will be drawn with a transparent rectangle,
+        if **False** they will not be drawn.
+        If you do not set this argument the function will draw all annotations the same,
+        regardless of their ``ignore`` attribute.
+
+    Note:
+        The ``color`` parameter can either be a dictionary or a list containing a single RGB color.
+        If it is a dictionary, the keys represent the different class labels to draw
+        and the values are the different RGB colors. |br|
+        If no ``color`` parameter is given, the function will give every label its own color,
+        by selecting colors from a list of 8 different colors.
     """
-    colors = [
+    default_colors = [
+        (255, 0, 0),
         (0, 0, 255),
         (0, 255, 0),
-        (255, 0, 0),
         (255, 0, 255),
         (0, 255, 255),
         (255, 255, 0),
         (255, 255, 255),
         (0, 0, 0)
     ]
+    if cv2 is None and method == draw_boxes.METHOD_CV:
+        raise ImportError('opencv is not installed')
 
-    if inline:
-        output = img
+    # Open image
+    if isinstance(img, str):
+        if method == draw_boxes.METHOD_PIL:
+            original = Image.open(img)
+            img = ImageDraw.Draw(original)
+        else:
+            img = cv2.imread(img)
+    elif isinstance(img, Image.Image):
+        original = img
+        img = ImageDraw.Draw(original)
+        method = draw_boxes.METHOD_PIL
+    elif cv2 is not None and isinstance(img, np.ndarray):
+        method = draw_boxes.METHOD_CV
     else:
-        output = img.copy()
+        raise TypeError(f'Unkown image type [{type(img)}]')
 
+    # Draw boxes
     label_color = {}
     color_counter = 0
     for box in boxes:
-        thickness = 4
-        text = box.class_label
+        text = None
+        special = False
 
-        # Type specific settings
+        # Type specific
         if isinstance(box, Annotation):
-            if box.lost:
+            if box.lost or (box.ignore and ignore is False):
                 continue
-            if box.occluded:
-                thickness = 2
+            if ignore and box.ignore:
+                special = True
+            if show_labels:
+                text = box.class_label
         elif isinstance(box, Detection):
-            text = f'{box.class_label} {100*box.confidence:.2f}%'
-
-        # get coord
-        pt1 = (int(box.x_top_left), int(box.y_top_left))
-        pt2 = (int(box.x_top_left + box.width), int(box.y_top_left + box.height))
-
-        # get color
-        if color is not None:
-            use_color = color
+            if show_labels:
+                text = f'{box.class_label} {100*box.confidence:.2f}'
         else:
+            continue
+
+        # Color
+        if color is None:
             if box.class_label in label_color:
                 use_color = label_color[box.class_label]
             else:
-                use_color = colors[color_counter]
+                use_color = default_colors[color_counter]
                 label_color[box.class_label] = use_color
-                color_counter = (color_counter + 1) % len(colors)
-
-        # draw rect
-        cv2.rectangle(output, pt1, pt2, use_color, 2)
-
-        # write label
-        if show_labels:
-            cv2.putText(output, text, (pt1[0], pt1[1]-5), cv2.FONT_HERSHEY_PLAIN, 0.75, use_color, 1, cv2.LINE_AA)
-
-    return output
-
-
-def show_bounding_boxes(boxes, img_folder, img_ext='.png', show_labels=False, color=None, get_img_fn=None):
-    """ Display the bounding boxes parsed by the generic parse function.
-
-    Args:
-        boxes (dict): Dictionary containing box objects per image ``{"image_id": [box, box, ...], ...}``
-        img_folder (str): Folder containing the images
-        img_ext (str, optional): Extension of the images; Default **'.png'**
-        show_labels (Boolean, optional): Whether or not to print the label names; Default **False**
-        color (tuple, optional): Color to use for drawing; Default **every label will get its own color, up to 8 labels**
-        get_img_fn (function): Function that will be called to get the image path
-
-    Note:
-        The ``get_img_fn`` function takes three parameters ``img_id``, ``img_folder`` and ``img_ext``.
-        It should return the full path to the image.
-        The default function will join the ``img_folder`` and ``img_id`` + ``img_ext``.
-    """
-    print('Showing bounding boxes:\n\tPress a key to show the next image\n\tPress ESC to stop viewing images')
-
-    if get_img_fn is None:
-        def get_img_fn(img_id, img_folder, img_ext): return os.path.join(img_folder, img_id+img_ext)
-
-    if color is None:
-        text_col = (0, 0, 255)
-    else:
-        text_col = color
-
-    for img_id, box in sorted(boxes.items()):
-        img_path = get_img_fn(img_id, img_folder, img_ext)
-        img = cv2.imread(img_path, cv2.IMREAD_UNCHANGED)
-        if len(img.shape) == 2:
-            img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-
-        draw_box(img, box, color, show_labels, True)
-        if show_labels:
-            cv2.putText(img, img_id, (10, 15), cv2.FONT_HERSHEY_PLAIN, 0.75, text_col, 1, cv2.LINE_AA)
-
-        cv2.imshow('Bounding boxes', img)
-        while True:
-            keycode = cv2.waitKey(0)
-            if keycode == 27:
-                return
-            elif keycode == ord('m'):
-                print(img_id)
+                color_counter = (color_counter + 1) % len(default_colors)
+        elif isinstance(color, dict):
+            if box.class_label not in color:
+                continue
             else:
-                break
+                use_color = color[box.class_label]
+        else:
+            use_color = color
+
+        # Draw
+        if method == draw_boxes.METHOD_PIL:
+            draw_pil(img, box, use_color, text, special)
+        else:
+            draw_cv(img, box, use_color, text, special)
+
+    if method == draw_boxes.METHOD_PIL:
+        return original
+    else:
+        return img
+
+
+def draw_pil(img, box, color, text, special):
+    """ Draw a box on the image. """
+    pt1 = (int(box.x_top_left), int(box.y_top_left))
+    pt2 = (int(box.x_top_left + box.width), int(box.y_top_left))
+    pt3 = (int(box.x_top_left + box.width), int(box.y_top_left + box.height))
+    pt4 = (int(box.x_top_left), int(box.y_top_left + box.height))
+    thickness = 1 if special else 3
+    img.line([pt1, pt2, pt3, pt4, pt1], color, thickness)
+
+    if text is not None:
+        offset = 13 if special else 15
+        img.text((pt1[0], pt1[1]-offset), text, color, font)
+
+
+def draw_cv(img, box, color, text, special):
+    """ Draw a box on the image. """
+    color = (color[2], color[1], color[0])
+    pt1 = (int(box.x_top_left), int(box.y_top_left))
+    pt2 = (int(box.x_top_left + box.width), int(box.y_top_left + box.height))
+    thickness = 1 if special else 3
+    cv2.rectangle(img, pt1, pt2, color, thickness)
+
+    if text is not None:
+        cv2.putText(img, text, (pt1[0], pt1[1]-5), cv2.FONT_HERSHEY_PLAIN, .75, color, 1, cv2.LINE_AA)
+
+
+draw_boxes.METHOD_CV = 0
+draw_boxes.METHOD_PIL = 1

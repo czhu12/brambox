@@ -14,8 +14,7 @@ Conversion
 
 Visualisation
 -------------
-.. autofunction:: brambox.boxes.draw_box
-.. autofunction:: brambox.boxes.show_bounding_boxes
+.. autofunction:: brambox.boxes.draw_boxes
 
 
 .. _filters-label:

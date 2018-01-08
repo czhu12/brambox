@@ -1,10 +1,11 @@
 import unittest
 import numpy as np
 import cv2
+from PIL import Image, ImageDraw
 import brambox.boxes as bbb
 
 
-class TestDrawBox(unittest.TestCase):
+class TestDrawBoxes(unittest.TestCase):
     def setUp(self):
         self.img = np.zeros((50, 50, 3), dtype=np.uint8)
         self.res = self.img.copy()
@@ -19,15 +20,22 @@ class TestDrawBox(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_drawing(self):
-        """ Test drawing function """
-        img_b = bbb.draw_box(self.img, [self.anno], (255, 255, 255))
-        self.assertTrue(np.array_equal(self.res, img_b))
+    def test_basic_cv2(self):
+        """ Test if cv2 drawing works """
+        img = np.zeros((25, 25, 3), np.uint8)
+        res = bbb.draw_boxes(img.copy(), [self.anno], (255, 0, 0))
+        cv2.rectangle(img, (1, 5), (11, 20), (0, 0, 255), 3)
 
-    def test_inline_drawing(self):
-        """ Test inline drawing """
-        bbb.draw_box(self.img, [self.anno], (255, 255, 255), False, True)
-        self.assertTrue(np.array_equal(self.res, self.img))
+        self.assertTrue(np.array_equal(img, res))
+
+    def test_basic_pil(self):
+        """ Test if Pillow drawing works """
+        img = Image.new('RGB', (25, 25))
+        imgdraw = ImageDraw.Draw(img)
+        res = bbb.draw_boxes(img.copy(), [self.anno], (255, 0, 0))
+        imgdraw.line([(1, 5), (11, 5), (11, 20), (1, 20), (1, 5)], (255, 0, 0), 3)
+
+        self.assertEqual(list(img.getdata()), list(res.getdata()))
 
 
 if __name__ == '__main__':

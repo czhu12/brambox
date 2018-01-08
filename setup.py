@@ -33,6 +33,7 @@ setup.setup(name='brambox',
                 'pyyaml',
                 'numpy',
                 'scipy',
+                'Pillow',
                 'matplotlib',
             ],
             )
