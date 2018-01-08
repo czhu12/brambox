@@ -12,7 +12,11 @@ The coordinates in this file are saved as relative coordinates of the image dime
 Args:
     image_width (Number): This keyword argument is used to get the width of the images.
     image_height (Number): This keyword argument is used to get the height of the images.
-    class_label_map (list): This keyword argument contains a list of the differenct classes. It is used to convert between ``class_label_indices`` and ``class_labels``.
+    class_label_map (list or str, optional): This keyword argument contains a list of the differenct classes. It is used to convert between ``class_label_indices`` and ``class_labels``. Default **[]**
+
+Note:
+    If the ``class_label_map`` parameter is a string, it is considered a filename and the file will be read.
+    Every line of the file will then be considered as a class_label.
 
 Example:
     >>> image_000.txt
@@ -32,7 +36,6 @@ __all__ = ["DarknetAnnotation", "DarknetParser"]
 
 class DarknetAnnotation(Annotation):
     """ Darknet image annotation """
-
     def serialize(self, class_label_map, image_width, image_height):
         """ generate a darknet annotation string """
         if class_label_map is not None:
@@ -89,15 +92,27 @@ class DarknetParser(Parser):
     def __init__(self, **kwargs):
         try:
             self.image_width = kwargs['image_width']
-            self.image_height = kwargs['image_height']
-            self.class_label_map = kwargs['class_label_map']
+            if self.image_width is None:
+                raise KeyError
         except KeyError:
-            raise TypeError("Darknet parser requires 'image_width', 'image_height' and 'class_label_map' keyword arguments")
+            raise ValueError("Darknet parser requires image_width")
 
-        if self.image_width is None:
-            raise TypeError("Darknet parser requires image_width")
-        if self.image_height is None:
-            raise TypeError("Darknet parser requires image_height")
+        try:
+            self.image_height = kwargs['image_height']
+            if self.image_height is None:
+                raise KeyError
+        except KeyError:
+            raise ValueError("Darknet parser requires image_height")
+
+        try:
+            label_map = kwargs['class_label_map']
+            if isinstance(label_map, str):
+                with open(label_map, 'r') as f:
+                    self.class_label_map = f.read.splitlines()
+            else:
+                self.class_label_map = label_map
+        except KeyError:
+            self.class_label_map = None
 
     def serialize(self, annotations):
         """ Serialize a list of annotations into one string """

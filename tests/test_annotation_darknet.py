@@ -59,14 +59,12 @@ class TestDarknetAnnotation(unittest.TestCase):
         """ test if constructor raises correct error when required kwargs
             are missing
         """
-        self.assertRaises(TypeError, DarknetParser)
-        self.assertRaises(TypeError, DarknetParser, frame_width=0)
-        self.assertRaises(TypeError, DarknetParser, frame_width=0,
-                          frame_height=0)
-        self.assertRaises(TypeError, DarknetParser, frame_width=None,
+        self.assertRaises(ValueError, DarknetParser)
+        self.assertRaises(ValueError, DarknetParser, image_width=0)
+        self.assertRaises(ValueError, DarknetParser, frame_width=None,
                           frame_height=0,
                           class_label_map=[])
-        self.assertRaises(TypeError, DarknetParser, frame_width=0,
+        self.assertRaises(ValueError, DarknetParser, frame_width=0,
                           frame_height=None,
                           class_label_map=[])
 

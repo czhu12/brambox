@@ -3,27 +3,52 @@
 import os
 import sys
 import argparse
-
 import brambox.boxes as bbb
 
 
+class StoreKwargs(argparse.Action):
+    """ Store keyword arguments in a dict.
+        This action must be used with multiple arguments.
+        It will parse ints and floats and leave the rest as strings.
+    """
+    def __call__(self, parser, namespace, values, option_string=None):
+        d = {}
+        for items in values:
+            n, v = items.split('=')
+
+            try:
+                v = int(v)
+            except ValueError:
+                try:
+                    v = float(v)
+                except ValueError:
+                    pass
+
+            d[n] = v
+
+        setattr(namespace, self.dest, d)
+
+
 def main():
-    parser = argparse.ArgumentParser(description='Convert annotation file(s) from one format to the other')
-    parser.add_argument('inputformat', choices=bbb.annotation_formats.keys(), help='Input annotation format')
+    parser = argparse.ArgumentParser(
+        description='Convert annotation file(s) from one format to the other',
+        usage='%(prog)s inputformat inputannotations outputformat outputannotations [optional arguments]',
+        epilog=f'Posible formats are: {list(bbb.annotation_formats.keys())}',
+    )
+
+    parser.add_argument('inputformat', metavar='inputformat', choices=bbb.annotation_formats.keys(), help='Input annotation format')
     parser.add_argument('inputannotations', help='Input annotation file or sequence expression, for example: path/to/anno/I%%08d.txt')
-    parser.add_argument('outputformat', choices=bbb.annotation_formats.keys(), help='Ouput annotation format')
+    parser.add_argument('outputformat', metavar='outputformat', choices=bbb.annotation_formats.keys(), help='Ouput annotation format')
     parser.add_argument('outputannotations', help='Output annotation file or folder')
-    parser.add_argument('--image-width', dest='image_width', type=int, default=None, help='Image width info for relative annotation formats')
-    parser.add_argument('--image-height', dest='image_height', type=int, default=None, help='Image height info for relative annotation formats')
-    parser.add_argument('--class-names', dest='class_names', default=None, help="Class label file for annotation formats using indexes rather than class names")
     parser.add_argument('--stride', type=int, default=1, help='If a sequence expression is given as input, this stride is used')
     parser.add_argument('--offset', type=int, default=0, help='If a sequence expression is given as input, this offset is used')
-
+    parser.add_argument('--kwargs', metavar='KW=V', help='Keyword arguments for the parser', nargs='*', action=StoreKwargs, default={})
     args = parser.parse_args()
 
+    # Parse arguments
     indir = os.path.split(args.inputannotations)[0]
     if not os.path.exists(indir):
-        sys.exit("Input directory {} does not exist".format(indir))
+        sys.exit(f'Input directory {indir} does not exist')
 
     if os.path.splitext(args.outputannotations)[1] != '':
         outdir = os.path.split(args.outputannotations)[0]
@@ -33,24 +58,9 @@ def main():
     if not os.path.exists(outdir):
         os.makedirs(outdir)
 
-    class_names = None
-    if args.class_names is not None:
-        class_names = []
-        with open(args.class_names) as f:
-            class_names = f.read().splitlines()
-
-    annotations = bbb.parse('anno_'+args.inputformat, args.inputannotations,
-                            image_width=args.image_width,
-                            image_height=args.image_height,
-                            class_label_map=class_names,
-                            stride=args.stride,
-                            offset=args.offset)
-
-    bbb.generate('anno_'+args.outputformat, annotations, args.outputannotations,
-                 image_width=args.image_width,
-                 image_height=args.image_height,
-                 class_label_map=class_names)
-
+    # Convert
+    annotations = bbb.parse('anno_'+args.inputformat, args.inputannotations, stride=args.stride, offset=args.offset, **args.kwargs)
+    bbb.generate('anno_'+args.outputformat, annotations, args.outputannotations, **args.kwargs)
     print("Converted", len(annotations), "files")
 
 
