@@ -62,6 +62,7 @@ class Annotation(b.Box):
         if isinstance(obj, Annotation):
             instance.lost = obj.lost
             instance.difficult = obj.difficult
+            instance.ignore = obj.ignore
             instance.occluded = obj.occluded
             instance.visible_x_top_left = obj.visible_x_top_left
             instance.visible_y_top_left = obj.visible_y_top_left
