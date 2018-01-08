@@ -45,9 +45,9 @@ class Detection(b.Box):
 
         return instance
 
-    def __str__(self):
-        """ pretty print """
-        string = 'Detection {'
+    def __repr__(self):
+        """ Unambiguous representation """
+        string = f'{self.__class__.__name__} ' + '{'
         string += f'class_label = {self.class_label}, '
         string += f'object_id = {self.object_id}, '
         string += f'x = {self.x_top_left}, '
@@ -55,11 +55,15 @@ class Detection(b.Box):
         string += f'w = {self.width}, '
         string += f'h = {self.height}, '
         string += f'confidence = {self.confidence}'
-        string += '}'
+        return string + '}'
 
-        return string
-
-    __repr__ = __str__
+    def __str__(self):
+        """ Pretty print """
+        string = 'Detection {'
+        string += f'\'{self.class_label}\' {self.object_id}, '
+        string += f'[{int(self.x_top_left)}, {int(self.y_top_left)}, {int(self.width)}, {int(self.height)}]'
+        string += f', {round(self.confidence*100, 2)} %'
+        return string + '}'
 
 
 ParserType = b.ParserType

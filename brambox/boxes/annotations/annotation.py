@@ -78,10 +78,10 @@ class Annotation(b.Box):
 
         return instance
 
-    def __str__(self):
-        """ pretty print """
-        string = 'Annotation {'
-        string += f'class_label = {self.class_label}, '
+    def __repr__(self):
+        """ Unambiguous representation """
+        string = f'{self.__class__.__name__} ' + '{'
+        string += f'class_label = \'{self.class_label}\', '
         string += f'object_id = {self.object_id}, '
         string += f'x = {self.x_top_left}, '
         string += f'y = {self.y_top_left}, '
@@ -95,11 +95,22 @@ class Annotation(b.Box):
         string += f'visible_y = {self.visible_y_top_left}, '
         string += f'visible_w = {self.visible_width}, '
         string += f'visible_h = {self.visible_height}'
-        string += '}'
+        return string + '}'
 
-        return string
-
-    __repr__ = __str__
+    def __str__(self):
+        """ Pretty print """
+        string = 'Annotation {'
+        string += f'\'{self.class_label}\' {self.object_id}, '
+        string += f'[{int(self.x_top_left)}, {int(self.y_top_left)}, {int(self.width)}, {int(self.height)}]'
+        if self.difficult:
+            string += ', difficult'
+        if self.lost:
+            string += ', lost'
+        if self.ignore:
+            string += ', ignore'
+        if self.occluded:
+            string += f', occluded [{int(self.visible_x_top_left)}, {int(self.visible_y_top_left)}, {int(self.visible_width)}, {int(self.visible_height)}]'
+        return string + '}'
 
 
 ParserType = b.ParserType
