@@ -78,7 +78,7 @@ Modifying your bounding boxes, happens with the :func:`~brambox.boxes.util.modif
 >>> # Read annotations
 >>> annotations = bbb.parse('anno_pickle', 'path/to/pickle.pkl')
 >>> 
->>> # Remove aeroplanes and boats from annotations 
+>>> # Remove all annotations without the class labels aeroplanes and boats
 >>> bbb.filter_discard(annotations, [ bbb.ClassLabel_filter(['aeroplanes', 'boats']) ])
 >>>
 >>> # Mark difficult and occluded annotations as ignore

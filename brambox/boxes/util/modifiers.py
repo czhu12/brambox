@@ -16,9 +16,9 @@ def modify(boxes, modifier_fns):
         modifier_fns (list): List of modifier functions that get applied
     """
     for _, values in boxes.items():
-        for i in range(values):
-            for fn in filter_fns:
-                fn(values[i])
+        for i in range(len(values)):
+            for fn in modifier_fns:
+                values[i] = fn(values[i])
 
     return boxes
 
@@ -51,7 +51,7 @@ class AspectRatio_modifier:
             self.change = 3
 
     def __call__(self, box):
-        if not self.modify_ignores and hasattr(box.ignore) and box.ignore:
+        if not self.modify_ignores and hasattr(box, 'ignore') and box.ignore:
             return box
 
         change = False
@@ -67,7 +67,7 @@ class AspectRatio_modifier:
             box.y_top_left -= d / 2
             box.height += d
         else:
-            d = box.height / self.ar - box.width
+            d = box.height * self.ar - box.width
             box.x_top_left -= d / 2
             box.width += d
 
