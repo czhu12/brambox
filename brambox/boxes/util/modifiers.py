@@ -23,7 +23,7 @@ def modify(boxes, modifier_fns):
     return boxes
 
 
-class AspectRatio_modifier:
+class AspectRatioModifier:
     """ Change the aspect ratio of all bounding boxes in ``boxes``.
 
     Args:
@@ -74,7 +74,7 @@ class AspectRatio_modifier:
         return box
 
 
-class Scale_modifier:
+class ScaleModifier:
     """ Rescale your bounding boxes like you would rescale an image.
 
     Args:

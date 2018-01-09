@@ -1,5 +1,5 @@
 # Runtime dependencies
-opencv-python
+#opencv-python
 
 # Development dependencies
 pycodestyle

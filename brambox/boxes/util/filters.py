@@ -49,7 +49,7 @@ def filter_discard(boxes, filter_fns):
     return boxes
 
 
-class ImageBounds_filter:
+class ImageBoundsFilter:
     """ Checks if the given box is contained in a certain area.
 
     Args:
@@ -66,7 +66,7 @@ class ImageBounds_filter:
                box.y_top_left >= self.bounds[1] and box.y_top_left + box.height <= self.bounds[3]
 
 
-class OcclusionArea_filter:
+class OcclusionAreaFilter:
     """ Checks if the visible fraction of an object, falls in a given range.
 
     Args:
@@ -94,7 +94,7 @@ class OcclusionArea_filter:
         return visible_fraction >= self.visible_range[0] and visible_fraction <= self.visible_range[1]
 
 
-class HeightRange_filter:
+class HeightRangeFilter:
     """ Checks whether the height of a bounding box lies within a given range.
 
     Args:
@@ -110,7 +110,7 @@ class HeightRange_filter:
         return box.height >= self.height_range[0] and box.height <= self.height_range[1]
 
 
-class ClassLabel_filter:
+class ClassLabelFilter:
     """ Checks whether the ``class_label`` of the box is found inside the accepted labels.
 
     Args:
