@@ -152,7 +152,13 @@ def generate(fmt, box, path, **kwargs):
         if not os.path.isdir(path):
             raise ValueError(f'Parser <{parser.__class__.__name__}> requires a path to a folder')
         for img_id, boxes in box.items():
-            with open(os.path.join(path, img_id + parser.extension), parser.write_mode) as f:
+            filename = os.path.join(path, img_id + parser.extension)
+
+            directory = os.path.dirname(filename)
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+
+            with open(filename, parser.write_mode) as f:
                 f.write(parser.serialize(boxes))
     else:
         raise AttributeError(f'Parser <{parser.__class__.__name__}> has not defined a parser_type class attribute')

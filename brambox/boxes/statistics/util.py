@@ -74,7 +74,7 @@ def match_detections(detection_results, ground_truth, overlap_threshold, overlap
     Returns:
         list: **[true_positives]**, **[false_positives]**, **num_annotations**
     """
-    all_matches = []
+    positives = []
     num_annotations = 0
 
     # Make copy to not alter the reference
@@ -102,12 +102,14 @@ def match_detections(detection_results, ground_truth, overlap_threshold, overlap
             matched_annotation = match_detection_to_annotations(detection, annotations, overlap_threshold, overlap_fn)
             if matched_annotation is not None:
                 del annotations[matched_annotation]
-                all_matches.append((detection.confidence, True))
+                # tp found
+                positives.append((detection.confidence, True))
             elif match_detection_to_annotations(detection, ignored_annotations, overlap_threshold, ioa) is None:
-                all_matches.append((detection.confidence, False))
+                # fp found
+                positives.append((detection.confidence, False))
 
     # sort matches by confidence from high to low
-    all_matches = sorted(all_matches, key=lambda d: d[0], reverse=True)
+    positives = sorted(positives, key=lambda d: d[0], reverse=True)
 
     tps = []
     fps = []
@@ -115,8 +117,8 @@ def match_detections(detection_results, ground_truth, overlap_threshold, overlap
     fp_counter = 0
 
     # all matches in dataset
-    for det in all_matches:
-        if det[1]:
+    for pos in positives:
+        if pos[1]:
             tp_counter += 1
         else:
             fp_counter += 1

@@ -67,7 +67,7 @@ def expand(expr, stride=1, offset=0):
     if os.path.isdir(expr):
         return strider(sorted(files(expr)), stride, offset)
     elif os.path.isfile(expr):
-        return expr
+        return [expr]
     elif '*' in expr:
         return strider(sorted(glob.glob(expr)), stride, offset)
     elif '%' in expr:

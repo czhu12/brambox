@@ -37,8 +37,9 @@ class AspectRatio_modifier:
         If the parameter is **'reduce'**, then the bounding box will be cropped to reach the new aspect ratio.
         If it is **'enlarge'**, then the bounding box will be made bigger.
     """
-    def __init__(self, aspect_ratio=1.0, change='width'):
+    def __init__(self, aspect_ratio=1.0, change='width', modify_ignores=False):
         self.ar = aspect_ratio
+        self.modify_ignores = modify_ignores
         change = change.lower()
         if change == 'reduce':
             self.change = 0
@@ -50,6 +51,9 @@ class AspectRatio_modifier:
             self.change = 3
 
     def __call__(self, box):
+        if not self.modify_ignores and hasattr(box.ignore) and box.ignore:
+            return box
+
         change = False
         if self.change == 0:
             if box.height / box.width > self.ar:

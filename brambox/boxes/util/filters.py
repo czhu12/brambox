@@ -87,7 +87,7 @@ class OcclusionArea_filter:
 
         area_visible = box.visible_width * box.visible_height
         # No visible area given -> Make sure it doesnt influence result
-        if area_visible == 0:
+        if area_visible == 0 and visible_range != (0, float('Inf')):
             return False
 
         visible_fraction = area_visible / (box.width * box.height)
