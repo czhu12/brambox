@@ -14,8 +14,8 @@ def image_bounds(box, bounds=(0, 0, float('Inf'), float('Inf'))):
     box         -- box object to test
     bounds      -- [left, top, right, bottom] pixel positions to mark the image bounds
     """
-    return box.x_top_left >= bounds[0] and box.x_top_left + box.width <= bounds[2] and \
-        box.y_top_left >= bounds[1] and box.y_top_left + box.height <= bounds[3]
+    return box.x_top_left >= bounds[0] and (box.x_top_left + box.width) <= bounds[2] and \
+        box.y_top_left >= bounds[1] and (box.y_top_left + box.height) <= bounds[3]
 
 
 def occlusion_area(box, visible_range=(0, float('Inf'))):
@@ -31,8 +31,8 @@ def occlusion_area(box, visible_range=(0, float('Inf'))):
     area_visible = box.visible_width * box.visible_height
 
     # if no visible area was given, we don't know how mutch the object is occluded so
-    # make sure it does not influence the result
-    if area_visible == 0:
+    # make sure it does not influence the result unless the visible_range == (0, inf)
+    if area_visible == 0 and visible_range != (0, float('Inf')):
         return False
 
     visible_fraction = area_visible / (box.width * box.height)

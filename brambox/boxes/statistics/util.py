@@ -115,7 +115,7 @@ def match_for_graphs(detection_results, ground_truth, overlap_threshold):
         num_annotations     -- integer with the number of included annotations
         num_images          -- integer with the number of processed images
     """
-    all_matches = []
+    positives = []
     num_annotations = 0
 
     # Make copy to not alter the reference
@@ -146,12 +146,14 @@ def match_for_graphs(detection_results, ground_truth, overlap_threshold):
             matched_annotation = match_detection_to_annotations(detection, annotations, overlap_threshold, iou)
             if matched_annotation is not None:
                 annotations.remove(matched_annotation)
-                all_matches.append((detection.confidence, True))
+                # tp found
+                positives.append((detection.confidence, True))
             elif match_detection_to_annotations(detection, ignored_annotations, overlap_threshold, iob) is None:
-                all_matches.append((detection.confidence, False))
+                # fp found
+                positives.append((detection.confidence, False))
 
     # sort matches by confidence from high to low
-    all_matches = sorted(all_matches, key=lambda d: d[0], reverse=True)
+    positives = sorted(positives, key=lambda d: d[0], reverse=True)
 
     tps = []
     fps = []
@@ -159,8 +161,8 @@ def match_for_graphs(detection_results, ground_truth, overlap_threshold):
     fp_counter = 0
 
     # all matches in dataset
-    for det in all_matches:
-        if det[1]:
+    for pos in positives:
+        if pos[1]:
             tp_counter += 1
         else:
             fp_counter += 1

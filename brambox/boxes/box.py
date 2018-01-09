@@ -36,6 +36,7 @@ class Box:
             instance.y_top_left = obj.y_top_left
             instance.width = obj.width
             instance.height = obj.height
+            instance.ignore = obj.ignore
         else:
             raise TypeError(f'Object is not of type Box or not a string [obj.__class__.__name__]')
 

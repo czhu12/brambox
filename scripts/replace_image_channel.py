@@ -46,8 +46,7 @@ def main():
     args = parser.parse_args()
 
     if not os.path.exists(args.outdir):
-        print("Error: directory", args.outdir, "does not exists")
-        return
+        os.makedirs(args.outdir)
 
     for colorfile in bb.boxes.expand(args.colorimages, args.stride, args.offset):
         colorimage = cv2.imread(colorfile)
