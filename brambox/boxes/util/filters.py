@@ -12,11 +12,19 @@ def filter_ignore(annotations, filter_fns):
     """ Set the ``ignore`` attribute of the annotations to **True** when they do not pass the provided filter functions.
 
     Args:
-        annotations (dict): Dictionary containing box objects per image ``{"image_id": [box, box, ...], ...}``
+        annotations (dict or list): Dictionary containing box objects per image ``{"image_id": [box, box, ...], ...}`` or list of annotations
         filter_fns (list): List of filter functions that get applied
     """
-    for _, values in annotations.items():
-        for anno in values:
+    if isinstance(annotations, dict):
+        for _, values in annotations.items():
+            for anno in values:
+                if not anno.ignore:
+                    for fn in filter_fns:
+                        if not fn(anno):
+                            anno.ignore = True
+                            break
+    else:
+        for anno in annotations:
             if not anno.ignore:
                 for fn in filter_fns:
                     if not fn(anno):
@@ -30,26 +38,27 @@ def filter_discard(boxes, filter_fns):
     """ Delete boxes when they do not pass the provided filter functions.
 
     Args:
-        boxes (dict): Dictionary containing box objects per image ``{"image_id": [box, box, ...], ...}``
+        boxes (dict or list): Dictionary containing box objects per image ``{"image_id": [box, box, ...], ...}`` or list of bounding boxes
         filter_fns (list): List of filter functions that get applied
     """
-    for image_id, values in boxes.items():
-        new_values = []
-        for box in values:
+    if isinstance(boxes, dict):
+        for image_id, values in boxes.items():
+            for i in range(len(values)-1, -1, -1):
+                for fn in filter_fns:
+                    if not fn(values[i]):
+                        del values[i]
+                        break
+    else:
+        for i in range(len(boxes)-1, -1, -1):
             for fn in filter_fns:
-                if not fn(box):
-                    box = None
+                if not fn(boxes[i]):
+                    del boxes[i]
                     break
-
-            if box is not None:
-                new_values.append(box)
-
-        boxes[image_id] = new_values
 
     return boxes
 
 
-class ImageBounds_filter:
+class ImageBoundsFilter:
     """ Checks if the given box is contained in a certain area.
 
     Args:
@@ -66,7 +75,7 @@ class ImageBounds_filter:
                box.y_top_left >= self.bounds[1] and box.y_top_left + box.height <= self.bounds[3]
 
 
-class OcclusionArea_filter:
+class OcclusionAreaFilter:
     """ Checks if the visible fraction of an object, falls in a given range.
 
     Args:
@@ -94,7 +103,7 @@ class OcclusionArea_filter:
         return visible_fraction >= self.visible_range[0] and visible_fraction <= self.visible_range[1]
 
 
-class HeightRange_filter:
+class HeightRangeFilter:
     """ Checks whether the height of a bounding box lies within a given range.
 
     Args:
@@ -110,7 +119,7 @@ class HeightRange_filter:
         return box.height >= self.height_range[0] and box.height <= self.height_range[1]
 
 
-class ClassLabel_filter:
+class ClassLabelFilter:
     """ Checks whether the ``class_label`` of the box is found inside the accepted labels.
 
     Args:

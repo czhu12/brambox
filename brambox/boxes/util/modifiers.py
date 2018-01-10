@@ -13,7 +13,7 @@ def modify(boxes, modifier_fns):
     """ Modifies boxes according to the modifier functions.
 
     Args:
-        annotations (dict): Dictionary containing box objects per image ``{"image_id": [box, box, ...], ...}``
+        boxes (dict or list): Dictionary containing box objects per image ``{"image_id": [box, box, ...], ...}`` or list of bounding boxes
         modifier_fns (list): List of modifier functions that get applied
 
     Warning:
@@ -25,12 +25,21 @@ def modify(boxes, modifier_fns):
         >>>
         >>> new_boxes = bbb.modify(copy.deepcopy(boxes), [modfier_fns, ...])
     """
-    for _, values in boxes.items():
-        for i in range(len(values)-1, -1, -1):
+
+    if isinstance(boxes, dict):
+        for _, values in boxes.items():
+            for i in range(len(values)-1, -1, -1):
+                for fn in modifier_fns:
+                    values[i] = fn(values[i])
+                    if values[i] is None:
+                        del values[i]
+                        break
+    else:
+        for i in range(len(boxes)-1, -1, -1):
             for fn in modifier_fns:
-                values[i] = fn(values[i])
-                if values[i] is None:
-                    del values[i]
+                boxes[i] = fn(boxes[i])
+                if boxes[i] is None:
+                    del boxes[i]
                     break
 
     return boxes
