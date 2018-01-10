@@ -14,6 +14,9 @@ def filter_ignore(annotations, filter_fns):
     Args:
         annotations (dict or list): Dictionary containing box objects per image ``{"image_id": [box, box, ...], ...}`` or list of annotations
         filter_fns (list): List of filter functions that get applied
+
+    Returns:
+        (dict or list): boxes after filtering
     """
     if isinstance(annotations, dict):
         for _, values in annotations.items():
@@ -40,6 +43,18 @@ def filter_discard(boxes, filter_fns):
     Args:
         boxes (dict or list): Dictionary containing box objects per image ``{"image_id": [box, box, ...], ...}`` or list of bounding boxes
         filter_fns (list): List of filter functions that get applied
+
+    Returns:
+        (dict or list): boxes after filtering
+
+    Warning:
+        This filter function will remove bounding boxes from your set.
+        If you want to keep a copy of your original values, you should pass a copy of your bounding box dictionary:
+
+        >>> import copy
+        >>> import brambox.boxes as bbb
+        >>>
+        >>> new_boxes = bbb.filter_discard(copy.deepcopy(boxes), [filter_fns, ...])
     """
     if isinstance(boxes, dict):
         for image_id, values in boxes.items():

@@ -16,6 +16,9 @@ def modify(boxes, modifier_fns):
         boxes (dict or list): Dictionary containing box objects per image ``{"image_id": [box, box, ...], ...}`` or list of bounding boxes
         modifier_fns (list): List of modifier functions that get applied
 
+    Returns:
+        (dict or list): boxes after modifications
+
     Warning:
         These modifier functions will mutate your bounding boxes and some of them can even remove bounding boxes.
         If you want to keep a copy of your original values, you should pass a copy of your bounding box dictionary:
