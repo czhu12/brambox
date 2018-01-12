@@ -96,7 +96,7 @@ def draw_boxes(img, boxes, color=None, show_labels=False, ignore=None, method=1)
                 text = box.class_label
         elif isinstance(box, Detection):
             if show_labels:
-                text = f'{box.class_label} {100*box.confidence:.2f}'
+                text = f'{box.class_label} {100*box.confidence:.2f}%'
         else:
             continue
 

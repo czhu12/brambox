@@ -12,11 +12,22 @@ def filter_ignore(annotations, filter_fns):
     """ Set the ``ignore`` attribute of the annotations to **True** when they do not pass the provided filter functions.
 
     Args:
-        annotations (dict): Dictionary containing box objects per image ``{"image_id": [box, box, ...], ...}``
+        annotations (dict or list): Dictionary containing box objects per image ``{"image_id": [box, box, ...], ...}`` or list of annotations
         filter_fns (list): List of filter functions that get applied
+
+    Returns:
+        (dict or list): boxes after filtering
     """
-    for _, values in annotations.items():
-        for anno in values:
+    if isinstance(annotations, dict):
+        for _, values in annotations.items():
+            for anno in values:
+                if not anno.ignore:
+                    for fn in filter_fns:
+                        if not fn(anno):
+                            anno.ignore = True
+                            break
+    else:
+        for anno in annotations:
             if not anno.ignore:
                 for fn in filter_fns:
                     if not fn(anno):
@@ -30,21 +41,34 @@ def filter_discard(boxes, filter_fns):
     """ Delete boxes when they do not pass the provided filter functions.
 
     Args:
-        boxes (dict): Dictionary containing box objects per image ``{"image_id": [box, box, ...], ...}``
+        boxes (dict or list): Dictionary containing box objects per image ``{"image_id": [box, box, ...], ...}`` or list of bounding boxes
         filter_fns (list): List of filter functions that get applied
+
+    Returns:
+        (dict or list): boxes after filtering
+
+    Warning:
+        This filter function will remove bounding boxes from your set.
+        If you want to keep a copy of your original values, you should pass a copy of your bounding box dictionary:
+
+        >>> import copy
+        >>> import brambox.boxes as bbb
+        >>>
+        >>> new_boxes = bbb.filter_discard(copy.deepcopy(boxes), [filter_fns, ...])
     """
-    for image_id, values in boxes.items():
-        new_values = []
-        for box in values:
+    if isinstance(boxes, dict):
+        for image_id, values in boxes.items():
+            for i in range(len(values)-1, -1, -1):
+                for fn in filter_fns:
+                    if not fn(values[i]):
+                        del values[i]
+                        break
+    else:
+        for i in range(len(boxes)-1, -1, -1):
             for fn in filter_fns:
-                if not fn(box):
-                    box = None
+                if not fn(boxes[i]):
+                    del boxes[i]
                     break
-
-            if box is not None:
-                new_values.append(box)
-
-        boxes[image_id] = new_values
 
     return boxes
 
