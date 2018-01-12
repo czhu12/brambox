@@ -108,7 +108,7 @@ class DarknetParser(Parser):
             label_map = kwargs['class_label_map']
             if isinstance(label_map, str):
                 with open(label_map, 'r') as f:
-                    self.class_label_map = f.read.splitlines()
+                    self.class_label_map = f.read().splitlines()
             else:
                 self.class_label_map = label_map
         except KeyError:
