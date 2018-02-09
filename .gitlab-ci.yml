@@ -9,6 +9,7 @@ cache:
   key: "$CI_PROJECT_ID"
 
 before_script:
+  - pip install opencv-python
   - pip install -r develop.txt
 
 stages:
