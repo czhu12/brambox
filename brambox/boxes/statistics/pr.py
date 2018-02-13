@@ -53,8 +53,9 @@ def ap(precision, recall, num_of_samples=100):
     if len(precision) > 1 and len(recall) > 1:
         p = np.array(precision)
         r = np.array(recall)
+        p_start = p[np.argmin(r)]
         samples = np.arange(0., 1., 1.0/num_of_samples)
-        interpolated = scipy.interpolate.interp1d(r, p, fill_value=(1., 0.), bounds_error=False)(samples)
+        interpolated = scipy.interpolate.interp1d(r, p, fill_value=(p_start, 0.), bounds_error=False)(samples)
         avg = sum(interpolated) / len(interpolated)
     elif len(precision) > 0 and len(recall) > 0:
         # 1 point on PR: AP is box between (0,0) and (p,r)

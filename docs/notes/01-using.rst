@@ -133,7 +133,7 @@ Here are some examples, where we plot the values using matplotlib_.
 >>> for c in classes:
 >>>   anno_c = bbb.filter_discard(copy.deepcopy(annotations), [ lambda anno: anno.class_label == c ])
 >>>   det_c  = bbb.filter_discard(copy.deepcopy(detections), [ lambda det: det.class_label == c ])
->>>   p,r = bbb.pr(detections, annotations)
+>>>   p,r = bbb.pr(det_c, anno_c)
 >>>   ap = bbb.ap(p,r)
 >>>   plt.plot(r, p, label=f'{c}: {round(ap*100, 2)}%')
 >>>
