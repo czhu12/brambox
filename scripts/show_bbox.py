@@ -53,7 +53,9 @@ class BoxImages:
         self.ids = sorted(list(self.boxes.keys()))
 
         self.folder = args.imagefolder
-        self.ext = args.extension if args.extension[0] == '.' else '.' + args.extension
+        self.ext = args.extension
+        if args.extension != "" and args.extension[0] != '.':
+            self.ext = '.' + args.extension
         self.labels = args.show_labels
 
     def __len__(self):

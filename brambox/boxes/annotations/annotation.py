@@ -33,15 +33,23 @@ class Annotation(b.Box):
         super(Annotation, self).__init__()
         self.lost = False               # if object is not seen in the image, if true one must ignore this annotation
         self.difficult = False          # if the object is considered difficult
-        self.occluded = False           # if object is occluded
+        self.occlusion_fraction = 0.0   # value between 0 and 1 that indicates how mutch an object is occluded
         self.ignore = False             # if true, this bounding box will not be considered in statistics processing
 
-        # variables below are only valid if the 'occluded' flag is True and
+        # variables below are only valid if the 'occluded' property is True (occlusion_fraction > 0) and
         # represent a bounding box that indicates the visible area inside the normal bounding box
         self.visible_x_top_left = 0.0   # x position top left in pixels
         self.visible_y_top_left = 0.0   # y position top left in pixels
         self.visible_width = 0.0        # width in pixels
         self.visible_height = 0.0       # height in pixels
+
+    @property
+    def occluded(self):
+        return self.occlusion_fraction > 0.0
+
+    @occluded.setter
+    def occluded(self, occ):
+        self.occlusion_fraction = float(occ)
 
     @classmethod
     def create(cls, obj=None):
@@ -90,8 +98,9 @@ class Annotation(b.Box):
         string += f'h = {self.height}, '
         string += f'ignore = {self.ignore}, '
         string += f'lost = {self.lost}, '
-        string += f'occluded = {self.occluded}, '
         string += f'difficult = {self.difficult}, '
+        string += f'occluded = {self.occluded}, '
+        string += f'occlision_fraction = {self.occlusion_fraction}, '
         string += f'visible_x = {self.visible_x_top_left}, '
         string += f'visible_y = {self.visible_y_top_left}, '
         string += f'visible_w = {self.visible_width}, '

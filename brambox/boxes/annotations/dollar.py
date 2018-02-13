@@ -33,7 +33,7 @@ class DollarAnnotation(Annotation):
 
         return string
 
-    def deserialize(self, string):
+    def deserialize(self, string, occlusion_tag_map):
         """ parse a dollar annotation string """
         elements = string.split()
         self.class_label = '' if elements[0] == '?' else elements[0]
@@ -41,7 +41,10 @@ class DollarAnnotation(Annotation):
         self.y_top_left = float(elements[2])
         self.width = float(elements[3])
         self.height = float(elements[4])
-        self.occluded = elements[5] != '0'
+        if occlusion_tag_map is None:
+            self.occluded = elements[5] != '0'
+        else:
+            self.occlusion_fraction = occlusion_tag_map[int(elements[5])]
         self.visible_x_top_left = float(elements[6])
         self.visible_y_top_left = float(elements[7])
         self.visible_width = float(elements[8])
@@ -50,11 +53,18 @@ class DollarAnnotation(Annotation):
 
         self.object_id = 0
 
+        return self
+
 
 class DollarParser(Parser):
     """ Dollar format annotation parser """
     parser_type = ParserType.MULTI_FILE
     box_type = DollarAnnotation
+
+    def __init__(self, **kwargs):
+        self.occlusion_tag_map = None
+        if 'occlusion_tag_map' in kwargs:
+            self.occlusion_tag_map = kwargs['occlusion_tag_map']
 
     def deserialize(self, string):
         """ deserialize a dollar string into a list of annotations
@@ -65,6 +75,7 @@ class DollarParser(Parser):
 
         for line in string.splitlines():
             if '%' not in line:
-                result += [self.box_type.create(line)]
+                anno = self.box_type()
+                result += [anno.deserialize(line, self.occlusion_tag_map)]
 
         return result
