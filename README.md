@@ -1,9 +1,10 @@
 <img src="docs/.static/logo-wide.png" alt="Logo" width="1000" />
 
 _Basic Recipes for Annotations and Modeling_
-![Version][version-badge]
-![Pipeline][pipeline-badge]
-![Coverage][coverage-badge](https://codecov.io/gl/EAVISE/brambox)
+
+[![Version][version-badge]][version-badge]
+[![Pipeline][pipeline-badge]][pipeline-badge]
+[![Coverage][coverage-badge]][coverage-report]
 
 Brambox is a toolbox that contains unified tools for converting image data annotation sets,
 computing statistics and more.
@@ -38,4 +39,5 @@ See [the contribution guidelines](CONTRIBUTING.md)
 [version-badge]: https://img.shields.io/badge/version-1.0.0-blue.svg
 [pipeline-badge]: https://gitlab.com/EAVISE/brambox/badges/develop/pipeline.svg
 [coverage-badge]: https://codecov.io/gl/EAVISE/brambox/branch/develop/graph/badge.svg
+[coverage-report]: https://codecov.io/gl/EAVISE/brambox/branch/develop
 [doc-url]: https://eavise.gitlab.io/brambox
