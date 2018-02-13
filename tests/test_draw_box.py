@@ -24,7 +24,7 @@ class TestDrawBoxes(unittest.TestCase):
     def tearDown(self):
         pass
 
-    @unittest.skipIf(cv2 == None, "OpenCV not found, test depending on OpenCV")
+    @unittest.skipIf(cv2 is None, "OpenCV not found, test depending on OpenCV")
     def test_basic_cv2(self):
         """ Test if cv2 drawing works """
         img = np.zeros((25, 25, 3), np.uint8)
