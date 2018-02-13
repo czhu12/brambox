@@ -7,7 +7,7 @@ _Basic Recipes for Annotations and Modeling_
 [![Coverage][coverage-badge]][coverage-report]
 
 Brambox is a toolbox that contains unified tools for converting image data annotation sets,
-computing statistics and more.
+computing statistics and more.  
 It's main use is for object detection networks.
 
 
@@ -25,7 +25,7 @@ pip install -r develop.txt
 ## Using
 The toolbox contains both library packages and scripts.
 If you installed brambox you can just run brambox scripts from anywhere on the commandline.
-For more about their usage, run `some_brambox_script.py --help`.
+For more about their usage, run `some_brambox_script.py --help`.  
 If you installed brambox you can also import brambox packages in your own python program with:
 ```python
 import brambox
