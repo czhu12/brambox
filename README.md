@@ -1,12 +1,12 @@
-<img src="docs/.static/logo-wide.png" alt="Logo" width="1000" />  
+<img src="docs/.static/logo-wide.png" alt="Logo" width="1000" />
 
-_Basic Recipes for Annotations and Modeling_  
+_Basic Recipes for Annotations and Modeling_
 ![Version][version-badge]
 ![Pipeline][pipeline-badge]
-![Coverage][coverage-badge]
+![Coverage][coverage-badge](https://codecov.io/gl/EAVISE/brambox)
 
 Brambox is a toolbox that contains unified tools for converting image data annotation sets,
-computing statistics and more.  
+computing statistics and more.
 It's main use is for object detection networks.
 
 
@@ -24,7 +24,7 @@ pip install -r develop.txt
 ## Using
 The toolbox contains both library packages and scripts.
 If you installed brambox you can just run brambox scripts from anywhere on the commandline.
-For more about their usage, run `some_brambox_script.py --help`.  
+For more about their usage, run `some_brambox_script.py --help`.
 If you installed brambox you can also import brambox packages in your own python program with:
 ```python
 import brambox
@@ -37,5 +37,5 @@ See [the contribution guidelines](CONTRIBUTING.md)
 
 [version-badge]: https://img.shields.io/badge/version-1.0.0-blue.svg
 [pipeline-badge]: https://gitlab.com/EAVISE/brambox/badges/master/pipeline.svg
-[coverage-badge]: https://gitlab.com/EAVISE/brambox/badges/master/coverage.svg
+[coverage-badge]: https://codecov.io/gl/EAVISE/brambox/branch/master/graph/badge.svg
 [doc-url]: https://eavise.gitlab.io/brambox
