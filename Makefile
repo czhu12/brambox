@@ -1,16 +1,16 @@
 all: test lint
 
 test:
-	coverage run --source brambox setup.py test -q
+	$(PYTHON) coverage run --source brambox setup.py test -q
 
 lint:
-	pycodestyle --max-line-length=200 ./brambox/ && \
-	pycodestyle --max-line-length=200 ./scripts/ && \
-	pycodestyle --max-line-length=200 ./tests/
+	$(PYTHON) pycodestyle --max-line-length=200 ./brambox/ && \
+	$(PYTHON) pycodestyle --max-line-length=200 ./scripts/ && \
+	$(PYTHON) pycodestyle --max-line-length=200 ./tests/
 
 coverage:
-	coverage html --skip-covered && \
-	coverage report
+	$(PYTHON) coverage html --skip-covered && \
+	$(PYTHON) coverage report
 
 docs:
 	cd ./docs && make clean html

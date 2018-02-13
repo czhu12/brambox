@@ -1,6 +1,9 @@
 import unittest
 import numpy as np
-import cv2
+try:
+    import cv2
+except ModuleNotFoundError:
+    cv2 = None
 from PIL import Image, ImageDraw
 import brambox.boxes as bbb
 
@@ -9,7 +12,8 @@ class TestDrawBoxes(unittest.TestCase):
     def setUp(self):
         self.img = np.zeros((50, 50, 3), dtype=np.uint8)
         self.res = self.img.copy()
-        cv2.rectangle(self.res, (1, 5), (11, 20), (255, 255, 255), 2)
+        if cv2 is not None:
+            cv2.rectangle(self.res, (1, 5), (11, 20), (255, 255, 255), 2)
 
         self.anno = bbb.annotations.Annotation()
         self.anno.x_top_left = 1
@@ -20,6 +24,7 @@ class TestDrawBoxes(unittest.TestCase):
     def tearDown(self):
         pass
 
+    @unittest.skipIf(cv2 == None, "OpenCV not found, test depending on OpenCV")
     def test_basic_cv2(self):
         """ Test if cv2 drawing works """
         img = np.zeros((25, 25, 3), np.uint8)
