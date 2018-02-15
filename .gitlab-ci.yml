@@ -36,14 +36,9 @@ coverage:
     - master
     - develop
   script:
-    - make coverage
+    - coverage report 
     - codecov -t 55553a97-b480-426f-9f03-3b6d401151a7
   coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
-  artifacts:
-    paths:
-      - .coverage
-      - htmlcov
-    expire_in: 1 week
 
 pages:
   stage: deploy
@@ -52,8 +47,6 @@ pages:
   script:
     - make docs
     - mv docs/.build/html public/
-    - make coverage
-    - mv htmlcov public/coverage
   artifacts:
     paths:
       - public

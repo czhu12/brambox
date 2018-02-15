@@ -9,7 +9,6 @@ lint:
 	$(PYTHON) pycodestyle --max-line-length=200 ./tests/
 
 coverage:
-	$(PYTHON) coverage html --skip-covered && \
 	$(PYTHON) coverage report
 
 docs:
