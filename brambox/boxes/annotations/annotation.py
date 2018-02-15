@@ -71,7 +71,7 @@ class Annotation(b.Box):
             instance.lost = obj.lost
             instance.difficult = obj.difficult
             instance.ignore = obj.ignore
-            instance.occluded = obj.occluded
+            instance.occlusion_fraction = obj.occlusion_fraction
             instance.visible_x_top_left = obj.visible_x_top_left
             instance.visible_y_top_left = obj.visible_y_top_left
             instance.visible_width = obj.visible_width
@@ -100,7 +100,7 @@ class Annotation(b.Box):
         string += f'lost = {self.lost}, '
         string += f'difficult = {self.difficult}, '
         string += f'occluded = {self.occluded}, '
-        string += f'occlision_fraction = {self.occlusion_fraction}, '
+        string += f'occlusion_fraction = {self.occlusion_fraction}, '
         string += f'visible_x = {self.visible_x_top_left}, '
         string += f'visible_y = {self.visible_y_top_left}, '
         string += f'visible_w = {self.visible_width}, '
@@ -119,7 +119,10 @@ class Annotation(b.Box):
         if self.ignore:
             string += ', ignore'
         if self.occluded:
-            string += f', occluded [{int(self.visible_x_top_left)}, {int(self.visible_y_top_left)}, {int(self.visible_width)}, {int(self.visible_height)}]'
+            if self.occlusion_fraction == 1.0:
+                string += f', occluded [{int(self.visible_x_top_left)}, {int(self.visible_y_top_left)}, {int(self.visible_width)}, {int(self.visible_height)}]'
+            else:
+                string += f', occluded {self.occlusion_fraction*100}%'
         return string + '}'
 
 

@@ -6,22 +6,22 @@ yaml_string = """img_1:
   '?':
   - coords: [0, 0, 0, 0]
     lost: false
-    occluded: false
+    occlusion_fraction: 0.0
   person:
   - coords: [0, 0, 0, 0]
     lost: false
-    occluded: false
+    occlusion_fraction: 0.0
 img_2:
   '?':
   - coords: [0, 0, 0, 0]
     lost: false
-    occluded: false
+    occlusion_fraction: 0.0
   - coords: [0, 0, 0, 0]
     lost: false
-    occluded: false
+    occlusion_fraction: 0.0
   - coords: [0, 0, 0, 0]
     lost: false
-    occluded: false
+    occlusion_fraction: 0.0
 """
 
 
@@ -47,15 +47,16 @@ class TestYamlAnnotation(unittest.TestCase):
         self.assertEqual(key, 'person')
         self.assertEqual(val['coords'], [10, 20, 30, 40])
         self.assertTrue(val['lost'])
-        self.assertFalse(val['occluded'])
+        self.assertEqual(val['occlusion_fraction'], 0.0)
 
     def test_anno_deserialize(self):
         """ test if deserialization of one annotation works """
-        self.anno.deserialize({'coords': [10, 20, 30, 40], 'lost': True, 'occluded': True}, 'person')
+        self.anno.deserialize({'coords': [10, 20, 30, 40], 'lost': True, 'occlusion_fraction': 70.0}, 'person')
         self.assertEqual(self.anno.x_top_left, 10)
         self.assertEqual(self.anno.y_top_left, 20)
         self.assertEqual(self.anno.width, 30)
         self.assertEqual(self.anno.height, 40)
+        self.assertEqual(self.anno.occlusion_fraction, 0.7)
         self.assertTrue(self.anno.occluded)
         self.assertTrue(self.anno.lost)
 

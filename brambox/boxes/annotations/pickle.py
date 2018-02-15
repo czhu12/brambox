@@ -37,6 +37,11 @@ class PickleAnnotation(Annotation):
         return state
 
     def __setstate__(self, state):
+        if 'occlusion_fraction' not in state:   # Backward compatible with older versions -> May be removed after new version is regularized
+            # TODO : logging #4 (deprecation warning)
+            state['occlusion_fraction'] = float(state['occluded'])
+            del state['occluded']
+
         self.__dict__.update(state)
         if not hasattr(self, 'ignore'):
             self.ignore = False

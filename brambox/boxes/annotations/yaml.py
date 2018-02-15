@@ -14,19 +14,19 @@ Example:
           car:
             - coords: [x,y,w,h]
               lost: False
-              occluded: True
+              occlusion_fraction: 50.123
           person:
             - coords: [x,y,w,h]
               lost: False
-              occluded: False
+              occlusion_fraction: 0.0
             - coords: [x,y,w,h]
               lost: False
-              occluded: False
+              occlusion_fraction: 0.0
         img2:
           car:
             - coords: [x,y,w,h]
               lost: True
-              occluded: True
+              occlusion_fraction: 90.0
 """
 
 
@@ -38,7 +38,6 @@ __all__ = ["YamlAnnotation", "YamlParser"]
 
 class YamlAnnotation(Annotation):
     """ YAML image annotation """
-
     def serialize(self):
         """ generate a yaml annotation object """
         class_label = '?' if self.class_label == '' else self.class_label
@@ -46,7 +45,7 @@ class YamlAnnotation(Annotation):
                 {
                     'coords': [round(self.x_top_left), round(self.y_top_left), round(self.width), round(self.height)],
                     'lost': self.lost,
-                    'occluded': self.occluded
+                    'occlusion_fraction': self.occlusion_fraction*100,
                 }
                 )
 
@@ -58,7 +57,12 @@ class YamlAnnotation(Annotation):
         self.width = float(yaml_obj['coords'][2])
         self.height = float(yaml_obj['coords'][3])
         self.lost = yaml_obj['lost']
-        self.occluded = yaml_obj['occluded']
+
+        if 'occlusion_fraction' not in yaml_obj:    # Backward compatible with older versions -> May be removed after new version is regularized
+            # TODO : logging #4 (deprecation warning)
+            self.occlusion_fraction = float(yaml_obj['occluded'])
+        else:
+            self.occlusion_fraction = yaml_obj['occlusion_fraction']/100
 
         self.object_id = 0
 
