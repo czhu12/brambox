@@ -33,8 +33,9 @@ class Annotation(b.Box):
         super(Annotation, self).__init__()
         self.lost = False               # if object is not seen in the image, if true one must ignore this annotation
         self.difficult = False          # if the object is considered difficult
-        self.occlusion_fraction = 0.0   # value between 0 and 1 that indicates how mutch an object is occluded
         self.ignore = False             # if true, this bounding box will not be considered in statistics processing
+        self.occlusion_fraction = 0.0   # value between 0 and 1 that indicates how much an object is occluded
+        self.truncated_fraction = 0.0   # value between 0 and 1 that indicates how much an object is truncated
 
         # variables below are only valid if the 'occluded' property is True (occlusion_fraction > 0) and
         # represent a bounding box that indicates the visible area inside the normal bounding box
@@ -48,8 +49,16 @@ class Annotation(b.Box):
         return self.occlusion_fraction > 0.0
 
     @occluded.setter
-    def occluded(self, occ):
-        self.occlusion_fraction = float(occ)
+    def occluded(self, val):
+        self.occlusion_fraction = float(val)
+
+    @property
+    def truncated(self):
+        return self.truncated_fraction > 0.0
+
+    @truncated.setter
+    def truncated(self, val):
+        self.truncated_fraction = float(val)
 
     @classmethod
     def create(cls, obj=None):
@@ -71,6 +80,7 @@ class Annotation(b.Box):
             instance.lost = obj.lost
             instance.difficult = obj.difficult
             instance.ignore = obj.ignore
+            instance.truncated_fraction = obj.truncated_fraction
             instance.occlusion_fraction = obj.occlusion_fraction
             instance.visible_x_top_left = obj.visible_x_top_left
             instance.visible_y_top_left = obj.visible_y_top_left
@@ -99,7 +109,7 @@ class Annotation(b.Box):
         string += f'ignore = {self.ignore}, '
         string += f'lost = {self.lost}, '
         string += f'difficult = {self.difficult}, '
-        string += f'occluded = {self.occluded}, '
+        string += f'truncated_fraction = {self.truncated_fraction}, '
         string += f'occlusion_fraction = {self.occlusion_fraction}, '
         string += f'visible_x = {self.visible_x_top_left}, '
         string += f'visible_y = {self.visible_y_top_left}, '
@@ -118,6 +128,8 @@ class Annotation(b.Box):
             string += ', lost'
         if self.ignore:
             string += ', ignore'
+        if self.truncated:
+            string += f', truncated {self.truncated_fraction*100}%'
         if self.occluded:
             if self.occlusion_fraction == 1.0:
                 string += f', occluded [{int(self.visible_x_top_left)}, {int(self.visible_y_top_left)}, {int(self.visible_width)}, {int(self.visible_height)}]'

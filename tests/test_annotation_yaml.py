@@ -7,21 +7,26 @@ yaml_string = """img_1:
   - coords: [0, 0, 0, 0]
     lost: false
     occlusion_fraction: 0.0
+    truncated_fraction: 0.0
   person:
   - coords: [0, 0, 0, 0]
     lost: false
     occlusion_fraction: 0.0
+    truncated_fraction: 0.0
 img_2:
   '?':
   - coords: [0, 0, 0, 0]
     lost: false
     occlusion_fraction: 0.0
+    truncated_fraction: 0.0
   - coords: [0, 0, 0, 0]
     lost: false
     occlusion_fraction: 0.0
+    truncated_fraction: 0.0
   - coords: [0, 0, 0, 0]
     lost: false
     occlusion_fraction: 0.0
+    truncated_fraction: 0.0
 """
 
 
