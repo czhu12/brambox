@@ -67,6 +67,7 @@ class ChannelMixer:
                 res[..., i] = imgs[self.channels[i][0]][..., self.channels[i][1]]
             else:
                 res[..., i] = imgs[self.channels[i][0]]
+        res = np.squeeze(res)
 
         if pil_image:
             return Image.fromarray(res)
