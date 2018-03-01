@@ -1,6 +1,6 @@
 import unittest
 from brambox.boxes.detections.detection import Detection
-from brambox.boxes.detections import PascalVOCDetection, PascalVOCParser
+from brambox.boxes.detections import PascalVocDetection, PascalVocParser
 
 pascalvoc_string = """img1 0.9090 10.01 20.02 29.03 39.04
 img2 0.1234 40.0 30.0 59.0 39.0
@@ -8,10 +8,10 @@ img2 0.75 0.00 25.00 49.00 74.00
 """
 
 
-class TestPascalVOCDetection(unittest.TestCase):
+class TestPascalVocDetection(unittest.TestCase):
     def setUp(self):
-        self.det = PascalVOCDetection()
-        self.parser = PascalVOCParser(class_label='person')
+        self.det = PascalVocDetection()
+        self.parser = PascalVocParser(class_label='person')
 
     def tearDown(self):
         pass

@@ -1,12 +1,10 @@
 #
 #   Copyright EAVISE
 #   Author: Maarten Vandersteegen
-#   NOTE: this coco format is based on the output of the darknet DL framework
 #
 """
 Coco
 ----
-**TODO:** Maarten
 """
 
 import json
@@ -41,7 +39,11 @@ class CocoDetection(Detection):
 
 
 class CocoParser(Parser):
-    """ Json based detection parser """
+    """ **TODO:** Maarten
+
+    Note:
+        This coco format is based on the output of the darknet DL framework.
+    """
     parser_type = ParserType.SINGLE_FILE
     box_type = CocoDetection
     extension = '.json'

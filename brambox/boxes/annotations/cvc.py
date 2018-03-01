@@ -5,7 +5,6 @@
 """
 CVC
 ---
-**TODO:** Maarten
 """
 
 from .annotation import *
@@ -47,6 +46,7 @@ class CvcAnnotation(Annotation):
 
 
 class CvcParser(Parser):
-    """ Cvc format annotation parser """
+    """ **TODO:** Maarten
+    """
     parser_type = ParserType.MULTI_FILE
     box_type = CvcAnnotation

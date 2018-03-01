@@ -5,7 +5,6 @@
 """
 Dollar
 ------
-**TODO:** Maarten
 """
 
 from .annotation import *
@@ -57,7 +56,8 @@ class DollarAnnotation(Annotation):
 
 
 class DollarParser(Parser):
-    """ Dollar format annotation parser """
+    """ **TODO:** Maarten
+    """
     parser_type = ParserType.MULTI_FILE
     box_type = DollarAnnotation
 

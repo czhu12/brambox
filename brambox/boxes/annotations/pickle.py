@@ -5,11 +5,6 @@
 """
 Pickle
 ------
-This parser generates a binary file of your annotations that can be parsed really fast.
-If you are using a python library for training your network, you can use this format to quickly read your annotations.
-
-Args:
-    keep_ignore (boolean, optional): Whether are not to save the ignore flag value of the annotations; Default **False**
 """
 import pickle
 from .annotation import *
@@ -59,7 +54,12 @@ class PickleAnnotation(Annotation):
 
 
 class PickleParser(Parser):
-    """ Pickle annotation parser """
+    """ This parser generates a binary file of your annotations that can be parsed really fast.
+    If you are using a python library for training your network, you can use this format to quickly read your annotations.
+
+    Args:
+        keep_ignore (boolean, optional): Whether are not to save the ignore flag value of the annotations; Default **False**
+    """
     parser_type = ParserType.SINGLE_FILE
     box_type = PickleAnnotation
     extension = '.pkl'

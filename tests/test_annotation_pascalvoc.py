@@ -1,7 +1,7 @@
 import unittest
 import xml.etree.ElementTree as ET
 from brambox.boxes.annotations.annotation import Annotation
-from brambox.boxes.annotations import PascalVOCAnnotation, PascalVOCParser
+from brambox.boxes.annotations import PascalVocAnnotation, PascalVocParser
 
 xml_string = """<annotation>
 <object>
@@ -46,10 +46,10 @@ xml_single_string = """<object>
 """
 
 
-class TestPascalVOCAnnotation(unittest.TestCase):
+class TestPascalVocAnnotation(unittest.TestCase):
     def setUp(self):
-        self.anno = PascalVOCAnnotation()
-        self.parser = PascalVOCParser()
+        self.anno = PascalVocAnnotation()
+        self.parser = PascalVocParser()
 
     def tearDown(self):
         pass

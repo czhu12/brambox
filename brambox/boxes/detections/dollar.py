@@ -1,12 +1,10 @@
 #
 #   Copyright EAVISE
 #   Author: Maarten Vandersteegen
-#   NOTE: for parsing PeopleDetect and dollar toolbox detection output
 #
 """
 Dollar
 ------
-**TODO:** Maarten
 """
 
 from .detection import *
@@ -37,7 +35,11 @@ class DollarDetection(Detection):
 
 
 class DollarParser(Parser):
-    """ Dollar detection format parser """
+    """ **TODO:** Maarten
+
+    Note:
+        For parsing PeopleDetect and dollar toolbox detection output
+    """
     parser_type = ParserType.SINGLE_FILE
     box_type = DollarDetection
 

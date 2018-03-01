@@ -5,32 +5,6 @@
 """
 YAML
 ----
-This parser generates a lightweight human readable annotation format.
-With only one file for the entire dataset, this format will save you precious HDD space and will also be parsed faster.
-
-Example:
-    >>> annotations.yaml
-        img1:
-          car:
-            - coords: [x,y,w,h]
-              lost: False
-              occlusion_fraction: 50.123
-              truncated_fraction: 0.0
-          person:
-            - coords: [x,y,w,h]
-              lost: False
-              occlusion_fraction: 0.0
-              truncated_fraction: 10.0
-            - coords: [x,y,w,h]
-              lost: False
-              occlusion_fraction: 0.0
-              truncated_fraction: 0.0
-        img2:
-          car:
-            - coords: [x,y,w,h]
-              lost: True
-              occlusion_fraction: 90.0
-              truncated_fraction: 76.0
 """
 
 
@@ -79,7 +53,33 @@ class YamlAnnotation(Annotation):
 
 
 class YamlParser(Parser):
-    """ YAML annotation parser """
+    """ This parser generates a lightweight human readable annotation format.
+    With only one file for the entire dataset, this format will save you precious HDD space and will also be parsed faster.
+
+    Example:
+        >>> annotations.yaml
+            img1:
+              car:
+                - coords: [x,y,w,h]
+                  lost: False
+                  occlusion_fraction: 50.123
+                  truncated_fraction: 0.0
+              person:
+                - coords: [x,y,w,h]
+                  lost: False
+                  occlusion_fraction: 0.0
+                  truncated_fraction: 10.0
+                - coords: [x,y,w,h]
+                  lost: False
+                  occlusion_fraction: 0.0
+                  truncated_fraction: 0.0
+            img2:
+              car:
+                - coords: [x,y,w,h]
+                  lost: True
+                  occlusion_fraction: 90.0
+                  truncated_fraction: 76.0
+    """
     parser_type = ParserType.SINGLE_FILE
     box_type = YamlAnnotation
     extension = '.yaml'

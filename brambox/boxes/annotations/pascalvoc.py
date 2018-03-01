@@ -5,50 +5,19 @@
 """
 Pascal VOC
 ----------
-This parser can parse annotations in the `pascal voc`_ format.
-This format consists of one xml file for every image.
-
-Example:
-    >>> image_000.xml
-        <annotation>
-          <object>
-            <name>horse</name>
-            <truncated>1</truncated>
-            <difficult>0</difficult>
-            <bndbox>
-              <xmin>100</xmin>
-              <ymin>200</ymin>
-              <xmax>300</xmax>
-              <ymax>400</ymax>
-            </bndbox>
-          </object>
-          <object>
-            <name>person</name>
-            <truncated>0</truncated>
-            <difficult>1</difficult>
-            <bndbox>
-              <xmin>110</xmin>
-              <ymin>20</ymin>
-              <xmax>200</xmax>
-              <ymax>350</ymax>
-            </bndbox>
-          </object>
-        </annotation>
-
-.. _pascal voc: http://host.robots.ox.ac.uk/pascal/VOC/
 """
 
 import xml.etree.ElementTree as ET
 
 from .annotation import *
 
-__all__ = ['PascalVOCAnnotation', 'PascalVOCParser']
+__all__ = ['PascalVocAnnotation', 'PascalVocParser']
 
 
-class PascalVOCAnnotation(Annotation):
-    """ Pascal VOC image annotation """
+class PascalVocAnnotation(Annotation):
+    """ Pascal Voc image annotation """
     def serialize(self):
-        """ generate a Pascal VOC object xml string """
+        """ generate a Pascal Voc object xml string """
         string = '<object>\n'
         string += f'\t<name>{self.class_label}</name>\n'
         string += '\t<pose>Unspecified</pose>\n'
@@ -65,7 +34,7 @@ class PascalVOCAnnotation(Annotation):
         return string
 
     def deserialize(self, xml_obj):
-        """ parse a Pascal VOC xml annotation string """
+        """ parse a Pascal Voc xml annotation string """
         self.class_label = xml_obj.find('name').text
         self.occluded = xml_obj.find('truncated').text == '1'
         self.difficult = xml_obj.find('difficult').text == '1'
@@ -82,10 +51,41 @@ class PascalVOCAnnotation(Annotation):
         return self
 
 
-class PascalVOCParser(Parser):
-    """ Pascal VOC annotation parser """
+class PascalVocParser(Parser):
+    """ This parser can parse annotations in the `pascal voc`_ format.
+    This format consists of one xml file for every image.
+
+    Example:
+        >>> image_000.xml
+            <annotation>
+              <object>
+                <name>horse</name>
+                <truncated>1</truncated>
+                <difficult>0</difficult>
+                <bndbox>
+                  <xmin>100</xmin>
+                  <ymin>200</ymin>
+                  <xmax>300</xmax>
+                  <ymax>400</ymax>
+                </bndbox>
+              </object>
+              <object>
+                <name>person</name>
+                <truncated>0</truncated>
+                <difficult>1</difficult>
+                <bndbox>
+                  <xmin>110</xmin>
+                  <ymin>20</ymin>
+                  <xmax>200</xmax>
+                  <ymax>350</ymax>
+                </bndbox>
+              </object>
+            </annotation>
+
+    .. _pascal voc: http://host.robots.ox.ac.uk/pascal/VOC/
+    """
     parser_type = ParserType.MULTI_FILE
-    box_type = PascalVOCAnnotation
+    box_type = PascalVocAnnotation
     extension = '.xml'
 
     def serialize(self, annotations):

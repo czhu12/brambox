@@ -5,7 +5,6 @@
 """
 Vatic
 -----
-**TODO:** Maarten
 """
 
 from .annotation import *
@@ -61,7 +60,8 @@ class VaticAnnotation(Annotation):
 
 
 class VaticParser(Parser):
-    """ VATIC tool annotation parser """
+    """ **TODO:** Maarten
+    """
     parser_type = ParserType.SINGLE_FILE
     box_type = VaticAnnotation
     extension = '.txt'

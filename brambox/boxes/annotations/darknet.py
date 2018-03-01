@@ -5,30 +5,7 @@
 """
 Darknet
 -------
-This is a parser for the annotation format used by darknet_.
-This format has one file for every image of the dataset, containing the annotations of that image.
-The coordinates in this file are saved as relative coordinates of the image dimensions.
-
-Args:
-    image_width (Number): This keyword argument is used to get the width of the images.
-    image_height (Number): This keyword argument is used to get the height of the images.
-    class_label_map (list or str, optional): This keyword argument contains a list of the differenct classes. It is used to convert between ``class_label_indices`` and ``class_labels``. Default **[]**
-
-Note:
-    If the ``class_label_map`` parameter is a string, it is considered a filename and the file will be read.
-    Every line of the file will then be considered as a class_label.
-
-Example:
-    >>> image_000.txt
-        <class_label_index> <x_center> <y_center> <width> <height>
-        <class_label_index> <x_center> <y_center> <width> <height>
-        <class_label_index> <x_center> <y_center> <width> <height>
-    >>> image_001.txt
-        <class_label_index> <x_center> <y_center> <width> <height>
-
-.. _darknet: https://pjreddie.com/darknet
 """
-
 from .annotation import *
 
 __all__ = ["DarknetAnnotation", "DarknetParser"]
@@ -85,7 +62,29 @@ class DarknetAnnotation(Annotation):
 
 
 class DarknetParser(Parser):
-    """ Darknet annotation parser """
+    """ This is a parser for the annotation format used by darknet_.
+    This format has one file for every image of the dataset, containing the annotations of that image.
+    The coordinates in this file are saved as relative coordinates of the image dimensions.
+
+    Args:
+        image_width (Number): This keyword argument is used to get the width of the images.
+        image_height (Number): This keyword argument is used to get the height of the images.
+        class_label_map (list or str, optional): This keyword argument contains a list of the different classes. It is used to convert between ``class_label_indices`` and ``class_labels``. Default **[]**
+
+    Note:
+        If the ``class_label_map`` parameter is a string, it is considered a filename and the file will be read.
+        Every line of the file will then be considered as a class_label.
+
+    Example:
+        >>> image_000.txt
+            <class_label_index> <x_center> <y_center> <width> <height>
+            <class_label_index> <x_center> <y_center> <width> <height>
+            <class_label_index> <x_center> <y_center> <width> <height>
+        >>> image_001.txt
+            <class_label_index> <x_center> <y_center> <width> <height>
+
+    .. _darknet: https://pjreddie.com/darknet
+    """
     parser_type = ParserType.MULTI_FILE
     box_type = DarknetAnnotation
 

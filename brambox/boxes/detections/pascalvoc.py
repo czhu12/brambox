@@ -5,30 +5,14 @@
 """
 Pascal VOC
 ----------
-This parser can parse detections in the `pascal voc`_ format.
-This format consists of one file per class of detection. |br|
-confidence_scores are saved as a number between 0-1, coordinates are saved as pixel values.
-
-Args:
-    class_label (string): This keyword argument contains the ``class_label`` for the current file that is being parsed.
-
-Example:
-    >>> person.txt
-        <img_000> <confidence_score> <x_left> <y_upper> <x_right> <y_lower>
-        <img_000> <confidence_score> <x_left> <y_upper> <x_right> <y_lower>
-        <img_073> <confidence_score> <x_left> <y_upper> <x_right> <y_lower>
-    >>> cat.txt
-        <img_011> <confidence_score> <x_left> <y_upper> <x_right> <y_lower>
-
-.. _pascal voc: http://host.robots.ox.ac.uk/pascal/VOC/
 """
 
 from .detection import *
 
-__all__ = ["PascalVOCDetection", "PascalVOCParser"]
+__all__ = ["PascalVocDetection", "PascalVocParser"]
 
 
-class PascalVOCDetection(Detection):
+class PascalVocDetection(Detection):
     """ Pascal VOC image detection """
     def serialize(self):
         """ generate a Pascal VOC detection string """
@@ -50,10 +34,26 @@ class PascalVOCDetection(Detection):
         return elements[0]
 
 
-class PascalVOCParser(Parser):
-    """ Pascal VOC detection parser """
+class PascalVocParser(Parser):
+    """ This parser can parse detections in the `pascal voc`_ format.
+    This format consists of one file per class of detection. |br|
+    confidence_scores are saved as a number between 0-1, coordinates are saved as pixel values.
+
+    Args:
+        class_label (string): This keyword argument contains the ``class_label`` for the current file that is being parsed.
+
+    Example:
+        >>> person.txt
+            <img_000> <confidence_score> <x_left> <y_upper> <x_right> <y_lower>
+            <img_000> <confidence_score> <x_left> <y_upper> <x_right> <y_lower>
+            <img_073> <confidence_score> <x_left> <y_upper> <x_right> <y_lower>
+        >>> cat.txt
+            <img_011> <confidence_score> <x_left> <y_upper> <x_right> <y_lower>
+
+    .. _pascal voc: http://host.robots.ox.ac.uk/pascal/VOC/
+    """
     parser_type = ParserType.SINGLE_FILE
-    box_type = PascalVOCDetection
+    box_type = PascalVocDetection
     extension = '.txt'
 
     def __init__(self, **kwargs):
