@@ -7,6 +7,7 @@
 These modifier functions allow to change certain aspects of your annotations and detections.
 """
 import collections
+from ..annotations import Annotation
 
 
 def modify(boxes, modifier_fns):
@@ -128,6 +129,7 @@ class CropModifier:
         intersection_threshold (number or list, optional): Fraction of the bounding box that should still be inside the cropped ``area``; Default **0**
         move_origin (boolean, optional): This value indicates whether we should move the origin of the coordinate system to the top-left corner of the cropped ``area``; Default **True**
         discard_lost (boolean, optional): Whether to discard bounding boxes that are not in the ``area`` or just set the ``lost`` flag to **True**; Default **True**
+        update_truncated (boolean, optional): *!For annotations only!* Update the ``truncated_fraction`` property if necessary; Default **False**
 
     Note:
         The ``area`` parameter can have multiple type of values. |br|
@@ -144,7 +146,7 @@ class CropModifier:
         If you use a **(width_thresh, height_thresh)** tuple, then the following formula is used:
         :math:`\\frac {width_{box\\ in\\ cropped\\ area}} {width_{box}} \\geq width\\_thresh \\ \\& \\  \\frac {height_{box\\ in\\ cropped\\ area}} {height_{box}} \\geq height\\_thresh`
     """
-    def __init__(self, area=float('Inf'), intersection_threshold=0, move_origin=True, discard_lost=True):
+    def __init__(self, area=float('Inf'), intersection_threshold=0, move_origin=True, discard_lost=True, update_truncated=False):
         if isinstance(area, collections.Sequence):
             if len(area) >= 4:
                 self.area = tuple(area[:4])
@@ -167,6 +169,7 @@ class CropModifier:
 
         self.move_origin = move_origin
         self.discard_lost = discard_lost
+        self.update_truncated = update_truncated
 
     def __call__(self, box):
         x1 = max(self.area[0], box.x_top_left)
@@ -185,11 +188,18 @@ class CropModifier:
                 return None
             else:
                 box.lost = True
+                if self.update_truncated and isinstance(box, Annotation) and box.truncated_fraction < 1:
+                    if w <= 0 or h <= 0:
+                        box.truncated_fraction = 1
+                    else:
+                        box.truncated_fraction = max(0, 1 - ((w * h) / (box.width * box.height * 1/(1-box.truncated_fraction))))
                 if self.move_origin:
                     box.x_top_left -= self.area[0]
                     box.y_top_left -= self.area[1]
                 return box
         else:
+            if self.update_truncated and isinstance(box, Annotation) and box.truncated_fraction < 1:
+                box.truncated_fraction = max(0, 1 - ((w * h) / (box.width * box.height * 1/(1-box.truncated_fraction))))
             box.x_top_left = x1
             box.y_top_left = y1
             box.width = w
