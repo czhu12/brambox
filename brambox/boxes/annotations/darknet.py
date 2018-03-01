@@ -66,7 +66,7 @@ class DarknetParser(Parser):
     This format has one file for every image of the dataset, containing the annotations of that image.
     The coordinates in this file are saved as relative coordinates of the image dimensions.
 
-    Args:
+    Keyword Args:
         image_width (Number): This keyword argument is used to get the width of the images.
         image_height (Number): This keyword argument is used to get the height of the images.
         class_label_map (list or str, optional): This keyword argument contains a list of the different classes. It is used to convert between ``class_label_indices`` and ``class_labels``. Default **[]**

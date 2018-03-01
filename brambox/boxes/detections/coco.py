@@ -39,10 +39,30 @@ class CocoDetection(Detection):
 
 
 class CocoParser(Parser):
-    """ **TODO:** Maarten
+    """
+    COCO detection format parser to parse the coco detection output of the darknet_ DL framework.
 
-    Note:
-        This coco format is based on the output of the darknet DL framework.
+    Keyword Args:
+        class_label_map (list): list of class label strings where the ``category_id`` in the json file \
+        is used as an index minus one on this list to get the class labels
+
+    A text file contains multiple detections formated using json.
+    The file contains one json list where each element represents one bounding box.
+    The fields within the elements are:
+
+        :image_id:      identifier of the image (integer)
+        :category_id:   class label index (where 1 is the first class label i.s.o. 0) (integer)
+        :bbox:          json list containing bounding box coordinates [top left x, top left y, width, height] (float values)
+        :score:         confidence score between 0 and 1 (float)
+
+    Example:
+
+        >>> detection_results.json
+        [
+          {"image_id":0, "category_id":1, "bbox":[501.484039, 209.805313, 28.525848, 50.727005], "score":0.189649},
+          {"image_id":1, "category_id":1, "bbox":[526.957703, 219.587631, 25.830444, 55.723373], "score":0.477851}
+        ]
+    .. _darknet: https://pjreddie.com/darknet/
     """
     parser_type = ParserType.SINGLE_FILE
     box_type = CocoDetection
