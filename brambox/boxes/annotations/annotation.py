@@ -11,7 +11,7 @@ __all__ = ['Annotation', 'ParserType', 'Parser']
 
 
 class Annotation(b.Box):
-    """ This is a generic annotation class that provides some base functionality all annotations need.
+    """ This is a generic annotation class that provides some common functionality all annotations need.
     It builds upon :class:`~brambox.boxes.box.Box`.
 
     Attributes:
@@ -19,14 +19,19 @@ class Annotation(b.Box):
         difficult (Boolean): Flag indicating whether the annotation is considered difficult; Default **False**
         occluded (Boolean): Flag indicating whether the annotation is occluded; Default **False**
         ignore (Boolean): Flag that is used to ignore a bounding box during statistics processing; Default **False**
-        visible_x_top_left (Number): X pixel coordinate of the top left corner of the bounding box that is visible; Default **0.0**
-        visible_y_top_left (Number): Y pixel coordinate of the top left corner of the bounding box that is visible; Default **0.0**
+        occlusion_fraction (Number): value between 0 and 1 that indicates the amount of occlusion (1 = completely occluded); Default **0.0**
+        truncated_fraction (Number): value between 0 and 1 that indicates the amount of truncation (1 = completely truncated); Default **0.0**
+        visible_x_top_left (Number): X pixel coordinate of the top left corner of the bounding box that frames the visible part of the object; Default **0.0**
+        visible_y_top_left (Number): Y pixel coordinate of the top left corner of the bounding box that frames the visible part of the object; Default **0.0**
         visible_width (Number): Width of the visible bounding box in pixels; Default **0.0**
         visible_height (Number): Height of the visible bounding box in pixels; Default **0.0**
 
     Note:
         The ``visible_x_top_left``, ``visible_y_top_left``, ``visible_width`` and ``visible_height`` attributes
         are only valid when the ``occluded`` flag is set to **True**.
+    Note:
+        The ``occluded`` flag is actually a property that returns **True** if the ``occlusion_fraction`` > **0.0** and **False** if
+        the occlusion_fraction equals **0.0**. Thus modifying the ``occlusion_fraction`` will affect the ``occluded`` flag and visa versa.
     """
     def __init__(self):
         """ x_top_left,y_top_left,width,height are in pixel coordinates """

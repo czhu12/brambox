@@ -2,6 +2,7 @@
 #   Copyright EAVISE
 #   Author: Maarten Vandersteegen
 #
+
 """
 Dollar
 ------
@@ -56,18 +57,55 @@ class DollarAnnotation(Annotation):
 
 
 class DollarParser(Parser):
-    """ **TODO:** Maarten
+    """
+    This parser is designed to parse the version3 text based dollar annotation format from Piotr Dollar's MATLAB toolbox_.
+
+    Keyword Args:
+        occlusion_tag_map (list, optional): When the occluded flag in the dollar text file (see below) is used a an occlusion level tag, \
+        its value is used as an index on this list to obtain an occlusion fraction that will be stored in the ``occlusion_fraction`` attribute.
+
+    The dollar format has one .txt file for every image of the dataset where each line within a file represents a bounding box.
+    Each line is a space separated list of values structured as follows:
+
+        <label> <x> <y> <w> <h> <occluded> <vx> <vy> <vw> <vh> <ignore> <angle>
+
+    where:
+
+        :label:     class label name (string)
+        :x:         left top x coordinate of the bounding box in pixels (integer)
+        :y:         left top y coordinate of the bounding box in pixels (integer)
+        :w:         width of the bounding box in pixels (integer)
+        :h:         height of the bounding box in pixels (integer)
+        :occluded:  1 indicating the object is occluded, 0 indicating the object is not occluded
+        :vx:        left top x coordinate of the inner bounding box that frames the non-occluded part of the object (a.k.a. the visible part)
+        :vy:        left top y coordinate of the inner bounding box that frames the non-occluded part of the object (a.k.a. the visible part)
+        :vw:        width of the inner bounding box that frames the non-occluded part of the object (a.k.a. the visible part)
+        :vh:        height of the inner bounding box that frames the non-occluded part of the object (a.k.a. the visible part)
+        :lost:      1 indicating the object is no visible in the image, 0 indicating the object is (partially) visible
+        :angle:     [0-360] degrees orientation of the bounding box (currently not used)
+
+    Note:
+        if no visible bounding box is annotated, [vx, vy, vw, vh] equal 0.
+
+    Example:
+        >>> image_000.txt
+        % bbGt version=3
+        person 488 232 34 100 0 0 0 0 0 0 0
+        person 576 219 27 68 0 0 0 0 0 0 0
+
+    .. _toolbox: https://github.com/pdollar/toolbox/blob/master/detector/bbGt.m
     """
     parser_type = ParserType.MULTI_FILE
     box_type = DollarAnnotation
 
     def __init__(self, **kwargs):
+
         self.occlusion_tag_map = None
         if 'occlusion_tag_map' in kwargs:
             self.occlusion_tag_map = kwargs['occlusion_tag_map']
 
     def deserialize(self, string):
-        """ deserialize a dollar string into a list of annotations
+        """ deserialize a string containing the content of a dollar .txt file
 
         This deserializer checks for header/comment strings in dollar strings
         """
