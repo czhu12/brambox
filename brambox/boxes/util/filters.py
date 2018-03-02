@@ -166,7 +166,7 @@ class OcclusionAreaFilter:
             # calc visible area fraction
             visible_fraction = area_visible / (box.width * box.height)
         else:
-            visible_fraction = 1.0 - box.occlusion_fraction
+            visible_fraction = 1.0 - box.occluded_fraction
 
         return visible_fraction >= self.visible_range[0] and visible_fraction <= self.visible_range[1]
 

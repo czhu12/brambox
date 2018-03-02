@@ -44,7 +44,7 @@ class DollarAnnotation(Annotation):
         if occlusion_tag_map is None:
             self.occluded = elements[5] != '0'
         else:
-            self.occlusion_fraction = occlusion_tag_map[int(elements[5])]
+            self.occluded_fraction = occlusion_tag_map[int(elements[5])]
         self.visible_x_top_left = float(elements[6])
         self.visible_y_top_left = float(elements[7])
         self.visible_width = float(elements[8])
@@ -62,7 +62,7 @@ class DollarParser(Parser):
 
     Keyword Args:
         occlusion_tag_map (list, optional): When the occluded flag in the dollar text file (see below) is used a an occlusion level tag, \
-        its value is used as an index on this list to obtain an occlusion fraction that will be stored in the ``occlusion_fraction`` attribute.
+        its value is used as an index on this list to obtain an occlusion fraction that will be stored in the ``occluded_fraction`` attribute.
 
     The dollar format has one .txt file for every image of the dataset where each line within a file represents a bounding box.
     Each line is a space separated list of values structured as follows:

@@ -23,7 +23,7 @@ class YamlAnnotation(Annotation):
                 {
                     'coords': [round(self.x_top_left), round(self.y_top_left), round(self.width), round(self.height)],
                     'lost': self.lost,
-                    'occlusion_fraction': self.occlusion_fraction*100,
+                    'occluded_fraction': self.occluded_fraction*100,
                     'truncated_fraction': self.truncated_fraction*100,
                 }
                 )
@@ -37,14 +37,12 @@ class YamlAnnotation(Annotation):
         self.height = float(yaml_obj['coords'][3])
         self.lost = yaml_obj['lost']
 
-        if 'occlusion_fraction' not in yaml_obj:    # Backward compatible with older versions -> May be removed after new version is regularized
-            # TODO : logging #4 (deprecation warning)
-            self.occlusion_fraction = float(yaml_obj['occluded'])
+        if 'occluded_fraction' not in yaml_obj:    # Backward compatible with older versions
+            self.occluded_fraction = float(yaml_obj['occluded'])
         else:
-            self.occlusion_fraction = yaml_obj['occlusion_fraction']/100
+            self.occluded_fraction = yaml_obj['occluded_fraction']/100
 
-        if 'truncated_fraction' not in yaml_obj:    # Backward compatible with older versions -> May be removed after new version is regularized
-            # TODO : logging #4 (deprecation warning)
+        if 'truncated_fraction' not in yaml_obj:    # Backward compatible with older versions
             self.truncated_fraction = 0.0
         else:
             self.truncated_fraction = yaml_obj['truncated_fraction']/100
@@ -63,22 +61,22 @@ class YamlParser(Parser):
               car:
                 - coords: [x,y,w,h]
                   lost: False
-                  occlusion_fraction: 50.123
+                  occluded_fraction: 50.123
                   truncated_fraction: 0.0
               person:
                 - coords: [x,y,w,h]
                   lost: False
-                  occlusion_fraction: 0.0
+                  occluded_fraction: 0.0
                   truncated_fraction: 10.0
                 - coords: [x,y,w,h]
                   lost: False
-                  occlusion_fraction: 0.0
+                  occluded_fraction: 0.0
                   truncated_fraction: 0.0
             img2:
               car:
                 - coords: [x,y,w,h]
                   lost: True
-                  occlusion_fraction: 90.0
+                  occluded_fraction: 90.0
                   truncated_fraction: 76.0
     """
     parser_type = ParserType.SINGLE_FILE
