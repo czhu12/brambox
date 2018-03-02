@@ -6,10 +6,12 @@
 Pickle
 ------
 """
+import logging
 import pickle
 from .annotation import *
 
 __all__ = ['PickleAnnotation', 'PickleParser']
+log = logging.getLogger(__name__)
 
 
 class PickleAnnotation(Annotation):
@@ -32,12 +34,12 @@ class PickleAnnotation(Annotation):
         return state
 
     def __setstate__(self, state):
-        if 'occlusion_fraction' not in state:   # Backward compatible with older versions -> May be removed after new version is regularized
-            # TODO : logging #4 (deprecation warning)
-            state['occlusion_fraction'] = float(state['occluded'])
+        if 'occluded_fraction' not in state:   # Backward compatible with older versions
+            log.deprecated('You are using an old pickle format that will be deprecated in newer versions. Consider to save your annotations with the new format.')
+            state['occluded_fraction'] = float(state['occluded'])
             del state['occluded']
-        if 'truncated_fraction' not in state:   # Backward compatible with older versions -> May be removed after new version is regularized
-            # TODO : logging #4 (deprecation warning)
+        if 'truncated_fraction' not in state:   # Backward compatible with older versions
+            log.deprecated('You are using an old pickle format that will be deprecated in newer versions. Consider to save your annotations with the new format.')
             state['truncated_fraction'] = 0.0
 
         self.__dict__.update(state)
@@ -71,7 +73,7 @@ class PickleParser(Parser):
         try:
             self.keep_ignore = kwargs['keep_ignore']
         except KeyError:
-            # TODO : logging #4
+            log.info("No 'keep_ignore' kwarg found, defaulting to False.")
             self.keep_ignore = False
 
     def serialize(self, annotations):

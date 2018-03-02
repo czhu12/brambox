@@ -17,9 +17,9 @@ class KittiAnnotation(Annotation):
     def serialize(self):
         """ generate a KITTI annotation string """
         truncated = 1.0 if self.lost else self.truncated_fraction
-        if self.occlusion_fraction >= 0.5:
+        if self.occluded_fraction >= 0.5:
             occluded = 2
-        elif self.occlusion_fraction > 0.0:
+        elif self.occluded_fraction > 0.0:
             occluded = 1
         else:
             occluded = 0
@@ -38,11 +38,11 @@ class KittiAnnotation(Annotation):
         self.height = float(elements[7]) - self.y_top_left
 
         if elements[2] == '1':
-            self.occlusion_fraction = 0.25
+            self.occluded_fraction = 0.25
         elif elements[2] == '2':
-            self.occlusion_fraction = 0.5
+            self.occluded_fraction = 0.5
         else:
-            self.occlusion_fraction = 0.0
+            self.occluded_fraction = 0.0
 
 
 class KittiParser(Parser):
@@ -83,7 +83,7 @@ class KittiParser(Parser):
             <class_label> <truncated_fraction> <occluded_state> -10 <bbox_left> <bbox_top> <bbox_right> <bbox_bottom> -1 -1 -1 -1000 -1000 -1000 -10
 
     Note:
-        This parser will convert the ``occluded_state`` to an ``occlusion_fraction``. |br|
+        This parser will convert the ``occluded_state`` to an ``occluded_fraction``. |br|
         Partly occluded (1) will be converted to a fraction of 0.25 and largely occluded (2) to 0.5.
         The other states will be converted to a fraction of 0. |br|
         When serializing, all fractions bigger or equal to 0.5 will be converted to largely occluded (2),

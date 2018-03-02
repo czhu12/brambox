@@ -89,7 +89,7 @@ class TestDollarAnnotation(unittest.TestCase):
         string = "person 0 0 0 0 2 0 0 0 0 0 0"
         self.anno.deserialize(string, [0.0, 0.25, 0.75])
         self.assertTrue(self.anno.occluded)
-        self.assertAlmostEqual(self.anno.occlusion_fraction, 0.75)
+        self.assertAlmostEqual(self.anno.occluded_fraction, 0.75)
 
 
 class TestDollarParser(unittest.TestCase):

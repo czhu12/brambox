@@ -89,7 +89,7 @@ class DollarParser(Parser):
         try:
             self.class_label_map = kwargs['class_label_map']
         except KeyError:
-            raise ValueError("Dollar detection format requires 'class_label_map' keyword arguments")
+            raise ValueError("Dollar detection format requires a 'class_label_map' kwarg")
 
     def serialize(self, detections):
         """ Serialize input detection to dollar detection strings """
