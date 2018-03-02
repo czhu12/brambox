@@ -12,6 +12,8 @@ keys = {
     'prev-stride': ['ctrl+left', 'ctrl+a', 'ctrl+h', 'cmd+left', 'cmd+a', 'cmd+h'],
     'increment-stride': ['up', 'w', 'k'],
     'decrement-stride': ['down', 's', 'j'],
+    'start': ['home', 'g'],
+    'end': ['end', 'G'],
     'info': ['i'],
     'detailed-info': ['I'],
     'help': ['?'],
@@ -44,13 +46,8 @@ class StoreKwargs(argparse.Action):
 class BoxImages:
     def __init__(self, args):
         self.boxes = bbb.parse(args.format, args.file, **args.kwargs)
-        if args.ignore is not None:
-            ignore_fn = eval(args.ignore)
-            bbb.filter_ignore(self.boxes, [ignore_fn])
-            self.ignore = True
-        else:
-            self.ignore = False
         self.ids = sorted(list(self.boxes.keys()))
+        self.faded = eval(args.faded) if args.faded is not None else None
 
         self.folder = args.imagefolder
         self.ext = args.extension
@@ -65,7 +62,7 @@ class BoxImages:
         """ Returns (id, img) tuple """
         img_idx = self.ids[idx]
         img_path = os.path.join(self.folder, img_idx + self.ext)
-        img = bbb.draw_boxes(img_path, self.boxes[img_idx], show_labels=self.labels, ignore=self.ignore)
+        img = bbb.draw_boxes(img_path, self.boxes[img_idx], show_labels=self.labels, faded=self.faded)
         return img_idx, img
 
 
@@ -98,6 +95,12 @@ def on_key_press(event):
         if stride < 10000:
             stride *= 10
         print(f'Stride: {stride}')
+    elif event.key in keys['start']:
+        change = True
+        number = 0
+    elif event.key in keys['end']:
+        change = True
+        number = len(imgs)-1
     elif event.key in keys['info'] or event.key in keys['detailed-info']:
         detailed = True if event.key in keys['detailed-info'] else False
         boxes = imgs.boxes[imgs.ids[number]]
@@ -149,7 +152,7 @@ def main():
     parser.add_argument('imagefolder', help='Image folder')
     parser.add_argument('--extension', '-x', metavar='.ext', help='Image extension (default .png)', default='.png')
     parser.add_argument('--show-labels', '-l', help='Show labels above bounding boxes', action='store_true')
-    parser.add_argument('--ignore', '-i', metavar='lambda', help='Lambda function to pass to filter_ignore', default=None)
+    parser.add_argument('--faded', '-f', metavar='lambda', help='Lambda function to pass as faded parameter', default=None)
     parser.add_argument('--kwargs', metavar='KW=V', help='Keyword arguments for the parser', nargs='*', action=StoreKwargs, default={})
     args = parser.parse_args()
 

@@ -4,6 +4,7 @@
 #
 
 import os
+from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 try:
     import cv2
@@ -22,7 +23,7 @@ except FileNotFoundError:
     font = ImageFont.load_default()
 
 
-def draw_boxes(img, boxes, color=None, show_labels=False, ignore=None, method=1):
+def draw_boxes(img, boxes, color=None, show_labels=False, faded=None, method=1):
     """ Draws bounding boxes on the image.
 
     Args:
@@ -30,18 +31,11 @@ def draw_boxes(img, boxes, color=None, show_labels=False, ignore=None, method=1)
         boxes (list): Bounding boxes to draw
         color (dict or list, optional): Color to use for drawing; Default **every label will get its own color, up to 8 labels**
         show_labels (Boolean, optional): Whether or not to print the label names; Default **False**
-        ignore (Boolean, optional): Whether are not to draw ignored annotations transparently; Default **Draw all annotations, regardless of ignore**
+        faded (function, optional): Function that determines whether we draw an annotation faded or not; Default **None**
         method (draw_boxes.METHOD_CV or draw_boxes.METHOD_PIL, optional): Whether to use OpenCV or Pillow for opening the image (only useful when filename given); Default: **draw_boxes.METHOD_PIL**
 
     Returns:
         OpenCV or PIL image: Image with bounding boxes drawn
-
-    Note:
-        the ``ignore`` parameter controls what happens with ignored annotations. |br|
-        If set to **True** ignored annotations will be drawn with a transparent rectangle,
-        if **False** they will not be drawn.
-        If you do not set this argument the function will draw all annotations the same,
-        regardless of their ``ignore`` attribute.
 
     Note:
         The ``color`` parameter can either be a dictionary or a list containing a single RGB color.
@@ -64,7 +58,7 @@ def draw_boxes(img, boxes, color=None, show_labels=False, ignore=None, method=1)
         raise ImportError('opencv is not installed')
 
     # Open image
-    if isinstance(img, str):
+    if isinstance(img, str) or isinstance(img, Path):
         if method == draw_boxes.METHOD_PIL:
             original = Image.open(img)
             img = ImageDraw.Draw(original)
@@ -80,6 +74,7 @@ def draw_boxes(img, boxes, color=None, show_labels=False, ignore=None, method=1)
         raise TypeError(f'Unkown image type [{type(img)}]')
 
     # Draw boxes
+    faded = faded if faded is not None else lambda box: False
     label_color = {}
     color_counter = 0
     for box in boxes:
@@ -88,13 +83,15 @@ def draw_boxes(img, boxes, color=None, show_labels=False, ignore=None, method=1)
 
         # Type specific
         if isinstance(box, Annotation):
-            if box.lost or (box.ignore and ignore is False):
+            if box.lost:
                 continue
-            if ignore and box.ignore:
+            if faded(box):
                 special = True
             if show_labels:
                 text = box.class_label
         elif isinstance(box, Detection):
+            if faded(box):
+                special = True
             if show_labels:
                 text = f'{box.class_label} {100*box.confidence:.2f}%'
         else:
