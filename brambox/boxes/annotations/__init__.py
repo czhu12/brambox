@@ -7,6 +7,7 @@ This package contains the actual annotation parsers. These parsers can be used t
 from .cvc import *
 from .darknet import *
 from .dollar import *
+from .kitti import *
 from .pascalvoc import *
 from .pickle import *
 from .vatic import *

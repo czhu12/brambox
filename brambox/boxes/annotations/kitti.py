@@ -17,6 +17,7 @@ class KittiAnnotation(Annotation):
     def serialize(self):
         """ generate a KITTI annotation string """
         truncated = 1.0 if self.lost else self.truncated_fraction
+        class_label = self.class_label if self.class_label != '' else '?'
         if self.occluded_fraction >= 0.5:
             occluded = 2
         elif self.occluded_fraction > 0.0:
@@ -24,13 +25,13 @@ class KittiAnnotation(Annotation):
         else:
             occluded = 0
 
-        return f'{self.class_label} {truncated} {occluded} -10 {self.x_top_left} {self.y_top_left} {self.x_top_left+self.width} {self.y_top_left+self.height} -1 -1 -1 -1000 -1000 -1000 -10'
+        return f'{class_label} {truncated:.2f} {occluded} -10 {self.x_top_left:.2f} {self.y_top_left:.2f} {self.x_top_left+self.width:.2f} {self.y_top_left+self.height:.2f} -1 -1 -1 -1000 -1000 -1000 -10'
 
     def deserialize(self, string):
         """ parse a KITTI annotation string """
         elements = string.split()
 
-        self.class_label = elements[0]
+        self.class_label = elements[0] if elements[0] != '?' else ''
         self.truncated_fraction = max(float(elements[1]), 0.0)
         self.x_top_left = float(elements[4])
         self.y_top_left = float(elements[5])
