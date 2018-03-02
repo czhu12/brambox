@@ -7,17 +7,24 @@
 These functions allow to filter out boxes depending on certain criteria.
 """
 
+import copy
+from ..statistics import *
+from ..statistics.util import match_detection_to_annotations
+
 
 def filter_ignore(annotations, filter_fns):
     """ Set the ``ignore`` attribute of the annotations to **True** when they do not pass the provided filter functions.
 
     Args:
         annotations (dict or list): Dictionary containing box objects per image ``{"image_id": [box, box, ...], ...}`` or list of annotations
-        filter_fns (list): List of filter functions that get applied
+        filter_fns (list or fn): List of filter functions that get applied or single filter function
 
     Returns:
         (dict or list): boxes after filtering
     """
+    if callable(filter_fns):
+        filter_fns = [filter_fns]
+
     if isinstance(annotations, dict):
         for _, values in annotations.items():
             for anno in values:
@@ -42,7 +49,7 @@ def filter_discard(boxes, filter_fns):
 
     Args:
         boxes (dict or list): Dictionary containing box objects per image ``{"image_id": [box, box, ...], ...}`` or list of bounding boxes
-        filter_fns (list): List of filter functions that get applied
+        filter_fns (list or fn): List of filter functions that get applied or single filter function
 
     Returns:
         (dict or list): boxes after filtering
@@ -56,6 +63,9 @@ def filter_discard(boxes, filter_fns):
         >>>
         >>> new_boxes = bbb.filter_discard(copy.deepcopy(boxes), [filter_fns, ...])
     """
+    if callable(filter_fns):
+        filter_fns = [filter_fns]
+
     if isinstance(boxes, dict):
         for image_id, values in boxes.items():
             for i in range(len(values)-1, -1, -1):
@@ -71,6 +81,48 @@ def filter_discard(boxes, filter_fns):
                     break
 
     return boxes
+
+
+def filter_split(boxes, filter_fns):
+    """ Split bounding boxes in 2 sets, based upon whether or not they pass the filters.
+
+    Args:
+        boxes (dict or list): Dictionary containing box objects per image ``{"image_id": [box, box, ...], ...}`` or list of bounding boxes
+        filter_fns (list or fn): List of filter functions that get applied or single filter function
+
+    Returns:
+        (tuple of dict or list): pass,fail bounding boxes
+    """
+    if callable(filter_fns):
+        filter_fns = [filter_fns]
+
+    if isinstance(boxes, dict):
+        ok, nok = dict(), dict()
+        for key, values in boxes.items():
+            ok[key] = []
+            nok[key] = []
+            for box in values:
+                failed = False
+                for fn in filter_fns:
+                    if not fn(box):
+                        nok[key].append(box)
+                        failed = True
+                        break
+                if not failed:
+                    ok[key].append(box)
+    else:
+        ok, nok = [], []
+        for box in boxes:
+            failed = False
+            for fn in filter_fns:
+                if not fn(box):
+                    nok.append(box)
+                    failed = True
+                    break
+            if not failed:
+                ok.append(box)
+
+    return ok, nok
 
 
 class ImageBoundsFilter:
@@ -149,3 +201,26 @@ class ClassLabelFilter:
 
     def __call__(self, box):
         return box.class_label in self.accepted_labels
+
+
+class MatchFilter:
+    """ Checks whether the bounding box matches with bounding boxes from a list.
+
+    Note:
+        Needs extra explaining
+    """
+    def __init__(self, boxes, remove_on_match=True, match_threshold=0.5, match_criteria=iou):
+        self.boxes = copy.deepcopy(boxes)
+        self.rm = remove_on_match
+        self.thresh = match_threshold
+        self.fn = match_criteria
+
+    def __call__(self, box):
+        match = match_detection_to_annotations(box, self.boxes, self.thresh, self.fn)
+
+        if match is None:
+            return False
+
+        if self.rm:
+            del self.boxes[match]
+        return True
