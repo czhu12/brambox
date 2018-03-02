@@ -69,29 +69,31 @@ class DollarParser(Parser):
 
         <label> <x> <y> <w> <h> <occluded> <vx> <vy> <vw> <vh> <ignore> <angle>
 
-    where:
-
-        :label:     class label name (string)
-        :x:         left top x coordinate of the bounding box in pixels (integer)
-        :y:         left top y coordinate of the bounding box in pixels (integer)
-        :w:         width of the bounding box in pixels (integer)
-        :h:         height of the bounding box in pixels (integer)
-        :occluded:  1 indicating the object is occluded, 0 indicating the object is not occluded
-        :vx:        left top x coordinate of the inner bounding box that frames the non-occluded part of the object (a.k.a. the visible part)
-        :vy:        left top y coordinate of the inner bounding box that frames the non-occluded part of the object (a.k.a. the visible part)
-        :vw:        width of the inner bounding box that frames the non-occluded part of the object (a.k.a. the visible part)
-        :vh:        height of the inner bounding box that frames the non-occluded part of the object (a.k.a. the visible part)
-        :lost:      1 indicating the object is no visible in the image, 0 indicating the object is (partially) visible
-        :angle:     [0-360] degrees orientation of the bounding box (currently not used)
-
-    Note:
-        if no visible bounding box is annotated, [vx, vy, vw, vh] equal 0.
+    ========  ===========
+    Name      Description
+    ========  ===========
+    label     class label name (string)
+    x         left top x coordinate of the bounding box in pixels (integer)
+    y         left top y coordinate of the bounding box in pixels (integer)
+    w         width of the bounding box in pixels (integer)
+    h         height of the bounding box in pixels (integer)
+    occluded  1 indicating the object is occluded, 0 indicating the object is not occluded
+    vx        left top x coordinate of the inner bounding box that frames the non-occluded part of the object (the visible part)
+    vy        left top y coordinate of the inner bounding box that frames the non-occluded part of the object (the visible part)
+    vw        width of the inner bounding box that frames the non-occluded part of the object (the visible part)
+    vh        height of the inner bounding box that frames the non-occluded part of the object (the visible part)
+    lost      1 indicating the object is no visible in the image, 0 indicating the object is (partially) visible
+    angle     [0-360] degrees orientation of the bounding box (currently not used)
+    ========  ===========
 
     Example:
         >>> image_000.txt
-        % bbGt version=3
-        person 488 232 34 100 0 0 0 0 0 0 0
-        person 576 219 27 68 0 0 0 0 0 0 0
+            % bbGt version=3
+            person 488 232 34 100 0 0 0 0 0 0 0
+            person 576 219 27 68 0 0 0 0 0 0 0
+
+    Note:
+        if no visible bounding box is annotated, [vx, vy, vw, vh] are equal to 0.
 
     .. _toolbox: https://github.com/pdollar/toolbox/blob/master/detector/bbGt.m
     """

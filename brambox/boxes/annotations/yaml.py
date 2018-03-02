@@ -53,7 +53,8 @@ class YamlAnnotation(Annotation):
 
 
 class YamlParser(Parser):
-    """ This parser generates a lightweight human readable annotation format.
+    """
+    This parser generates a lightweight human readable annotation format.
     With only one file for the entire dataset, this format will save you precious HDD space and will also be parsed faster.
 
     Example:

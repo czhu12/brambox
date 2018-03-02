@@ -49,19 +49,22 @@ class DollarParser(Parser):
 
         <image_id>,<x>,<y>,<w>,<h>,<score>
 
-    where:
-        :image_id:  image identifier that this annotation belong to (integer)
-        :x:         top left x coordinate of the bounding box in pixels (integer)
-        :y:         top left y coordinate of the bounding box in pixels (integer)
-        :w:         width of the bounding box in pixels (integer)
-        :h:         height of the bounding box in pixels (integer)
-        :score:     relative detection score not limited between boundaries (float)
+    =========  ===========
+    Name       Description
+    =========  ===========
+    image_id   image identifier that this annotation belong to (integer)
+    x          top left x coordinate of the bounding box in pixels (integer)
+    y          top left y coordinate of the bounding box in pixels (integer)
+    w          width of the bounding box in pixels (integer)
+    h          height of the bounding box in pixels (integer)
+    score      relative detection score not limited between boundaries (float)
+    =========  ===========
 
     Example:
         >>> video_000.txt
-        20,503.75,213,20.5,50,74.8391
-        20,540.8,166.4,37.4857,91.4286,56.4761
-        20,519.034,186.602,31.6574,77.2131,51.2428
+            20,503.75,213,20.5,50,74.8391
+            20,540.8,166.4,37.4857,91.4286,56.4761
+            20,519.034,186.602,31.6574,77.2131,51.2428
 
     Note:
         The image identifier is subtracted with 1 during parsing so parsed image id 1 refers to

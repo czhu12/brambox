@@ -14,7 +14,8 @@ __all__ = ["PickleParser"]
 
 
 class PickleParser(Parser):
-    """ This parser generates a binary file of your detections that can be parsed really fast.
+    """
+    This parser generates a binary file of your detections that can be parsed really fast.
     If you are using a python library for testing your network, you can use this format to quickly save your detections.
     """
     parser_type = ParserType.SINGLE_FILE

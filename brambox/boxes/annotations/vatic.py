@@ -68,25 +68,28 @@ class VaticParser(Parser):
 
         <track_id> <xmin> <ymin> <xmax> <ymax> <frame> <lost> <occluded> <generated> <label>
 
-    where:
-        :track_id:  identifier of the track this object is following (integer)
-        :xmin:      top left x coordinate of the bounding box (integer)
-        :ymin:      top left y coordinate of the bounding box (integer)
-        :xmax:      bottom right x coordinate of the bounding box (integer)
-        :ymax:      bottom right y coordinate of the bounding box (integer)
-        :frame:     image identifier that this annotation belong to (integer)
-        :lost:      1 if the annotated object is outside of the view screen, 0 otherwise
-        :occluded:  1 if the annotated object is occluded, 0 otherwise
-        :generated: 1 if the annotation was automatically interpolated, 0 otherwise (not used)
-        :label:     class label of the object, enclosed in quotation marks
-
-    .. _VATIC: https://github.com/cvondrick/vatic
+    =========  ===========
+    Name       Description
+    =========  ===========
+    track_id   identifier of the track this object is following (integer)
+    xmin       top left x coordinate of the bounding box (integer)
+    ymin       top left y coordinate of the bounding box (integer)
+    xmax       bottom right x coordinate of the bounding box (integer)
+    ymax       bottom right y coordinate of the bounding box (integer)
+    frame      image identifier that this annotation belong to (integer)
+    lost       1 if the annotated object is outside of the view screen, 0 otherwise
+    occluded   1 if the annotated object is occluded, 0 otherwise
+    generated  1 if the annotation was automatically interpolated, 0 otherwise (not used)
+    label      class label of the object, enclosed in quotation marks
+    =========  ===========
 
     Example:
         >>> video_000.txt
-        1 578 206 762 600 282 0 0 0 "person"
-        2 206 286 234 340 0 1 0 0 "person"
-        8 206 286 234 340 10 1 0 1 "car"
+            1 578 206 762 600 282 0 0 0 "person"
+            2 206 286 234 340 0 1 0 0 "person"
+            8 206 286 234 340 10 1 0 1 "car"
+
+    .. _VATIC: https://github.com/cvondrick/vatic
     """
     parser_type = ParserType.SINGLE_FILE
     box_type = VaticAnnotation

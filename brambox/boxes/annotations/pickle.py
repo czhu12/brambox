@@ -54,7 +54,8 @@ class PickleAnnotation(Annotation):
 
 
 class PickleParser(Parser):
-    """ This parser generates a binary file of your annotations that can be parsed really fast.
+    """
+    This parser generates a binary file of your annotations that can be parsed really fast.
     If you are using a python library for training your network, you can use this format to quickly read your annotations.
 
     Args:

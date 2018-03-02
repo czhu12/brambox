@@ -52,7 +52,8 @@ class PascalVocAnnotation(Annotation):
 
 
 class PascalVocParser(Parser):
-    """ This parser can parse annotations in the `pascal voc`_ format.
+    """
+    This parser can parse annotations in the `pascal voc`_ format.
     This format consists of one xml file for every image.
 
     Example:

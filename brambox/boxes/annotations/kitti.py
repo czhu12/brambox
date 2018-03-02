@@ -46,7 +46,8 @@ class KittiAnnotation(Annotation):
 
 
 class KittiParser(Parser):
-    """ This parser can read and write kitti_ annotation files. |br|
+    """
+    This parser can read and write kitti_ annotation files. |br|
     Some of the values of this dataset are not present in the brambox annotation objects and are thus not used.
     When serializing this format, these values will be set to their default value, as per specification.
 
@@ -72,13 +73,6 @@ class KittiParser(Parser):
     rotation_y          1                 *[Not used in brambox]* Rotation around Y-axis in camera coordinates
     ==================  ================  ===========
 
-    Note:
-        This parser will convert the ``occluded_state`` to an ``occlusion_fraction``. |br|
-        Partly occluded (1) will be converted to a fraction of 0.25 and largely occluded (2) to 0.5.
-        The other states will be converted to a fraction of 0. |br|
-        When serializing, all fractions bigger or equal to 0.5 will be converted to largely occluded (2),
-        fractions between 0.5 and 0 to partly occluded (1) and fractions of 0 will be converted to fully visible (0).
-
     Example:
         >>> image_000.txt
             <class_label> <truncated_fraction> <occluded_state> -10 <bbox_left> <bbox_top> <bbox_right> <bbox_bottom> -1 -1 -1 -1000 -1000 -1000 -10
@@ -87,6 +81,13 @@ class KittiParser(Parser):
             <class_label> <truncated_fraction> <occluded_state> -10 <bbox_left> <bbox_top> <bbox_right> <bbox_bottom> -1 -1 -1 -1000 -1000 -1000 -10
             <class_label> <truncated_fraction> <occluded_state> -10 <bbox_left> <bbox_top> <bbox_right> <bbox_bottom> -1 -1 -1 -1000 -1000 -1000 -10
             <class_label> <truncated_fraction> <occluded_state> -10 <bbox_left> <bbox_top> <bbox_right> <bbox_bottom> -1 -1 -1 -1000 -1000 -1000 -10
+
+    Note:
+        This parser will convert the ``occluded_state`` to an ``occlusion_fraction``. |br|
+        Partly occluded (1) will be converted to a fraction of 0.25 and largely occluded (2) to 0.5.
+        The other states will be converted to a fraction of 0. |br|
+        When serializing, all fractions bigger or equal to 0.5 will be converted to largely occluded (2),
+        fractions between 0.5 and 0 to partly occluded (1) and fractions of 0 will be converted to fully visible (0).
 
     .. _kitti: https://www.cvlibs.net/datasets/kitti/eval_object.php?obj_benchmark=2d
     """

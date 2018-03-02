@@ -35,7 +35,8 @@ class PascalVocDetection(Detection):
 
 
 class PascalVocParser(Parser):
-    """ This parser can parse detections in the `pascal voc`_ format.
+    """
+    This parser can parse detections in the `pascal voc`_ format.
     This format consists of one file per class of detection. |br|
     confidence_scores are saved as a number between 0-1, coordinates are saved as pixel values.
 
