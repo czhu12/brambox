@@ -1,4 +1,4 @@
-#!python
+#!/usr/bin/env python
 import time
 import argparse
 from pathlib import Path

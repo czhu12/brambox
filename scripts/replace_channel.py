@@ -1,9 +1,4 @@
-#!python
-#
-#   Copyright EAVISE
-#   By Tanguy Ophoff
-#
-
+#!/usr/bin/env python
 import argparse
 import cv2
 
