@@ -6,12 +6,12 @@
 YAML
 ----
 """
-
-
+import logging
 import yaml
 from .annotation import *
 
 __all__ = ["YamlAnnotation", "YamlParser"]
+log = logging.getLogger(__name__)
 
 
 class YamlAnnotation(Annotation):
@@ -38,11 +38,13 @@ class YamlAnnotation(Annotation):
         self.lost = yaml_obj['lost']
 
         if 'occluded_fraction' not in yaml_obj:    # Backward compatible with older versions
+            log.deprecated('You are using an old yaml format that will be deprecated in newer versions. Consider to save your annotations with the new format.')
             self.occluded_fraction = float(yaml_obj['occluded'])
         else:
             self.occluded_fraction = yaml_obj['occluded_fraction']/100
 
         if 'truncated_fraction' not in yaml_obj:    # Backward compatible with older versions
+            log.deprecated('You are using an old yaml format that will be deprecated in newer versions. Consider to save your annotations with the new format.')
             self.truncated_fraction = 0.0
         else:
             self.truncated_fraction = yaml_obj['truncated_fraction']/100
