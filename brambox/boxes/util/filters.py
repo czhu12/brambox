@@ -206,8 +206,18 @@ class ClassLabelFilter:
 class MatchFilter:
     """ Checks whether the bounding box matches with bounding boxes from a list.
 
+    Args:
+        boxes (list): List of bounding boxes to match with
+        remove_on_match (Boolean, optional): Whether to remove the matched box from the boxes list; Default **True**
+        match_threshold (Number, optional): Threshold for the matching criteria to reach; Default **0.5**
+        match_criteria (function, optional): Function that computes a matching criteria; Default **iou**
+
+    Returns:
+        Boolean: **True** if a match was found.
+
     Note:
-        Needs extra explaining
+        The ``match_criteria`` function takes two bounding boxes as input
+        and must return a Number to compare with the matching threshold.
     """
     def __init__(self, boxes, remove_on_match=True, match_threshold=0.5, match_criteria=iou):
         self.boxes = copy.deepcopy(boxes)
