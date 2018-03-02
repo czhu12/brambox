@@ -37,7 +37,7 @@ For more in-depth guides and the API documentation [click here][doc-url].
 See [the contribution guidelines](CONTRIBUTING.md)
 
 [version-badge]: https://img.shields.io/badge/version-1.0.0-blue.svg
-[pipeline-badge]: https://gitlab.com/EAVISE/brambox/badges/develop/pipeline.svg
-[coverage-badge]: https://codecov.io/gl/EAVISE/brambox/branch/develop/graph/badge.svg
-[coverage-report]: https://codecov.io/gl/EAVISE/brambox/branch/develop
+[pipeline-badge]: https://gitlab.com/EAVISE/brambox/badges/master/pipeline.svg
+[coverage-badge]: https://codecov.io/gl/EAVISE/brambox/branch/master/graph/badge.svg
+[coverage-report]: https://codecov.io/gl/EAVISE/brambox/branch/master
 [doc-url]: https://eavise.gitlab.io/brambox
