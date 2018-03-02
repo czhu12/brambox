@@ -2,6 +2,10 @@
 #   Copyright EAVISE
 #   Author: Maarten Vandersteegen
 #
+"""
+Vatic
+-----
+"""
 
 from .annotation import *
 
@@ -22,7 +26,7 @@ class VaticAnnotation(Annotation):
         lost = int(self.lost)
         occluded = int(self.occluded)
         generated = 0
-        class_label = self.class_label
+        class_label = '?' if self.class_label == '' else self.class_label
 
         string = "{} {} {} {} {} {} {} {} {} {}" \
             .format(object_id,
@@ -51,16 +55,47 @@ class VaticAnnotation(Annotation):
         self.lost = elements[6] != '0'
         self.occluded = elements[7] != '0'
         self.class_label = elements[9].strip('\"')
+        if self.class_label == '?':
+            self.class_label = ''
 
 
 class VaticParser(Parser):
-    """ VATIC tool annotation parser """
+    """
+    This parser is designed to parse the standard VATIC_ video annotation tool text files.
+    The VATIC format contains all annotation from multiple images into one file.
+    Each line of the file represents one bounding box from one image and is a spaces separated
+    list of values structured as follows:
+
+        <track_id> <xmin> <ymin> <xmax> <ymax> <frame> <lost> <occluded> <generated> <label>
+
+    =========  ===========
+    Name       Description
+    =========  ===========
+    track_id   identifier of the track this object is following (integer)
+    xmin       top left x coordinate of the bounding box (integer)
+    ymin       top left y coordinate of the bounding box (integer)
+    xmax       bottom right x coordinate of the bounding box (integer)
+    ymax       bottom right y coordinate of the bounding box (integer)
+    frame      image identifier that this annotation belong to (integer)
+    lost       1 if the annotated object is outside of the view screen, 0 otherwise
+    occluded   1 if the annotated object is occluded, 0 otherwise
+    generated  1 if the annotation was automatically interpolated, 0 otherwise (not used)
+    label      class label of the object, enclosed in quotation marks
+    =========  ===========
+
+    Example:
+        >>> video_000.txt
+            1 578 206 762 600 282 0 0 0 "person"
+            2 206 286 234 340 0 1 0 0 "person"
+            8 206 286 234 340 10 1 0 1 "car"
+
+    .. _VATIC: https://github.com/cvondrick/vatic
+    """
     parser_type = ParserType.SINGLE_FILE
     box_type = VaticAnnotation
-    extension = '.txt'
 
     def serialize(self, annotations):
-        """ Serialize input dictionary of annotations into one string """
+        """ Serialize input dictionary of annotations into a VATIC annotation string """
 
         result = []
         for img_id, annos in annotations.items():
@@ -71,7 +106,7 @@ class VaticParser(Parser):
         return "\n".join(result)
 
     def deserialize(self, string):
-        """ Deserialize an annotation file into a dictionary of annotations """
+        """ deserialize a string containing the content of a VATIC .txt file """
 
         result = {}
         for line in string.splitlines():

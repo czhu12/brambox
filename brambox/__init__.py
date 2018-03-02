@@ -3,6 +3,9 @@
 # Copyright EAVISE
 #
 
+from .log import *
+from .version import __version__
+
 from . import boxes
 from . import transforms
 

@@ -2,9 +2,13 @@ import unittest
 from brambox.boxes.annotations.annotation import Annotation
 from brambox.boxes.annotations import VaticAnnotation, VaticParser
 
+vatic_string = """0 0 0 0 0 0 0 0 0 ?
+0 0 0 0 0 0 0 0 0 ?
+0 0 0 0 0 0 0 0 0 person
+0 0 0 0 0 1 0 0 0 person"""
+
 
 class TestCvcAnnotation(unittest.TestCase):
-
     def setUp(self):
         self.anno = VaticAnnotation()
 
@@ -34,21 +38,21 @@ class TestCvcAnnotation(unittest.TestCase):
         self.anno.height = 16.1
 
         string = self.anno.serialize()
-        self.assertEqual(string, "0 13 14 27 30 0 0 0 0 x")
+        self.assertEqual(string, "0 13 14 27 30 0 0 0 0 ?")
 
     def test_serialize_occluded(self):
         """ test if occluded flag is serialized """
 
         self.anno.occluded = 1
         string = self.anno.serialize()
-        self.assertEqual(string, "0 0 0 0 0 0 0 1 0 x")
+        self.assertEqual(string, "0 0 0 0 0 0 0 1 0 ?")
 
     def test_serialize_lost(self):
         """ test if lost flag is serialized """
 
         self.anno.lost = 1
         string = self.anno.serialize()
-        self.assertEqual(string, "0 0 0 0 0 0 1 0 0 x")
+        self.assertEqual(string, "0 0 0 0 0 0 1 0 0 ?")
 
     def test_deserialize(self):
         """ test if major fields: label, x, y, w, h, object_id, frame_nr are processed """
@@ -67,24 +71,19 @@ class TestCvcAnnotation(unittest.TestCase):
     def test_deserialize_occluded(self):
         """ test if occluded flag is processed """
 
-        string = "0 0 0 0 0 0 0 1 0 x"
+        string = "0 0 0 0 0 0 0 1 0 ?"
         self.anno.deserialize(string)
         self.assertTrue(self.anno.occluded)
 
     def test_deserialize_lost(self):
         """ test if lost flag is processed """
 
-        string = "0 0 0 0 0 0 1 0 0 x"
+        string = "0 0 0 0 0 0 1 0 0 ?"
         self.anno.deserialize(string)
         self.assertTrue(self.anno.lost)
 
-vatic_string = """0 0 0 0 0 0 0 0 0 x
-0 0 0 0 0 0 0 0 0 x
-0 0 0 0 0 0 0 0 0 person
-0 0 0 0 0 1 0 0 0 person"""
 
 class TestVaticParser(unittest.TestCase):
-
     def setUp(self):
         self.parser = VaticParser()
 
@@ -110,5 +109,9 @@ class TestVaticParser(unittest.TestCase):
         self.assertEqual(len(obj), 2)
         self.assertEqual(len(obj['0']), 3)
         self.assertEqual(len(obj['1']), 1)
-        self.assertEqual(obj['0'][0].class_label, 'x')
+        self.assertEqual(obj['0'][0].class_label, '')
         self.assertEqual(obj['1'][0].class_label, 'person')
+
+
+if __name__ == '__main__':
+    unittest.main()

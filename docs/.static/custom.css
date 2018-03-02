@@ -1,0 +1,41 @@
+.wy-side-nav-search {
+  background: #fcfcfc;
+}
+
+.wy-side-nav-search a:hover {
+  background: #ffffff00;
+}
+
+.wy-side-nav-search a {
+    display: block;
+}
+
+.wy-side-nav-search div.version {
+  color: #2980b9;
+}
+
+.wy-nav-content {
+  min-height: 100vh;
+  max-width: 1000px;
+}
+
+@media screen and (min-width: 1400px) {
+.wy-nav-content-wrap {
+  background: #ffffff;
+}
+
+a {
+  color: #2980b9;
+}
+
+a:visited {
+  color: #2e90d1;
+}
+
+a:hover {
+  color: #58a6da;
+}
+
+.wy-menu a, .wy-menu a:hover, .wy-menu a:visited {
+    color: #b3b3b3;
+}

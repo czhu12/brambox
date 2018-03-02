@@ -1,3 +1,10 @@
+# Project specific
+docs/.build
+brambox/version.py
+.coverage
+htmlcov/
+
+# Python specific
 *.pyc
 dist
 build

@@ -1,0 +1,11 @@
+# Runtime dependencies
+
+# Development dependencies
+pycodestyle
+coverage
+codecov
+sphinx
+sphinx_rtd_theme
+recommonmark
+
+-e .

@@ -2,51 +2,85 @@
 #   Copyright EAVISE
 #   Author: Tanguy Ophoff
 #
-#   YAML annotation format
-#   example file
-#       img1:
-#           car:
-#               - [x,y,w,h]
-#           person:
-#               - [x,y,w,h]
-#               - [x,y,w,h]
-#       img2:
-#           car:
-#               - [x,y,w,h]
-#
-
+"""
+YAML
+----
+"""
+import logging
 import yaml
 from .annotation import *
 
 __all__ = ["YamlAnnotation", "YamlParser"]
+log = logging.getLogger(__name__)
 
 
 class YamlAnnotation(Annotation):
     """ YAML image annotation """
-
     def serialize(self):
         """ generate a yaml annotation object """
-        return (self.class_label,
-                [round(self.x_top_left),
-                 round(self.y_top_left),
-                 round(self.width),
-                 round(self.height)])
+        class_label = '?' if self.class_label == '' else self.class_label
+        return (class_label,
+                {
+                    'coords': [round(self.x_top_left), round(self.y_top_left), round(self.width), round(self.height)],
+                    'lost': self.lost,
+                    'occluded_fraction': self.occluded_fraction*100,
+                    'truncated_fraction': self.truncated_fraction*100,
+                }
+                )
 
     def deserialize(self, yaml_obj, class_label):
         """ parse a yaml annotation object """
-        self.class_label = class_label
-        self.x_top_left = float(yaml_obj[0])
-        self.y_top_left = float(yaml_obj[1])
-        self.width = float(yaml_obj[2])
-        self.height = float(yaml_obj[3])
+        self.class_label = '' if class_label == '?' else class_label
+        self.x_top_left = float(yaml_obj['coords'][0])
+        self.y_top_left = float(yaml_obj['coords'][1])
+        self.width = float(yaml_obj['coords'][2])
+        self.height = float(yaml_obj['coords'][3])
+        self.lost = yaml_obj['lost']
 
-        self.lost = False
-        self.occluded = False
+        if 'occluded_fraction' not in yaml_obj:    # Backward compatible with older versions
+            log.deprecated('You are using an old yaml format that will be deprecated in newer versions. Consider to save your annotations with the new format.')
+            self.occluded_fraction = float(yaml_obj['occluded'])
+        else:
+            self.occluded_fraction = yaml_obj['occluded_fraction']/100
+
+        if 'truncated_fraction' not in yaml_obj:    # Backward compatible with older versions
+            log.deprecated('You are using an old yaml format that will be deprecated in newer versions. Consider to save your annotations with the new format.')
+            self.truncated_fraction = 0.0
+        else:
+            self.truncated_fraction = yaml_obj['truncated_fraction']/100
+
         self.object_id = 0
 
 
 class YamlParser(Parser):
-    """ YAML annotation parser """
+    """
+    This parser generates a lightweight human readable annotation format.
+    With only one file for the entire dataset, this format will save you precious HDD space and will also be parsed faster.
+
+    Example:
+        >>> annotations.yaml
+            img1:
+              car:
+                - coords: [x,y,w,h]
+                  lost: False
+                  occluded_fraction: 50.123
+                  truncated_fraction: 0.0
+              person:
+                - coords: [x,y,w,h]
+                  lost: False
+                  occluded_fraction: 0.0
+                  truncated_fraction: 10.0
+                - coords: [x,y,w,h]
+                  lost: False
+                  occluded_fraction: 0.0
+                  truncated_fraction: 0.0
+            img2:
+              car:
+                - coords: [x,y,w,h]
+                  lost: True
+                  occluded_fraction: 90.0
+                  truncated_fraction: 76.0
+    """
     parser_type = ParserType.SINGLE_FILE
     box_type = YamlAnnotation
     extension = '.yaml'
@@ -57,14 +91,12 @@ class YamlParser(Parser):
         for img_id in annotations:
             img_res = {}
             for anno in annotations[img_id]:
-                if anno.lost:   # yaml does not support lost type -> ignore
-                    continue
                 new_anno = self.box_type.create(anno)
                 key, val = new_anno.serialize()
                 if key not in img_res:
                     img_res[key] = [val]
                 else:
-                    img_res[key] += [val]
+                    img_res[key].append(val)
             result[img_id] = img_res
 
         return yaml.dump(result)
