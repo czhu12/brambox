@@ -28,6 +28,7 @@ dollar_string = """20,503.75,213,20.5,50,74.8391
 21,519.034,186.602,31.6574,77.2131,51.2428
 """
 
+
 class TestDollarParser(unittest.TestCase):
     def setUp(self):
         self.parser = DollarParser(class_label_map=['person'])
