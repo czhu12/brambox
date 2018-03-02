@@ -3,9 +3,10 @@
 # Copyright EAVISE
 #
 
+from .log import *
+from .version import __version__
+
 from . import boxes
 from . import transforms
-from .version import __version__
-from .logger import set_log_level
 
 __all__ = ['boxes', 'transforms']

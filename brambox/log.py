@@ -2,6 +2,7 @@
 #   Copyright EAVISE
 #
 import logging
+import os
 
 
 __all__ = ['set_log_level', 'logger']
@@ -22,7 +23,10 @@ logging.Logger.deprecated = deprecated
 
 # Console Handler
 ch = logging.StreamHandler()
-ch.setLevel(logging.INFO)
+if 'BB_LOGLVL' in os.environ:
+    ch.setLevel(os.environ['BB_LOGLVL'])
+else:
+    ch.setLevel(logging.INFO)
 ch.setFormatter(logging.Formatter('%(levelname)s [%(name)s]  %(message)s'))
 set_log_level = ch.setLevel
 

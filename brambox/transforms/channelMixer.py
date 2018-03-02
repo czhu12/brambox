@@ -3,11 +3,15 @@
 #   By Tanguy Ophoff
 #
 
+import logging
+log = logging.getLogger(__name__)   # noqa
+
 from PIL import Image
 import numpy as np
 try:
     import cv2
 except ModuleNotFoundError:
+    log.debug('OpenCV not installed, always using PIL')
     cv2 = None
 
 __all__ = ['ChannelMixer']

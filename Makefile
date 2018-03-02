@@ -1,7 +1,7 @@
 all: test lint
 
 test:
-	$(PYTHON) coverage run --source brambox setup.py test -q
+	BB_LOGLVL=WARNING $(PYTHON) coverage run --source brambox setup.py test -q
 
 lint:
 	$(PYTHON) pycodestyle --max-line-length=250 ./brambox/ && \

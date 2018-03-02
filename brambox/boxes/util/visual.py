@@ -3,6 +3,9 @@
 #   Author: Tanguy Ophoff
 #
 
+import logging
+log = logging.getLogger(__name__)   # noqa
+
 import os
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
@@ -10,6 +13,7 @@ try:
     import cv2
     import numpy as np
 except ModuleNotFoundError:
+    log.debug('OpenCV not installed, always using PIL')
     cv2 = None
 
 from ..annotations import Annotation
