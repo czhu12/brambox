@@ -6,10 +6,11 @@
 Pascal VOC
 ----------
 """
-
+import logging
 from .detection import *
 
 __all__ = ["PascalVocDetection", "PascalVocParser"]
+log = logging.getLogger(__name__)
 
 
 class PascalVocDetection(Detection):
@@ -41,7 +42,8 @@ class PascalVocParser(Parser):
     confidence_scores are saved as a number between 0-1, coordinates are saved as pixel values.
 
     Keyword Args:
-        class_label (string): This keyword argument contains the ``class_label`` for the current file that is being parsed.
+        class_label (string, optional): This keyword argument contains the ``class_label`` \
+        for the current file that is being parsed.
 
     Example:
         >>> person.txt
@@ -61,6 +63,7 @@ class PascalVocParser(Parser):
         try:
             self.class_label = kwargs['class_label']
         except KeyError:
+            log.info("No 'class_label' kwarg found, parser will use '' as class_label.")
             self.class_label = ''
 
     def serialize(self, detections):

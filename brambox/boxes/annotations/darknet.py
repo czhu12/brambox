@@ -6,9 +6,11 @@
 Darknet
 -------
 """
+import logging
 from .annotation import *
 
 __all__ = ["DarknetAnnotation", "DarknetParser"]
+log = logging.getLogger(__name__)
 
 
 class DarknetAnnotation(Annotation):
@@ -95,14 +97,14 @@ class DarknetParser(Parser):
             if self.image_width is None:
                 raise KeyError
         except KeyError:
-            raise ValueError("Darknet parser requires image_width")
+            raise ValueError("Darknet parser requires a 'image_width' kwarg.")
 
         try:
             self.image_height = kwargs['image_height']
             if self.image_height is None:
                 raise KeyError
         except KeyError:
-            raise ValueError("Darknet parser requires image_height")
+            raise ValueError("Darknet parser requires a 'image_height' kwarg.")
 
         try:
             label_map = kwargs['class_label_map']
@@ -112,6 +114,7 @@ class DarknetParser(Parser):
             else:
                 self.class_label_map = label_map
         except KeyError:
+            log.info("No 'class_label_map' kwarg found, parser will use class_label_indices as class_labels.")
             self.class_label_map = None
 
     def serialize(self, annotations):

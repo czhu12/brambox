@@ -73,7 +73,7 @@ class PickleParser(Parser):
         try:
             self.keep_ignore = kwargs['keep_ignore']
         except KeyError:
-            # TODO : logging #4
+            log.info("No 'keep_ignore' kwarg found, defaulting to False.")
             self.keep_ignore = False
 
     def serialize(self, annotations):
