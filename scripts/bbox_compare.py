@@ -203,7 +203,7 @@ def main():
     parser.add_argument('--extension', '-x', metavar='.ext', help='Image extension (default .png)', default='.png')
     parser.add_argument('--show-anno-labels', '-a', help='Show labels of annotations', action='store_true')
     parser.add_argument('--show-det-labels', '-d', help='Show labels of detections', action='store_true')
-    parser.add_argument('--kwargs', metavar='KW=V', help='Keyword arguments for the parsers', nargs='*', action=StoreKwargs, default={})
+    parser.add_argument('--kwargs', '-k', metavar='KW=V', help='Keyword arguments for the parsers', nargs='*', action=StoreKwargs, default={})
     args = parser.parse_args()
 
     print('Parsing bounding boxes...')

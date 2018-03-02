@@ -21,10 +21,10 @@ def main():
         description='Parse DarkNet stdout, plot the loss and indicate weights file '
                     'with lowest avg precision and total precision.')
     parser.add_argument('input', help='Input text file containing darknet stdout.')
-    parser.add_argument('--weights-step', default=100,
+    parser.add_argument('--weights-step', '-w', metavar='N', default=100,
                         help='Multiple of iterations a new weights file is saved. '
                         'This is used to point to the most interesting weights file.')
-    parser.add_argument('--backend', default='mpl', help='Set the rendering engine of the plot to "mpl" or "ply".')
+    parser.add_argument('--backend', '-b', default='mpl', help='Set the rendering engine of the plot to "mpl" or "ply".')
     args = parser.parse_args()
 
     with open(args.input) as f:

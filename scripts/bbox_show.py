@@ -153,7 +153,7 @@ def main():
     parser.add_argument('--extension', '-x', metavar='.ext', help='Image extension (default .png)', default='.png')
     parser.add_argument('--show-labels', '-l', help='Show labels above bounding boxes', action='store_true')
     parser.add_argument('--faded', '-f', metavar='lambda', help='Lambda function to pass as faded parameter', default=None)
-    parser.add_argument('--kwargs', metavar='KW=V', help='Keyword arguments for the parser', nargs='*', action=StoreKwargs, default={})
+    parser.add_argument('--kwargs', '-k', metavar='KW=V', help='Keyword arguments for the parser', nargs='*', action=StoreKwargs, default={})
     args = parser.parse_args()
 
     print('Parsing bounding boxes...')

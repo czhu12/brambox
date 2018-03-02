@@ -11,12 +11,11 @@ import brambox as bb
 
 
 def main():
-
     # Parse arguments
-    parser = argparse.ArgumentParser(description='This script swaps a channel from input1 with a channel from input2 and saves the output')
+    parser = argparse.ArgumentParser(description='This script replaces a channel from input 1 with a channel from input 2 and saves the output as a new image')
     parser.add_argument('inputimage', nargs=2, help='Filename of the 2 images')
-    parser.add_argument('-o', '--output', help='Output filename', default='out.jpg')
-    parser.add_argument('-c', '--channels', nargs=2, help='Channel to swap (old new)', default=['0', '0'])
+    parser.add_argument('--output', '-o', help='Output filename', default='out.jpg')
+    parser.add_argument('--channels', '-c', metavar='N', nargs=2, help='Zero-based index of the channel to replace (old new)', default=['0', '0'])
     args = parser.parse_args()
 
     # Parse input
