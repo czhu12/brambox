@@ -23,7 +23,7 @@ __all__ = ['draw_boxes']
 
 try:
     font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf', 10)
-except FileNotFoundError:
+except (FileNotFoundError, OSError) as e:
     font = ImageFont.load_default()
 
 
